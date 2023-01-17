@@ -26,7 +26,46 @@ public interface JavaObjectCriteria<O> extends Criteria {
 }
 ```
 
-用来过滤一个指定的java对象， 范型参数指明支持的对象类型
+用来过滤一个指定的java对象， 范型参数指明支持的对象类型。这样基于要过滤的对象的类型，可以编写符合业务需要的对象，比如
+
+```java
+public class User {
+    private String name;
+    private int level;
+}
+
+public class UserMinLevelCriteria implements JavaObjectCriteria<User> {
+    private int level;
+
+    public boolean meetCriteria(User object) {
+        return object.getLevel() >= this.level;
+    }
+}
+```
+
+`UserMinLevelCriteria`会检查用户的最低等级是否符合预期。通过这种机制，配合"Trait"的编程理念，常见的过滤和条件标准还有希望得到进一步沉淀，如
+
+```java
+
+@Trait
+public interface EnabledStatusFlag {
+    boolean enabled;
+}
+
+public class User implements EnabledStatusFlag {
+    private boolean enabled;
+}
+
+public class EnabledStatusCriteria implements JavaObjectCriteria<EnabledStatusFlag> {
+    private boolean status;
+
+    public boolean meetCriteria(User object) {
+        return status == object.isEabled();
+    }
+}
+```
+
+`EnabledStatusCriteria`为所有实现`EnabledStatusFlag`的类型提供过滤能力
 
 # PersistenceQueryCriteria
 
@@ -42,3 +81,5 @@ public interface PersistenceQueryCriteria<T> {
 ```
 
 用来构建一个查询数据引擎的表达式或者引擎sdk能够理解的java对象，这个对象一般来说会是个字符串(或者json形式的字符串)
+
+# 布尔与或非运算

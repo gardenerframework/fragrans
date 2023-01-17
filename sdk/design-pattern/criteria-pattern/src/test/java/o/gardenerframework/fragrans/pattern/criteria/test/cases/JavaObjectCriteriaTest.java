@@ -43,7 +43,7 @@ public class JavaObjectCriteriaTest {
         private String item2;
     }
 
-    class ObjectHasItemCriteria implements JavaObjectCriteria<TestObject> {
+    static class ObjectHasItemCriteria implements JavaObjectCriteria<TestObject> {
 
         @Override
         public boolean meetCriteria(TestObject object) {
