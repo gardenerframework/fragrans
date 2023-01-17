@@ -1,8 +1,7 @@
-com:
-  jdcloud:
-    gardener:
-      fragrans:
-        validation:
-          constraints:
-            map:
-              OneToOneMapping: 不是一对一的对应关系
+io:
+  gardenerframework:
+    fragrans:
+      validation:
+        constraints:
+          map:
+            OneToOneMapping: 不是一对一的对应关系

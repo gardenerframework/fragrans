@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.jdcloud.gardener.fragrans.validation.configuration.EnhanceValidationConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.gardenerframework.fragrans.validation.configuration.EnhanceValidationConfiguration

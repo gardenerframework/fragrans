@@ -1,11 +1,10 @@
-com:
-  jdcloud:
-    gardener:
-      fragrans:
-        messages:
-          basenames:
-            - test-0 # 这也是一个不存在的资源文件
-            - test-1
-            - test-2
-            # 这是一个不存在的资源文件
-            - test-4
+io:
+  gardenerframework:
+    fragrans:
+      messages:
+        basenames:
+          - test-0 # 这也是一个不存在的资源文件
+          - test-1
+          - test-2
+          # 这是一个不存在的资源文件
+          - test-4

@@ -1,8 +1,7 @@
-com:
-  jdcloud:
-    gardener:
-      fragrans:
-        validation:
-          constraints:
-            collection:
-              DistinctItem: 有重复数据
+io:
+  gardenerframework:
+    fragrans:
+      validation:
+        constraints:
+          collection:
+            DistinctItem: 有重复数据

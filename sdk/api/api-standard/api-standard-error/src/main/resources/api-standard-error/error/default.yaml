@@ -1,6 +1,5 @@
-com:
-  jdcloud:
-    gardener:
+io:
+  gardenerframework:
       fragrans:
         api:
           standard:
