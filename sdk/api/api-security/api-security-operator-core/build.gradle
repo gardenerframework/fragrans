@@ -1,0 +1,7 @@
+dependencies {
+    api "org.springframework:spring-web"
+    api "org.springframework.boot:spring-boot-autoconfigure"
+    api "${group}:sugar-trait"
+    annotationProcessor "${group}:sugar-trait-apt"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+}

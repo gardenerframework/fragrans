@@ -1,0 +1,7 @@
+com:
+  jdcloud:
+    gardener:
+      fragrans:
+        messages:
+          basenames:
+            - api-options-engine/error/client

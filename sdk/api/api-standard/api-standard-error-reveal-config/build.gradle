@@ -1,0 +1,5 @@
+dependencies {
+    api "${group}:log-generic"
+    api "${group}:log-common-words"
+    api "org.springframework.boot:spring-boot-starter"
+}

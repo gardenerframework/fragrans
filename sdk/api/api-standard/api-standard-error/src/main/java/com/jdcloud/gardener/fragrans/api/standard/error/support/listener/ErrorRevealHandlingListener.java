@@ -1,0 +1,42 @@
+package com.jdcloud.gardener.fragrans.api.standard.error.support.listener;
+
+import com.jdcloud.gardener.fragrans.api.standard.error.configuration.ApiErrorRegistry;
+import com.jdcloud.gardener.fragrans.api.standard.error.support.DefaultApiErrorFactory;
+import com.jdcloud.gardener.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
+import com.jdcloud.gardener.fragrans.messages.EnhancedMessageSource;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.ApplicationListener;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+/**
+ * 处理在业务错误定义包内的错误
+ *
+ * @author zhanghan30
+ * @date 2022/5/9 9:12 下午
+ */
+@Component
+@Slf4j
+@RequiredArgsConstructor
+@ConditionalOnBean(DefaultApiErrorFactory.class)
+@Order(0)
+public class ErrorRevealHandlingListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
+    /**
+     * 注册表
+     */
+    private final ApiErrorRegistry registry;
+    private final EnhancedMessageSource messageSource;
+
+    @Override
+    public void onApplicationEvent(InitializingApiErrorPropertiesEvent event) {
+        //判断当前错误是否要展示
+        if (event.getError() != null && registry.isErrorRevealed(event.getError())) {
+            //将业务错误的类名作为错误代码返回
+            event.getApiError().setError(event.getError().getClass().getCanonicalName());
+            //将业务错误作为消息输出返回
+            event.getApiError().setMessage(messageSource.getMessage(event.getError(), event.getLocale()));
+        }
+    }
+}

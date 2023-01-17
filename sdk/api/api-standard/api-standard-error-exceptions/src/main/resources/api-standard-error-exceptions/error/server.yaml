@@ -1,0 +1,16 @@
+com:
+  jdcloud:
+    gardener:
+      fragrans:
+        api:
+          standard:
+            error:
+              exception:
+                server:
+                  BadGatewayException: 网关访问错误
+                  BandwidthLimitExceededException: 带宽使用超限
+                  GatewayTimeoutException: 网关访问超时
+                  HttpVersionNotSupportedException: 无法支持所要求的http版本
+                  InternalServerErrorException: 内部异常
+                  NotImplementedException: 未实现请求指定的方法
+                  ServiceUnavailableException: 服务暂时不可用

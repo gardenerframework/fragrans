@@ -1,0 +1,9 @@
+dependencies {
+    api group: "${group}", name: 'api-standard-error'
+    api group: "${group}", name: 'api-advice-engine'
+    api group: "${group}", name: 'data-cache-core'
+    api group: "${group}", name: 'log-generic'
+    api group: "${group}", name: 'log-common-words'
+    api "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "${group}:data-cache-spring-redis"
+}

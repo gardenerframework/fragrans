@@ -1,0 +1,9 @@
+com:
+  jdcloud:
+    gardener:
+      fragrans:
+        api:
+          idempotent:
+            exception:
+              IdempotentFactorNotFoundException: 请求中没有发现幂等因子
+              DuplicateHttpRequestException: 请勿重复提交[幂等因子={0}]

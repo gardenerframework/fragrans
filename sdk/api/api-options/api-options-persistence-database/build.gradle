@@ -1,0 +1,7 @@
+dependencies {
+    api group: "${rootProject.group}", name: 'api-options-common'
+    api group: "${rootProject.group}", name: 'data-persistence'
+    api group: "${rootProject.group}", name: 'data-domain-common-practice'
+    api group: "${rootProject.group}", name: 'api-security-operator-core'
+    testImplementation "mysql:mysql-connector-java"
+}

@@ -1,0 +1,5 @@
+dependencies {
+    api "org.springframework.kafka:spring-kafka"
+    api "${rootProject.group}:domain-event-core"
+    testImplementation "org.springframework.kafka:spring-kafka-test"
+}

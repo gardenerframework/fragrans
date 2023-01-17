@@ -1,0 +1,5 @@
+dependencies {
+    api "${group}:data-traits-generic"
+    api "${group}:data-traits-security"
+    api "${group}:data-traits-data-structure"
+}

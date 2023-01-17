@@ -1,0 +1,7 @@
+dependencies {
+    api group: "${group}", name: 'enhance-validation-constraints'
+    api group: "${group}", name: 'data-traits-generic'
+    api group: "${group}", name: 'data-traits-data-structure'
+    api "org.springframework.boot:spring-boot-starter"
+    testImplementation group: 'org.springframework', name: 'spring-web'
+}

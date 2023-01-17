@@ -1,0 +1,11 @@
+dependencies {
+    api "${group}:data-traits-generic"
+    api "${group}:data-traits-bio"
+    api "${group}:data-traits-mankind"
+    api "${group}:data-traits-society"
+    api "${group}:data-traits-account"
+    api "${group}:data-traits-application"
+    api "${group}:data-traits-data-structure"
+    api "${group}:data-traits-network"
+    api "${group}:data-traits-security"
+}

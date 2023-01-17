@@ -1,0 +1,19 @@
+server:
+  port: 80
+spring:
+  web:
+    locale: zh_CN
+logging:
+  level:
+    root: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    web:
+      server:
+        request:
+          autotime:
+            percentiles: 0.90,0.95,0.99

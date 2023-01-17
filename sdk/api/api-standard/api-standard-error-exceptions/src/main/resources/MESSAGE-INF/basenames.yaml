@@ -1,0 +1,8 @@
+com:
+  jdcloud:
+    gardener:
+      fragrans:
+        messages:
+          basenames:
+            - api-standard-error-exceptions/error/client
+            - api-standard-error-exceptions/error/server

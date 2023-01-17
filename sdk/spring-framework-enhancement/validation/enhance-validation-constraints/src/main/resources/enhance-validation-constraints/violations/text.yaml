@@ -1,0 +1,10 @@
+com:
+  jdcloud:
+    gardener:
+      fragrans:
+        validation:
+          constraints:
+            text:
+              OptionalNonBlank: 可不填写但一旦填写则不能没有内容
+              UpperUnderscore: 格式为字母大写(含数字)以及下划线(但不能以下划线开头)
+              LowerUnderscore: 格式为字母小写(含数字)以及下划线(但不能以下划线开头)

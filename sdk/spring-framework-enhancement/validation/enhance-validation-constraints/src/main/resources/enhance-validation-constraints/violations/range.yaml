@@ -1,0 +1,10 @@
+com:
+  jdcloud:
+    gardener:
+      fragrans:
+        validation:
+          constraints:
+            range:
+              Max: 不能超过{max}
+              Min: 不能低于{min}
+              Range: 不能低于{min}且不能超过{max}

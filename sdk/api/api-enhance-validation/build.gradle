@@ -1,0 +1,6 @@
+dependencies {
+    api group: "${group}", name: 'enhance-validation'
+    api group: "${group}", name: 'api-standard-error-exceptions'
+    api group: "${group}", name: 'api-advice-engine'
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+}

@@ -1,0 +1,9 @@
+dependencies {
+    compileOnly "${group}:sugar-trait"
+    annotationProcessor "${group}:sugar-trait-apt"
+    api "${group}:data-traits-generic"
+    api "${group}:data-traits-security"
+    api "${group}:data-traits-network"
+    api "${group}:data-traits-application"
+    api "${group}:data-traits-society"
+}
