@@ -1,0 +1,6 @@
+dependencies {
+    api "${group}:criteria-pattern"
+    api "org.springframework:spring-aop"
+    api "org.springframework:spring-context"
+    api "org.aspectj:aspectjweaver"
+}

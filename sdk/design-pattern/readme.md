@@ -83,3 +83,56 @@ public interface PersistenceQueryCriteria<T> {
 用来构建一个查询数据引擎的表达式或者引擎sdk能够理解的java对象，这个对象一般来说会是个字符串(或者json形式的字符串)
 
 # 布尔与或非运算
+
+## 过滤内存对象
+
+* [BooleanCriteria](criteria-pattern%2Fsrc%2Fmain%2Fjava%2Fio%2Fgardenerframework%2Ffragrans%2Fpattern%2Fcriteria%2Fschema%2Fobject%2FBooleanCriteria.java)
+* [MatchAllCriteria](criteria-pattern%2Fsrc%2Fmain%2Fjava%2Fio%2Fgardenerframework%2Ffragrans%2Fpattern%2Fcriteria%2Fschema%2Fobject%2FMatchAllCriteria.java)
+* [MatchAnyCriteria](criteria-pattern%2Fsrc%2Fmain%2Fjava%2Fio%2Fgardenerframework%2Ffragrans%2Fpattern%2Fcriteria%2Fschema%2Fobject%2FMatchAnyCriteria.java)
+* [NotCriteria](criteria-pattern%2Fsrc%2Fmain%2Fjava%2Fio%2Fgardenerframework%2Ffragrans%2Fpattern%2Fcriteria%2Fschema%2Fobject%2FNotCriteria.java)
+
+以上类型均使用[JavaObjectCriteria](criteria-pattern%2Fsrc%2Fmain%2Fjava%2Fio%2Fgardenerframework%2Ffragrans%2Fpattern%2Fcriteria%2Fschema%2Fobject%2FJavaObjectCriteria.java)
+作为输入，构造与或非条件。比如
+
+
+```java
+public class User {
+    private String name;
+    private int level;
+}
+
+public class UserMinLevelCriteria implements JavaObjectCriteria<User> {
+    private int level;
+
+    public boolean meetCriteria(User object) {
+        return object.getLevel() >= this.level;
+    }
+}
+
+public class User {
+    private String name;
+    private int level;
+}
+
+public class UserNameNotEmptyCriteria implements JavaObjectCriteria<User> {
+
+    public boolean meetCriteria(User object) {
+        return StringUtils.hasText(object.getName());
+    }
+}
+
+public class SampleApp {
+    public static void main() {
+        BooleanCriteria.builder()
+                //条件a
+                .a(new UserMinLevelCriteria(10))
+                //并且
+                .operator(AND)
+                //条件b
+                .b(new UserNameNotEmptyCriteria())
+                .build()
+                //判断一个100级，名字不为空的用户
+                .meetCriteria(new User("not empty", 100));
+    }
+}
+```
