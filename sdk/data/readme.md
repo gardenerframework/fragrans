@@ -4,188 +4,7 @@ data组件主要集合和与数据相关的定义和操作
 
 * [common](common): 负责与数据定义，持久化和操作相关的共用代码定义
 * [data-schema](data-schema): 负责标准化的数据定义，主要是与数据持久化相关的数据定义
-
-# 基准数据定义
-
-基准数据定义主要是为了规定和规范化数据库内的记录字段名称以及格式，并通过注解约定是否可以变化，是否可以通过put方法这类的粗旷操作直接覆盖
-
-## BasicRecord
-
-代表一个数据库记录(E-R关系中的E)，具有基本的
-
-* 创建时间
-* 更新时间字段
-
-```java
-public abstract class BasicRecord {
-    /**
-     * 记录的创建时间，一般存储在落地表内，可由数据库产生默认值。
-     * 创建时间一旦生成也是不可变的，请编程人员遵守这项设计
-     */
-    @ImmutableField
-    @DatabaseControlledField
-    private Date createdTime;
-    /**
-     * 上一次更新属性的时间，
-     * 在落地表中可由数据库的特性来保证
-     */
-    @DatabaseControlledField
-    private Date lastUpdateTime;
-}
-```
-
-通过注解不难看出，创建时间不可变化，2个时间字段一般都由数据库来控制(设置默认值以及更新等)
-
-## BasicRelation
-
-代表一个数据库关系
-
-```java
-public abstract class BasicRelation extends BasicRecord {
-    public BasicRelation(Date createdTime, Date lastUpdateTime) {
-        super(createdTime, lastUpdateTime);
-    }
-}
-```
-
-## BasicEntity
-
-表达一个简单的实体，约定了实体的识别符号的规范名称为"id"，类型不定，一般为Long或者String
-
-## BasicTrash
-
-代表已经被删除的记录。对比逻辑删除和真实物理删除，最佳实践推荐将被删除的记录移到回收站。当移动到回收站时，为了避免回收站的表结构总是受到记录表变更的影响，将被删除的记录作为一个json存储在其中
-
-```java
-public abstract class BasicTrash<I> extends BasicRecord {
-    /**
-     * 被删除的，仍在垃圾箱中的物体
-     */
-    @ImmutableField
-    private I item;
-
-    protected BasicTrash(Date createdTime, Date lastUpdateTime, I item) {
-        super(createdTime, lastUpdateTime);
-        this.item = item;
-    }
-}
-```
-
-## BasicEntityTrash & BasicRelationTrash
-
-实体和关系的回收站记录结构
-
-```java
-public abstract class BasicEntityTrash<T, I> extends BasicTrash<I> implements IdTrait<T> {
-    /**
-     * 被删除的，仍在垃圾箱中的物体
-     */
-    @ImmutableField
-    private T id;
-
-    protected BasicEntityTrash(Date createdTime, Date lastUpdateTime, T id, I item) {
-        super(createdTime, lastUpdateTime, item);
-        this.id = id;
-    }
-}
-```
-
-```java
-public abstract class BasicRelationTrash<I> extends BasicTrash<I> {
-
-    protected BasicRelationTrash(Date createdTime, Date lastUpdateTime, I item) {
-        super(createdTime, lastUpdateTime, item);
-    }
-}
-```
-
-<font color=orange>注意</font>: BasicEntityTrash中的id是否和被删除的记录id保持一致没有硬性规，推荐保持一致。
-
-# 操作追踪
-
-当一些记录需要进行操作追踪时，需要对以上基础实体进行扩展，增加谁创建的、谁更新的、谁删除的3个主要操作追踪常用字段
-
-## BasicOperationTraceableEntity
-
-在基础实体的基础上增加了创建人和更新人
-
-```java
-public abstract class BasicOperationTraceableEntity<T> extends BasicEntity<T> implements CreatorTrait, UpdaterTrait {
-    /**
-     * 创建人
-     */
-    @ImmutableField
-    private String creator;
-    /**
-     * 上一次更新人
-     */
-    @OperationTraceField
-    private String updater;
-
-    protected BasicOperationTraceableEntity(Date createdTime, Date lastUpdateTime, T id, String creator, String updater) {
-        super(createdTime, lastUpdateTime, id);
-        this.creator = creator;
-        this.updater = updater;
-    }
-}
-```
-
-## BasicOperationTraceableRelation
-
-和上面一样
-
-```java
-public abstract class BasicOperationTraceableRelation extends BasicRelation implements CreatorTrait, UpdaterTrait {
-    /**
-     * 创建人
-     */
-    @ImmutableField
-    @OperationTraceField
-    private String creator;
-    /**
-     * 上一次更新人
-     */
-    @OperationTraceField
-    private String updater;
-
-    protected BasicOperationTraceableRelation(Date createdTime, Date lastUpdateTime, String creator, String updater) {
-        super(createdTime, lastUpdateTime);
-        this.creator = creator;
-        this.updater = updater;
-    }
-}
-```
-
-## BasicOperationTraceableEntityTrash & BasicOperationTraceableRelationTrash
-
-在基础回收站记录的基础上主要增加了删除人
-
-# 字段注解
-
-字段注解在本组件中主要是配合orm工具来使用的，它的常见用法就是在扫描实体类时用于跳过或者保留带有注解的字段
-
-## ImmutableField & ImmutableRelation
-
-代表字段一旦创建就不应当被修改
-
-## ReadBySpecificOperation & UpdateBySpecificOperation
-
-意思是有明确的读取方法，而不是在读取记录语句中被一并带出。比如商品的价格是个经常变化的字段，它既不进入缓存，也不推荐在商品读取时连同几千字的详情等一并读出。因此会有一个`getPrice`方法，在sql语句上
-
-```sql
-select price
-from sku
-where id = #{id}
-```
-
-这样的语句来读取，此时就需要标记price字段为`ReadBySpecificOperation`
-
-`UpdateBySpecificOperation`同理，意思是有单独的，明确的接口来操作
-
-## OperationTraceField
-
-表达这个字段是用来记录创建人，更新人的操作跟踪用的字段
-
+* [data-cache-core](data-cache-core/readme.md): 负责进行数据缓存的操作
 # 持久化工具集
 
 data-persistence组件定义了常用的orm工具和持久化工具，其兼容的数据为mysql数据库并使用mybatis作为底层框架，目前没有兼容其它数据库语言的计划
@@ -194,7 +13,8 @@ data-persistence组件定义了常用的orm工具和持久化工具，其兼容�
 
 ## 推荐的方法
 
-orm工具推荐将实体的类型作为一个操作的基准对象，并在类型上标记上若干注解，如`@TableName`表达类型映射的底层表，来表达表的映射，字段到数据库的列名的转换处理器等。
+orm工具推荐将实体的类型作为一个操作的基准对象，并在类型上标记上若干注解，如`@TableName`
+表达类型映射的底层表，来表达表的映射，字段到数据库的列名的转换处理器等。
 
 ## 实体类向数据库表结构转换
 
@@ -278,12 +98,15 @@ public class FieldScanner {
 }
 ```
 
-上面的scan方法要求输入一个给定的类型和一组注解并表达带有注解的字段是保留还是去掉。通过这个方法，能够使得开发人员一次性将本次sql语句需要操作的实体类的属性名进行确认，并通过`ColumnNameConverter`进行转换。
+上面的scan方法要求输入一个给定的类型和一组注解并表达带有注解的字段是保留还是去掉。通过这个方法，能够使得开发人员一次性将本次sql语句需要操作的实体类的属性名进行确认，并通过`ColumnNameConverter`
+进行转换。
 
 ### ColumnNameConverter
 
-在java编程语言中，类的属性一般都是驼峰命名的，而数据库表结构的字段则一般都不是驼峰命名的，而是下划线连接的，比如"dateOfBirth"在数据库中的列名一般为"date_of_birth"。
-因此，如果在扫描类型时，不需要对这种驼峰转小写下划线的方式进行干预，则在扫描方法中不需要传入具体的转换器。`FieldScanner`默认使用`CamelToUnderscoreConverter`进行转换。
+在java编程语言中，类的属性一般都是驼峰命名的，而数据库表结构的字段则一般都不是驼峰命名的，而是下划线连接的，比如"
+dateOfBirth"在数据库中的列名一般为"date_of_birth"。
+因此，如果在扫描类型时，不需要对这种驼峰转小写下划线的方式进行干预，则在扫描方法中不需要传入具体的转换器。`FieldScanner`
+默认使用`CamelToUnderscoreConverter`进行转换。
 
 但不排除有些老的系统或者已经成型的命名方法不是这样的，因此允许开发人员自己实现`ColumnNameConverter`来进行转换
 
@@ -329,7 +152,8 @@ public class FieldScanner {
 }
 ```
 
-开发人员还能调用这两个接口，并给定一个过滤方法，这个方法输入一个`Field`类型的数据，然后要求回答这个字段是保留(true)还是过滤掉(false)
+开发人员还能调用这两个接口，并给定一个过滤方法，这个方法输入一个`Field`类型的数据，然后要求回答这个字段是保留(true)
+还是过滤掉(false)
 
 ## 语句拼接与拆解
 
@@ -354,7 +178,8 @@ ${havingCriteria} order by ${oderByColumn} limit ${offset}, ${size}"
 
 #### column(s)方法集
 
-`StatementBuilder.select`方法返回一个`SelectStatement`对象用于查询语句的具体构建。这个对象通过column(s)的若干方法来确定查询返回的所有数据库列名
+`StatementBuilder.select`方法返回一个`SelectStatement`对象用于查询语句的具体构建。这个对象通过column(s)
+的若干方法来确定查询返回的所有数据库列名
 
 ```java
 public class SelectStatement extends BasicStatement<SelectStatement> {
@@ -773,7 +598,8 @@ public class InsertStatement {
 }
 ```
 
-简单来说就是设定好数据库的列，mapper方法中的实体的参数名，还有一个就是数据库列和实体类型字段之间的名称转换器，这里可以和类型扫描时使用的一样，也可以实现Function<String, String>自行定义
+简单来说就是设定好数据库的列，mapper方法中的实体的参数名，还有一个就是数据库列和实体类型字段之间的名称转换器，这里可以和类型扫描时使用的一样，也可以实现Function<
+String, String>自行定义
 
 最后，插入语句支持默认转换器，这个转换器由`StatementBuilder.insert`语句，自动联合`FieldScanner`获得默认转换器，参考
 
@@ -879,7 +705,8 @@ public class InsertStatement {
 
 <font color=orange>警告</font>: 批量操作一旦调用过，就不能再调用columns或者column进行列和值的配对了
 
-简单来讲，批量操作要求给定列名称，集合参数名称和每一个集合元素名称。随后，将列名一一通过`columnValueMapper`去获得值，又或者认为值是一个实体类型的若干字段，则使用`columnNameConverter`
+简单来讲，批量操作要求给定列名称，集合参数名称和每一个集合元素名称。随后，将列名一一通过`columnValueMapper`
+去获得值，又或者认为值是一个实体类型的若干字段，则使用`columnNameConverter`
 或`columnToFieldMapper`来讲数据库的列名转为字段名
 
 举例来说
@@ -923,7 +750,8 @@ mysql修改语句的基本构成是"update ${table} set ${column1}=${value1}, ${
 * valueX是值
 * queryCriteria是查询条件
 
-类似的，`StatementBuilder.update`用来生成一个更新语句`UpdateStatement`，更新语句提供的方法和插入语句基本一致但没有批量设置值这个逻辑，而是where方法能够输入`BatchCriteria`
+类似的，`StatementBuilder.update`用来生成一个更新语句`UpdateStatement`
+，更新语句提供的方法和插入语句基本一致但没有批量设置值这个逻辑，而是where方法能够输入`BatchCriteria`
 进行批量条件筛选。
 
 在简化操作上，update支持输入类名，并额外提供了方法要求提供扫描回调和参数名。只给类名是设置表，都给了是设置表+扫描字段并进行值的自动配对，逻辑和插入语句一致
@@ -939,7 +767,8 @@ mysql删除语句的基本构成是"delete from ${table} where ${queryCriteria}"
 
 ## 规范化条件
 
-查询、更新、删除语句都允许输入条件，而目前的条件相对粗旷一些，`RawCriteria`给定的是一个字符串，那么为了简化开发的过程，也为了防止开发人员写出来一些bug，增加一些常用的查询条件
+查询、更新、删除语句都允许输入条件，而目前的条件相对粗旷一些，`RawCriteria`
+给定的是一个字符串，那么为了简化开发的过程，也为了防止开发人员写出来一些bug，增加一些常用的查询条件
 
 ### EqualsCriteria & InequalityCriteria
 
@@ -947,7 +776,8 @@ mysql删除语句的基本构成是"delete from ${table} where ${queryCriteria}"
 
 * column: 条件的列名
 * addGravyAccent: 这个列名要不要加重音，因为有些所谓的列名是个mysql函数，比如"length(name) >= 10"里面的length
-* value: 值，值的类型分为原始类型(字符串)和`BasicValue`类型两种，原始类型的诉求就是解决比如"`name` = concat(`name`, 1)"，里面的concat函数，其它类型的值就主要使用值的`build`
+* value: 值，值的类型分为原始类型(字符串)和`BasicValue`类型两种，原始类型的诉求就是解决比如"`name` = concat(`name`, 1)"
+  ，里面的concat函数，其它类型的值就主要使用值的`build`
   方法来转成字符串
 
 从落地来说，假如mapper的方法是这样
@@ -1051,7 +881,8 @@ public class CommonOperations {
 }
 ```
 
-这个方法返回一个检查实例，实例可以检查单一记录是否符合预期，也可以检查一个记录集合是否符合预期(比如给定一组用户要求发代金券，那么需要检查每一个用户id是否存在)。方法上都是需要输入读取出来的数据，然后附加一系列checker进行检查。
+这个方法返回一个检查实例，实例可以检查单一记录是否符合预期，也可以检查一个记录集合是否符合预期(
+比如给定一组用户要求发代金券，那么需要检查每一个用户id是否存在)。方法上都是需要输入读取出来的数据，然后附加一系列checker进行检查。
 
 于是作为一个领域对象，它的所有验证器可以被封装为多个类，每一个类负责一种业务逻辑的判断，当需要读取的时候，调用方正常调用读取方法并按需传入验证器即可。验证器如果验证失败，则抛异常中断流程
 
@@ -1116,7 +947,8 @@ public abstract class BasicChecker<I, R> implements RecordChecker<R>, RecordColl
 * 范性I代表id的类型，一般来说都是String
 * R代表记录的类型
 * basicLogTemplate是当检查结果不满足要求时的日志记录的方法模板，默认采用`GenericBasicLogger.error`，也就是记录错误日志
-* getLogHow & getLogDetail, 当检查结果不符合预期时会自动记录日志(使用GenericBasicLogger)，这里要求子类给出日志的how和detail，detail默认是`IdsDetail`
+* getLogHow & getLogDetail, 当检查结果不符合预期时会自动记录日志(使用GenericBasicLogger)
+  ，这里要求子类给出日志的how和detail，detail默认是`IdsDetail`
   ，也就是记录不符合的id清单
 * doCheck执行检查，返回是否符合预期，不符合预期的记录的id将被送至getLogDetail和exceptionFactory
 * exceptionFactory检查失败后抛出什么异常
@@ -1170,11 +1002,13 @@ public abstract class BasicExistenceChecker<I, R> extends BasicChecker<I, R> {
 
 ### 过期检查
 
-常规的记录可能具有过期时间，如营销活动的过期时间，账户的过期时间等，对应`ExpiryTimeTrait`，对位`BasicEntityExpiryTimeChecker` & `BasicExpiryTimeChecker`。
+常规的记录可能具有过期时间，如营销活动的过期时间，账户的过期时间等，对应`ExpiryTimeTrait`
+，对位`BasicEntityExpiryTimeChecker` & `BasicExpiryTimeChecker`。
 
 ## 常用扫描回调
 
-`StatementBuilder`的若干方法都需要一个扫描器回调，而大量的最佳实践其实会发现，插入和进行记录覆盖的时候基本就是跳过那些个注解。因此对这些常用的注解进行总结，整理为`CommonScannerCallbacks`
+`StatementBuilder`
+的若干方法都需要一个扫描器回调，而大量的最佳实践其实会发现，插入和进行记录覆盖的时候基本就是跳过那些个注解。因此对这些常用的注解进行总结，整理为`CommonScannerCallbacks`
 
 ```java
 public class CommonScannerCallbacks {
@@ -1247,7 +1081,7 @@ public class CommonScannerCallbacks {
 
 # 缓存操作
 
-参考[data-cache-core](./data-cache-core/readme.md)
+参考[data-cache-core](data-cache-core/readme.md)
 
 # 唯一id
 
