@@ -3,6 +3,7 @@ dependencies {
     api group: 'com.google.guava', name: 'guava'
     api group: 'org.apache.commons', name: 'commons-text'
     api group: "${rootProject.group}", name: "sugar-trait-utils"
+    api group: "${rootProject.group}", name: "criteria-pattern"
     api group: "${rootProject.group}", name: "data-schema"
     api group: "${rootProject.group}", name: "log-generic"
     api group: "${rootProject.group}", name: "log-common-words"

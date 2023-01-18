@@ -75,7 +75,7 @@ String[] subprojectNames = [
         'sdk:data:common:traits:real-world:data-traits-bio',
         'sdk:data:common:traits:data-traits-starter',
         'sdk:data:data-schema',
-//        'sdk:data:data-persistence',
+        'sdk:data:data-persistence',
         'sdk:data:data-cache-core',
         'sdk:data:data-cache-spring-redis',
 //        'sdk:data:data-unique-id',

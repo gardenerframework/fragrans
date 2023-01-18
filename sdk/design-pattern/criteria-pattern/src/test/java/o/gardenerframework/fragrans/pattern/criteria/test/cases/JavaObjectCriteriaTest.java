@@ -1,8 +1,10 @@
 package o.gardenerframework.fragrans.pattern.criteria.test.cases;
 
+import io.gardenerframework.fragrans.pattern.criteria.schema.object.BooleanCriteria;
 import io.gardenerframework.fragrans.pattern.criteria.schema.object.JavaObjectCriteria;
 import io.gardenerframework.fragrans.pattern.criteria.schema.object.MatchAllCriteria;
 import io.gardenerframework.fragrans.pattern.criteria.schema.object.NotCriteria;
+import io.gardenerframework.fragrans.pattern.criteria.schema.root.BaseBooleanCriteria;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -27,6 +29,10 @@ public class JavaObjectCriteriaTest {
         Assertions.assertTrue(matchAllCriteria.meetCriteria(TestSunObject.builder().item(UUID.randomUUID().toString()).build()));
         NotCriteria<TestSunObject> notCriteria = NotCriteria.<TestSunObject>builder().criteria(new ObjectHasItemCriteria()).build();
         Assertions.assertFalse(notCriteria.meetCriteria(TestSunObject.builder().item(UUID.randomUUID().toString()).build()));
+        BooleanCriteria<TestObject> booleanCriteriaLeaf = BooleanCriteria.<TestObject>builder().a(new ObjectHasItemCriteria()).b(new ObjectHasItemCriteria()).operator(BaseBooleanCriteria.Operator.AND).build();
+        //尝试内嵌bool条件成功
+        BooleanCriteria<TestObject> booleanCriteriaRoot = BooleanCriteria.<TestObject>builder().a(new ObjectHasItemCriteria()).b(booleanCriteriaLeaf).operator(BaseBooleanCriteria.Operator.AND).build();
+        Assertions.assertTrue(booleanCriteriaRoot.meetCriteria(TestObject.builder().item(UUID.randomUUID().toString()).build()));
     }
 
     @Getter

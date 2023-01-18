@@ -1,9 +1,6 @@
 package io.gardenerframework.fragrans.pattern.criteria.schema.root;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.Singular;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -15,8 +12,18 @@ import java.util.List;
 @SuperBuilder
 @Setter
 @Getter
+@AllArgsConstructor
 public abstract class BaseMatchAnyCriteria<C extends Criteria> {
     @Singular("criteria")
     @NonNull
     private List<C> criteriaList;
+
+    /**
+     * 是否没有任何条件
+     *
+     * @return 是否没有条件
+     */
+    public boolean isEmpty() {
+        return criteriaList.isEmpty();
+    }
 }

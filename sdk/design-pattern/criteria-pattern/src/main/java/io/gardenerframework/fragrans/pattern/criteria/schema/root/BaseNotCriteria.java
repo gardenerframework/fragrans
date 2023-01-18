@@ -1,8 +1,6 @@
 package io.gardenerframework.fragrans.pattern.criteria.schema.root;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -12,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Setter
 @Getter
+@AllArgsConstructor
 public abstract class BaseNotCriteria<C extends Criteria> {
     @NonNull
     private C criteria;

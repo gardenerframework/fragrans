@@ -67,10 +67,10 @@ public class EnabledStatusCriteria implements JavaObjectCriteria<EnabledStatusFl
 
 `EnabledStatusCriteria`为所有实现`EnabledStatusFlag`的类型提供过滤能力
 
-# PersistenceQueryCriteria
+# RecordCriteria
 
 ```java
-public interface PersistenceQueryCriteria<T> {
+public interface RecordCriteria<T> {
     /**
      * 构造成目标持久化引擎能够支持的查询语句
      *
@@ -81,6 +81,7 @@ public interface PersistenceQueryCriteria<T> {
 ```
 
 用来构建一个查询数据引擎的表达式或者引擎sdk能够理解的java对象，这个对象一般来说会是个字符串(或者json形式的字符串)
+。由于查询条件是根据不同的持久化引擎不一样的，因此本组件并不进行过多的抽象
 
 # 布尔与或非运算
 
@@ -93,7 +94,6 @@ public interface PersistenceQueryCriteria<T> {
 
 以上类型均使用[JavaObjectCriteria](criteria-pattern%2Fsrc%2Fmain%2Fjava%2Fio%2Fgardenerframework%2Ffragrans%2Fpattern%2Fcriteria%2Fschema%2Fobject%2FJavaObjectCriteria.java)
 作为输入，构造与或非条件。比如
-
 
 ```java
 public class User {
@@ -133,6 +133,33 @@ public class SampleApp {
                 .build()
                 //判断一个100级，名字不为空的用户
                 .meetCriteria(new User("not empty", 100));
+    }
+}
+```
+
+## 数据记录过滤
+
+数据记录的过滤一般也存在着与或非组合逻辑，这里举一个数据库的列子
+
+```java
+public interface DatabaseRecordCriteria extends RecordCriteria<String> {
+    
+}
+
+public class EqualsCriteria implements DatabaseRecordCriteria {
+    private String column;
+    private String value;
+    
+    @Override
+    public String build() {
+        return column + "=" + value;
+    }
+}
+
+public class BooleanCriteria extends BaseBooleanCriteria<DatabaseRecordCriteria> implements DatabaseRecordCriteria {
+    @Override
+    public String build() {
+        return getA().build + " AND " + getB().build();
     }
 }
 ```
