@@ -53,20 +53,16 @@ public class StatementBuilderTest {
     @Test
     @DisplayName("bool条件测试")
     public void booleanCriteriaTest() {
-        BooleanCriteria criteria = new BooleanCriteria().a(new DatabaseCriteria() {
-            @Override
-            public String build() {
-                return "1 = 1";
-            }
-        }).and().b(new DatabaseCriteria() {
-            @Override
-            public String build() {
-                return "2 = 2";
-            }
-        });
+        BooleanCriteria criteria = new BooleanCriteria().a(() -> "1 = 1").and().b(() -> "2 = 2");
         BooleanCriteria parent = new BooleanCriteria().a(criteria).or().b(criteria);
         parent.build();
         Assertions.assertEquals("((1 = 1) AND (2 = 2)) OR ((1 = 1) AND (2 = 2))", parent.build());
+        //嵌入没有问题
+        new BooleanCriteria().a(criteria).and().b(criteria);
+        new NotCriteria().criteria(criteria);
+        new MatchAnyCriteria(criteria);
+        new MatchAllCriteria(criteria);
+        new NotCriteria(new MatchAllCriteria(criteria));
     }
 
     @Test

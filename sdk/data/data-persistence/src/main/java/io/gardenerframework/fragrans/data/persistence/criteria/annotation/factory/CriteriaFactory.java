@@ -15,7 +15,7 @@ public interface CriteriaFactory {
      * @param entityType            实体类型
      * @param criteria              条件参数
      * @param criteriaParameterName 条件参数名
-     * @param column                引擎创建出来的lie
+     * @param column                引擎创建出来的列
      * @param value                 引擎默认给定的值
      * @return 搜索条件
      */
