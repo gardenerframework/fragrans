@@ -11,3 +11,9 @@
 # 标准化属性定义
 
 [traits](traits)目录定义了一系列标准化的属性名称和类型
+
+# 常见业务操作
+
+[data-domain-common-practice](data-domain-common-practice)定义了一些常见的业务操作
+
+

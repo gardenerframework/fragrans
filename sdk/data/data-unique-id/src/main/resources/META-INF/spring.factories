@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.jdcloud.gardener.fragrans.data.unique.configuration.UniqueIdConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.gardenerframework.fragrans.data.unique.configuration.UniqueIdConfiguration

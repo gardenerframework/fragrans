@@ -28,3 +28,8 @@ public interface HostIdGenerator {
 # @BusinessCode
 
 生成唯一id的时候，可以附加一个字符作为业务前缀。这个注解可以给实体类上添加这个业务字符
+
+# 使用
+
+通常来说一个实体会有一个自己的`UniqueIdGenerator`，因此只有`HostIdGenerator`会被默认生成bean，`UniqueIdGenerator`
+在需要的时候自己new。 相同的`UniqueIdGenerator`共享序号
