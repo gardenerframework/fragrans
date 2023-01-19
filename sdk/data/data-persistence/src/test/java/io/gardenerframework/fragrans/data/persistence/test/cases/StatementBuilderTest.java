@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.test.cases;
 
+import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilder;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.annotation.TableName;
@@ -13,10 +14,13 @@ import io.gardenerframework.fragrans.data.schema.annotation.DatabaseControlledFi
 import io.gardenerframework.fragrans.data.schema.common.BasicRecord;
 import io.gardenerframework.fragrans.data.schema.entity.BasicEntity;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Collections;
 
@@ -26,11 +30,17 @@ import java.util.Collections;
  */
 @DisplayName("语句创建测试")
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
+@ActiveProfiles("mysql")
 public class StatementBuilderTest {
     @Autowired
     private FieldScanner scanner;
     @Autowired
     private StatementBuilder builder;
+
+    @BeforeEach
+    public void ensureDriver() {
+        Database.setDriver(DatabaseDriver.MYSQL);
+    }
 
     @Test
     @DisplayName("所有必须满足测试")
@@ -98,9 +108,9 @@ public class StatementBuilderTest {
                 "t"
         );
         Assertions.assertEquals("<script>" +
-                "SELECT `test`.`test` FROM ((" +
+                "SELECT `test`.`test` FROM (" +
                 "SELECT `hehe` FROM `haha`" +
-                ") `t`)" +
+                ") `t`" +
                 "</script>".replace(String.format("%n"), ""), statement.build().replace(String.format("%n"), ""));
         //测试join语句
         statement = new SelectStatement().column("test", "test").table("hehe")

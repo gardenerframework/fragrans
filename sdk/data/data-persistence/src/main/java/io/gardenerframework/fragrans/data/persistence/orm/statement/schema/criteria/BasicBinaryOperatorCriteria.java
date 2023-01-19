@@ -29,22 +29,22 @@ public abstract class BasicBinaryOperatorCriteria implements DatabaseCriteria {
      * 给一个双目操作条件
      *
      * @param column         列名
-     * @param addGraveAccent 列是否加重音
+     * @param addDelimitIdentifier 列是否加重音
      * @param value          值
      */
-    public BasicBinaryOperatorCriteria(String column, boolean addGraveAccent, String value) {
-        this(new Column(column, addGraveAccent), value);
+    public BasicBinaryOperatorCriteria(String column, boolean addDelimitIdentifier, String value) {
+        this(new Column(column, addDelimitIdentifier), value);
     }
 
     /**
      * 给一个双目操作条件
      *
      * @param column         列名
-     * @param addGraveAccent 列是否加重音
+     * @param addDelimitIdentifier 列是否加重音
      * @param value          值
      */
-    public BasicBinaryOperatorCriteria(String column, boolean addGraveAccent, BasicValue value) {
-        this(new Column(column, addGraveAccent), value);
+    public BasicBinaryOperatorCriteria(String column, boolean addDelimitIdentifier, BasicValue value) {
+        this(new Column(column, addDelimitIdentifier), value);
     }
 
     /**

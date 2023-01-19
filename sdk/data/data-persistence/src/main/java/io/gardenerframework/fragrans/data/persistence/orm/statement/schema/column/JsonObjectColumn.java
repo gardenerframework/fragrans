@@ -1,6 +1,9 @@
 package io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column;
 
+import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.exception.UnsupportedDriverException;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -69,9 +72,8 @@ public class JsonObjectColumn extends Column {
         );
         return String.format("JSON_OBJECT(%s)%s",
                 fields.stream().map(Object::toString).collect(Collectors.joining(",")),
-                StringUtils.hasText(alias) ? " AS " + addGraveAccent(alias) : ""
+                StringUtils.hasText(alias) ? " AS " + addDelimitIdentifier(alias) : ""
         );
-
     }
 
     @AllArgsConstructor
@@ -80,13 +82,26 @@ public class JsonObjectColumn extends Column {
         private String table;
         private String field;
         private String column;
-        private boolean addGraveAccent;
+        private boolean addDelimitIdentifier;
 
         @Override
         public String toString() {
-            return String.format("\"%s\", %s", field,
-                    (StringUtils.hasText(table) ? (addGraveAccent(table) + ".") : "")
-                            + (addGraveAccent ? addGraveAccent(column) : column));
+            String delimiter = ",";
+            DatabaseDriver driver = Database.getDriver();
+            switch (driver) {
+                case MYSQL:
+                    delimiter = ",";
+                    break;
+                case SQLSERVER:
+                    delimiter = ":";
+                    break;
+                default:
+                    throw new UnsupportedDriverException(driver);
+            }
+            return String.format("\"%s\"%s%s", field,
+                    delimiter,
+                    (StringUtils.hasText(table) ? (addDelimitIdentifier(table) + ".") : "")
+                            + (addDelimitIdentifier ? addDelimitIdentifier(column) : column));
         }
     }
 }

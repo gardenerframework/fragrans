@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.data.persistence.orm.statement.schema.statement;
 
 import io.gardenerframework.fragrans.data.persistence.orm.entity.converter.ColumnNameConverter;
-import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.BasicElement;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.SqlElement;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.Column;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.value.BasicValue;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.value.FieldNameValue;
@@ -123,7 +123,7 @@ public class InsertStatement extends BasicRecordSetModificationStatement<InsertS
                 getTable().build(),
                 this.getColumns().stream().map(Column::build).collect(Collectors.joining(",")),
                 isBatchMode() ? batchStart : "",
-                this.getValues().stream().map(BasicElement::build).collect(Collectors.joining(",")),
+                this.getValues().stream().map(SqlElement::build).collect(Collectors.joining(",")),
                 isBatchMode() ? batchEnd : ""
         );
     }

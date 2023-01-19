@@ -2,6 +2,7 @@ package io.gardenerframework.fragrans.data.persistence.test.utils.fieldTest;
 
 import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilderStaticAccessor;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.Column;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.BatchCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.EqualsCriteria;
@@ -46,8 +47,8 @@ public interface FieldTestDao extends ApplicationContextAware {
     @SelectProvider(SqlProvider.class)
     List<FieldTestObject> query(@Param("prefix") String prefix, int pageNo, int pageSize);
 
-    @Select("select FOUND_ROWS()")
-    long foundRows();
+    @SelectProvider(SqlProvider.class)
+    long foundRows(@Param("prefix") String prefix);
 
     @DeleteProvider(SqlProvider.class)
     void deleteById(@Param("id") String id);
@@ -88,18 +89,22 @@ public interface FieldTestDao extends ApplicationContextAware {
             return StatementBuilderStaticAccessor.builder().select().table(FieldTestObject.class).column("count(1)", false).build();
         }
 
-        public String query(@Param("prefix") String prefix, int pageNo, int pageSize) {
+        public String foundRows(@Param("prefix") String prefix) {
             return StatementBuilderStaticAccessor.builder()
                     .select(FieldTestObject.class, FieldScanner::columns)
                     .countFoundRows(true)
                     .where(
                             StringUtils.hasText(prefix) ?
-                                    new DatabaseCriteria() {
-                                        @Override
-                                        public String build() {
-                                            return String.format("`test` like concat(%s, \"%%\")", new ParameterNameValue("prefix").build());
-                                        }
-                                    } : null
+                                    (DatabaseCriteria) () -> String.format("%s like concat(%s, '%%')", new Column("test").build(), new ParameterNameValue("prefix").build()) : null
+                    ).build();
+        }
+
+        public String query(@Param("prefix") String prefix, int pageNo, int pageSize) {
+            return StatementBuilderStaticAccessor.builder()
+                    .select(FieldTestObject.class, FieldScanner::columns)
+                    .where(
+                            StringUtils.hasText(prefix) ?
+                                    (DatabaseCriteria) () -> String.format("%s like concat(%s, '%%')", new Column("test").build(), new ParameterNameValue("prefix").build()) : null
                     )
                     .orderBy("id", SelectStatement.Order.DESC)
                     .limit((pageNo - 1L) * pageSize, pageSize).build();

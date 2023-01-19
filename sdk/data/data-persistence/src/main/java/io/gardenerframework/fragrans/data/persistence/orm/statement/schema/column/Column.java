@@ -1,6 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column;
 
-import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.BasicElement;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.SqlElement;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
  * @author zhanghan30
  * @date 2022/9/23 21:45
  */
-public class Column extends BasicElement {
+public class Column implements SqlElement {
     /**
      * 别名(自动加重音)
      */
@@ -34,11 +34,11 @@ public class Column extends BasicElement {
     @Setter(AccessLevel.PROTECTED)
     private String columnExpression;
     /**
-     * 加不加重音符号
+     * 加不加界定符
      */
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
-    private boolean addGraveAccent;
+    private boolean addDelimitIdentifier;
 
     /**
      * 自动加``
@@ -53,10 +53,10 @@ public class Column extends BasicElement {
      * 列名
      *
      * @param columnExpression 列或表达式
-     * @param addGraveAccent   是不是+ ``
+     * @param addDelimitIdentifier   是不是加上界定符
      */
-    public Column(String columnExpression, boolean addGraveAccent) {
-        this(null, columnExpression, addGraveAccent, null);
+    public Column(String columnExpression, boolean addDelimitIdentifier) {
+        this(null, columnExpression, addDelimitIdentifier, null);
     }
 
     /**
@@ -74,10 +74,10 @@ public class Column extends BasicElement {
      *
      * @param table            表名
      * @param columnExpression 列名或表达式
-     * @param addGraveAccent   要不要加`
+     * @param addDelimitIdentifier   是不是加上界定符
      */
-    public Column(@Nullable String table, String columnExpression, boolean addGraveAccent) {
-        this(table, columnExpression, addGraveAccent, null);
+    public Column(@Nullable String table, String columnExpression, boolean addDelimitIdentifier) {
+        this(table, columnExpression, addDelimitIdentifier, null);
     }
 
     /**
@@ -96,13 +96,13 @@ public class Column extends BasicElement {
      *
      * @param table            表名
      * @param columnExpression 列名或表达式
-     * @param addGraveAccent   加重音？
+     * @param addDelimitIdentifier   是不是加上界定符
      * @param alias            别名
      */
-    public Column(@Nullable String table, String columnExpression, boolean addGraveAccent, @Nullable String alias) {
+    public Column(@Nullable String table, String columnExpression, boolean addDelimitIdentifier, @Nullable String alias) {
         this.table = table;
         this.columnExpression = columnExpression;
-        this.addGraveAccent = addGraveAccent;
+        this.addDelimitIdentifier = addDelimitIdentifier;
         this.alias = alias;
     }
 
@@ -110,13 +110,13 @@ public class Column extends BasicElement {
     public String build() {
         StringBuilder columnExpressionBuilder = new StringBuilder();
         if (StringUtils.hasText(table)) {
-            columnExpressionBuilder.append(addGraveAccent(table));
+            columnExpressionBuilder.append(addDelimitIdentifier(table));
             columnExpressionBuilder.append(".");
         }
-        columnExpressionBuilder.append(addGraveAccent ? addGraveAccent(columnExpression) : columnExpression);
+        columnExpressionBuilder.append(addDelimitIdentifier ? addDelimitIdentifier(columnExpression) : columnExpression);
         if (StringUtils.hasText(alias)) {
             columnExpressionBuilder.append("AS ");
-            columnExpressionBuilder.append(addGraveAccent(alias));
+            columnExpressionBuilder.append(addDelimitIdentifier(alias));
         }
         return columnExpressionBuilder.toString();
     }

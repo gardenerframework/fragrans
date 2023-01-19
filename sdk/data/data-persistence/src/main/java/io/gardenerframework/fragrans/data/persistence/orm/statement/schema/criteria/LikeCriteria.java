@@ -14,12 +14,12 @@ public class LikeCriteria extends BasicBinaryOperatorCriteria {
         super(column, value);
     }
 
-    public LikeCriteria(String column, boolean addGraveAccent, String value) {
-        super(column, addGraveAccent, value);
+    public LikeCriteria(String column, boolean addDelimitIdentifier, String value) {
+        super(column, addDelimitIdentifier, value);
     }
 
-    public LikeCriteria(String column, boolean addGraveAccent, BasicValue value) {
-        super(column, addGraveAccent, value);
+    public LikeCriteria(String column, boolean addDelimitIdentifier, BasicValue value) {
+        super(column, addDelimitIdentifier, value);
     }
 
     public LikeCriteria(String column, BasicValue value) {

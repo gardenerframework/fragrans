@@ -1,12 +1,15 @@
 package io.gardenerframework.fragrans.data.persistence.orm.statement.schema.statement;
 
-import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.BasicElement;
+import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.exception.UnsupportedDriverException;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.SqlElement;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.Column;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.BooleanCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.MatchAllCriteria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
  * @date 2022/6/15 2:39 下午
  */
 public class SelectStatement extends BasicStatement<SelectStatement> {
+    public static final String FOUND_ROWS_VARIABLE_NAME = "FOUND_ROWS";
     /**
      * 列清单
      */
@@ -156,24 +160,24 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
     /**
      * 添加一个单独的列
      *
-     * @param column         列名
-     * @param addGraveAccent 是否要添加重音符号
+     * @param column               列名
+     * @param addDelimitIdentifier 是否要添加重音符号
      * @return 语句
      */
-    public SelectStatement column(String column, boolean addGraveAccent) {
-        return column(null, column, addGraveAccent, null);
+    public SelectStatement column(String column, boolean addDelimitIdentifier) {
+        return column(null, column, addDelimitIdentifier, null);
     }
 
     /**
      * 添加一个单独的列以及别名，列名由参数决策，但别名将被自动附加``符号
      *
-     * @param column         列名
-     * @param addGraveAccent 列名是否要加重音符号
-     * @param alias          别名
+     * @param column               列名
+     * @param addDelimitIdentifier 列名是否要加重音符号
+     * @param alias                别名
      * @return 语句
      */
-    public SelectStatement column(String column, boolean addGraveAccent, String alias) {
-        return column(null, column, addGraveAccent, alias);
+    public SelectStatement column(String column, boolean addDelimitIdentifier, String alias) {
+        return column(null, column, addDelimitIdentifier, alias);
     }
 
     /**
@@ -181,14 +185,14 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
      * <p>
      * 表名也由参数决定
      *
-     * @param table          表名
-     * @param column         列名
-     * @param addGraveAccent 列名是否要加重音符号
-     * @param alias          别名
+     * @param table                表名
+     * @param column               列名
+     * @param addDelimitIdentifier 列名是否要加重音符号
+     * @param alias                别名
      * @return 语句
      */
-    public SelectStatement column(@Nullable String table, String column, boolean addGraveAccent, @Nullable String alias) {
-        return column(new Column(table, column, addGraveAccent, alias));
+    public SelectStatement column(@Nullable String table, String column, boolean addDelimitIdentifier, @Nullable String alias) {
+        return column(new Column(table, column, addDelimitIdentifier, alias));
     }
 
     /**
@@ -310,12 +314,12 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
     /**
      * 聚合分组列名
      *
-     * @param column         列名
-     * @param addGraveAccent 是不是加重音符号
+     * @param column               列名
+     * @param addDelimitIdentifier 是不是加重音符号
      * @return 语句
      */
-    public SelectStatement groupBy(String column, boolean addGraveAccent) {
-        return groupBy(new Column(column, addGraveAccent));
+    public SelectStatement groupBy(String column, boolean addDelimitIdentifier) {
+        return groupBy(new Column(column, addDelimitIdentifier));
     }
 
     /**
@@ -379,12 +383,12 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
     /**
      * 指定一个排序列进行升序
      *
-     * @param column         列名
-     * @param addGraveAccent 是否加重音符号
+     * @param column               列名
+     * @param addDelimitIdentifier 是否加重音符号
      * @return 语句
      */
-    public SelectStatement orderBy(String column, boolean addGraveAccent) {
-        return orderBy(column, addGraveAccent, null);
+    public SelectStatement orderBy(String column, boolean addDelimitIdentifier) {
+        return orderBy(column, addDelimitIdentifier, null);
     }
 
     /**
@@ -401,15 +405,15 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
     /**
      * 指定一个排序列进行升序
      *
-     * @param column         列名
-     * @param addGraveAccent 是否加重音符号
-     * @param order          升降序
+     * @param column               列名
+     * @param addDelimitIdentifier 是否加重音符号
+     * @param order                升降序
      * @return 语句
      */
-    public SelectStatement orderBy(String column, boolean addGraveAccent, @Nullable Order order) {
+    public SelectStatement orderBy(String column, boolean addDelimitIdentifier, @Nullable Order order) {
         this.orderByColumns.add(
                 new OrderByElement(
-                        new Column(column, addGraveAccent),
+                        new Column(column, addDelimitIdentifier),
                         order == null ? Order.ASC : order
                 )
         );
@@ -446,15 +450,24 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
                         appendHavingCriteria(
                                 appendGroupByColumns(
                                         appendQueryCriteria(
-                                                appendJoin(String.format("SELECT %s FROM %s",
-                                                        (this.countFoundRows ? "SQL_CALC_FOUND_ROWS " : "") + queryColumns.stream().map(Column::build).collect(Collectors.joining(",")),
-                                                        this.getTable().build()
-                                                )),
+                                                appendJoin(buildMainStatement()),
                                                 queryCriteria
                                         )
                                 )
                         )
                 )
+        );
+    }
+
+    /**
+     * 创建最原始的语句
+     *
+     * @return select from xxx这种没有任何条件的语句
+     */
+    private String buildMainStatement() {
+        return String.format("SELECT %s FROM %s",
+                countFoundRows ? "COUNT(1)" : queryColumns.stream().map(Column::build).collect(Collectors.joining(",")),
+                this.getTable().build()
         );
     }
 
@@ -502,7 +515,7 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
      * @return 增加完的语句
      */
     private String appendOrderBy(String statement) {
-        if (!CollectionUtils.isEmpty(this.orderByColumns)) {
+        if (!CollectionUtils.isEmpty(this.orderByColumns) && !this.countFoundRows) {
             return String.format("%s ORDER BY %s", statement, orderByColumns.stream().map(
                     OrderByElement::build
             ).collect(Collectors.joining(",")));
@@ -517,8 +530,16 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
      * @return 增加完的语句
      */
     private String appendLimit(String statement) {
-        if (this.offset != null && this.size != null) {
-            return String.format("%s LIMIT %d,%d", statement, this.offset, this.size);
+        if (this.offset != null && this.size != null && !this.countFoundRows) {
+            DatabaseDriver driver = Database.getDriver();
+            switch (driver) {
+                case MYSQL:
+                    return String.format("%s LIMIT %d,%d", statement, this.offset, this.size);
+                case SQLSERVER:
+                    return String.format("%s OFFSET %d ROWS FETCH NEXT %d ROWS ONLY", statement, this.offset, this.size);
+                default:
+                    throw new UnsupportedDriverException(driver);
+            }
         }
         return statement;
     }
@@ -560,7 +581,7 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
      * 一个内部使用的排序元素
      */
     @AllArgsConstructor
-    private class OrderByElement extends BasicElement {
+    private class OrderByElement implements SqlElement {
         private final Column column;
         private final Order order;
 
@@ -571,7 +592,7 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
     }
 
     @AllArgsConstructor
-    private class JoinElement extends BasicElement {
+    private class JoinElement implements SqlElement {
         private Join join;
         private RecordSet element;
 

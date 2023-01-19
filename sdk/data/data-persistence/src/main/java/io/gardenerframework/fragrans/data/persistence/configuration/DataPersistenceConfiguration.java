@@ -1,10 +1,13 @@
 package io.gardenerframework.fragrans.data.persistence.configuration;
 
 import io.gardenerframework.fragrans.data.persistence.DataPersistencePackage;
+import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScannerStaticAccessor;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilder;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilderStaticAccessor;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +19,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackageClasses = DataPersistencePackage.class)
 public class DataPersistenceConfiguration {
+    public DataPersistenceConfiguration(DataSourceProperties dataSourceProperties) {
+        Database.setDriver(DatabaseDriver.fromJdbcUrl(dataSourceProperties.getUrl()));
+    }
 
     /**
      * 保持静态生成的和bean一致

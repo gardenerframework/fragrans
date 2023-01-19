@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.data.persistence.orm.statement.schema.statement;
 
 import io.gardenerframework.fragrans.data.persistence.orm.statement.annotation.TableNameUtils;
-import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.BasicElement;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.SqlElement;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.MatchAllCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.MatchAnyCriteria;
@@ -17,7 +17,7 @@ import java.util.Objects;
  * @date 2022/6/14 6:35 下午
  */
 @Getter
-public abstract class BasicStatement<S extends BasicStatement<S>> extends BasicElement {
+public abstract class BasicStatement<S extends BasicStatement<S>> implements SqlElement {
     /**
      * 表名称
      */
@@ -62,16 +62,16 @@ public abstract class BasicStatement<S extends BasicStatement<S>> extends BasicE
      *
      * @param subQuery       子查询
      * @param alias          子查询的名称
-     * @param addGraveAccent 是否加重音
+     * @param addDelimitIdentifier 是否加重音
      * @return 语句
      */
     @SuppressWarnings("unchecked")
-    public S table(S subQuery, String alias, boolean addGraveAccent) {
+    public S table(S subQuery, String alias, boolean addDelimitIdentifier) {
         //关闭script标签
         this.table = new RecordSet(
                 subQuery,
                 alias,
-                addGraveAccent
+                addDelimitIdentifier
         );
         return (S) this;
     }
@@ -130,7 +130,7 @@ public abstract class BasicStatement<S extends BasicStatement<S>> extends BasicE
      * <p>
      * 或者是子查询
      */
-    protected static class RecordSet extends BasicElement {
+    protected static class RecordSet implements SqlElement {
         /**
          * 表名
          */
@@ -145,13 +145,13 @@ public abstract class BasicStatement<S extends BasicStatement<S>> extends BasicE
          */
         private final String alias;
 
-        private final boolean addGraveAccent;
+        private final boolean addDelimitIdentifier;
 
         public RecordSet(String table) {
             this.table = table;
             this.subQuery = null;
             this.alias = null;
-            this.addGraveAccent = false;
+            this.addDelimitIdentifier = false;
         }
 
         @SuppressWarnings("rawtypes")
@@ -160,19 +160,19 @@ public abstract class BasicStatement<S extends BasicStatement<S>> extends BasicE
         }
 
         @SuppressWarnings("rawtypes")
-        public RecordSet(BasicStatement subQuery, String alias, boolean addGraveAccent) {
+        public RecordSet(BasicStatement subQuery, String alias, boolean addDelimitIdentifier) {
             this.table = null;
             this.subQuery = subQuery;
             this.alias = alias;
-            this.addGraveAccent = addGraveAccent;
+            this.addDelimitIdentifier = addDelimitIdentifier;
         }
 
         @Override
         public String build() {
-            return table != null ? addGraveAccent(table) :
-                    String.format("((%s) %s)",
+            return table != null ? addDelimitIdentifier(table) :
+                    String.format("(%s) %s",
                             Objects.requireNonNull(subQuery).build(true),
-                            addGraveAccent ? addGraveAccent(alias) : alias
+                            addDelimitIdentifier ? addDelimitIdentifier(alias) : alias
                     );
         }
     }

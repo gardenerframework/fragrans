@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.test.cases;
 
+import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.annotation.UsingColumnNameConverter;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.converter.NoopConverter;
@@ -11,10 +12,13 @@ import io.gardenerframework.fragrans.data.schema.entity.BasicOperationTraceableE
 import io.gardenerframework.fragrans.data.trait.generic.GenericTraits;
 import io.gardenerframework.fragrans.data.trait.security.SecurityTraits;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,9 +31,15 @@ import java.util.HashSet;
  */
 @DisplayName("类扫描测试")
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
+@ActiveProfiles("mysql")
 public class FieldScannerTest {
     @Autowired
     private FieldScanner fieldScanner;
+
+    @BeforeEach
+    public void ensureDriver() {
+        Database.setDriver(DatabaseDriver.MYSQL);
+    }
 
     @Test
     public void smokeTest() {

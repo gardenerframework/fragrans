@@ -34,7 +34,7 @@ public class JsonObjectArrayColumn extends JsonObjectColumn {
         super(table, columns, columnToFieldMapper);
         this.setColumnExpression(
                 String.format("JSON_ARRAYAGG(%s)%s", this.getColumnExpression(),
-                        StringUtils.hasText(alias) ? " AS " + addGraveAccent(alias) : "")
+                        StringUtils.hasText(alias) ? " AS " + addDelimitIdentifier(alias) : "")
         );
     }
 }

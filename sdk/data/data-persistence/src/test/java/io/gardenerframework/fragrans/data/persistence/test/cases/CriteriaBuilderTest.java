@@ -3,6 +3,7 @@ package io.gardenerframework.fragrans.data.persistence.test.cases;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Equals;
 import io.gardenerframework.fragrans.data.persistence.criteria.support.CriteriaBuilder;
 import io.gardenerframework.fragrans.data.persistence.criteria.support.CriteriaBuilderStaticAccessor;
+import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.EqualsCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.MatchAllCriteria;
@@ -13,10 +14,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -28,9 +32,15 @@ import java.util.UUID;
  */
 @DisplayName("类扫描测试")
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
+@ActiveProfiles("mysql")
 public class CriteriaBuilderTest {
     @Autowired
     private CriteriaBuilder criteriaBuilder;
+
+    @BeforeEach
+    public void ensureDriver() {
+        Database.setDriver(DatabaseDriver.MYSQL);
+    }
 
     @Test
     public void smokeTest() {

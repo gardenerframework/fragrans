@@ -1,15 +1,19 @@
 package io.gardenerframework.fragrans.data.persistence.test.cases;
 
+import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.template.support.DomainDaoTemplateRegistry;
 import io.gardenerframework.fragrans.data.persistence.template.support.DomainDaoTemplateTypesResolver;
 import io.gardenerframework.fragrans.data.persistence.template.support.DomainObjectTemplateTypesResolver;
 import io.gardenerframework.fragrans.data.persistence.test.DataPersistenceTestApplication;
 import io.gardenerframework.fragrans.data.persistence.test.utils.template.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +26,13 @@ import java.util.Map;
 @DisplayName("操作模板测试")
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
 @MapperScan(basePackageClasses = TestRecordMapperTemplate.class)
+@ActiveProfiles("mysql")
 public class TemplateTest {
+    @BeforeEach
+    public void ensureDriver() {
+        Database.setDriver(DatabaseDriver.MYSQL);
+    }
+
     @Test
     @DisplayName("对象模板冒烟测试")
     public void smokeTest() {
@@ -49,14 +59,10 @@ public class TemplateTest {
     @Test
     @DisplayName("dao模板冒烟测试")
     public void daoTemplateSomeTest() {
-        Collection<Class<?>> templateTypes = DomainDaoTemplateTypesResolver.resolveTemplateTypes(
-                TestRecordMapperTemplate.class
-        );
+        Collection<Class<?>> templateTypes = DomainDaoTemplateTypesResolver.resolveTemplateTypes(TestRecordMapperTemplate.class);
         Assertions.assertEquals(1, templateTypes.size());
         Assertions.assertTrue(templateTypes.contains(TestRecordMapperTemplate.class));
-        templateTypes = DomainDaoTemplateTypesResolver.resolveTemplateTypes(
-                TestRecordMapperSubClassWithTypesSubClass.class
-        );
+        templateTypes = DomainDaoTemplateTypesResolver.resolveTemplateTypes(TestRecordMapperSubClassWithTypesSubClass.class);
         Assertions.assertEquals(2, templateTypes.size());
         Assertions.assertTrue(templateTypes.containsAll(Arrays.asList(TestRecordMapperTemplate.class, TestRecordMapperSubClassWithTypes.class)));
 

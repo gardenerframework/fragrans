@@ -11,8 +11,8 @@ import lombok.Getter;
 public class InequalityCriteria extends BasicBinaryOperatorCriteria {
     private final Operator operator;
 
-    public InequalityCriteria(String column, boolean addGraveAccent, Operator operator, String value) {
-        super(column, addGraveAccent, value);
+    public InequalityCriteria(String column, boolean addDelimitIdentifier, Operator operator, String value) {
+        super(column, addDelimitIdentifier, value);
         this.operator = operator;
     }
 
@@ -20,8 +20,8 @@ public class InequalityCriteria extends BasicBinaryOperatorCriteria {
         this(column, true, operator, value);
     }
 
-    public InequalityCriteria(String column, boolean addGraveAccent, Operator operator, BasicValue value) {
-        this(column, addGraveAccent, operator, value.build());
+    public InequalityCriteria(String column, boolean addDelimitIdentifier, Operator operator, BasicValue value) {
+        this(column, addDelimitIdentifier, operator, value.build());
     }
 
     public InequalityCriteria(String column, Operator operator, BasicValue value) {
