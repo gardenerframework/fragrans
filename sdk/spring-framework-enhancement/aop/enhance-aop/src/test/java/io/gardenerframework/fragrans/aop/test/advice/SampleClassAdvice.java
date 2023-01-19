@@ -14,7 +14,7 @@ public class SampleClassAdvice extends SampleClass implements EnhanceMethodInter
     @Override
     public Pointcut getPointcut() {
         return CriteriaPointcut.builder().classCriteria(
-                ClassMatchesCriteria.builder().superClass(SampleClass.class).build()
+                ClassMatchesCriteria.builder().target(SampleClass.class).build()
         ).build();
     }
 }

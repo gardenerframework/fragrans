@@ -1,6 +1,6 @@
 io:
   gardenerframework:
-      fragrans:
-        messages:
-          basenames:
-            - api-standard-error/error/default
+    fragrans:
+      messages:
+        basenames:
+          - api-standard-error/error/default

@@ -17,10 +17,10 @@ public class ClassMatchesCriteria implements JavaObjectCriteria<Class<?>> {
      * 要匹配的类型
      */
     @NonNull
-    private Class<?> superClass;
+    private Class<?> target;
 
     @Override
     public boolean meetCriteria(Class<?> object) {
-        return superClass.equals(ClassUtils.getUserClass(object));
+        return target.equals(ClassUtils.getUserClass(object));
     }
 }

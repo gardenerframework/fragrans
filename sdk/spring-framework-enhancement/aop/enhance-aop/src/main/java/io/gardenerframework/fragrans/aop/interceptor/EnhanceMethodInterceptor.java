@@ -13,18 +13,18 @@ public interface EnhanceMethodInterceptor extends PointcutAdvisor, MethodInterce
     /**
      * 在controller的端点方法执行前
      *
-     * @param target          目标对象
-     * @param methodSignature 方法签名
-     * @param arguments       参数
+     * @param target    目标对象
+     * @param method    方法
+     * @param arguments 参数
      * @throws Exception 可能抛出异常中断后续执行
      */
-    default void before(Object target, Method methodSignature, Object[] arguments) throws Exception {
+    default void before(Object target, Method method, Object[] arguments) throws Exception {
         try {
             //寻找同样声明的方法(参数一样，名称一样)
-            Method method = this.getClass().getMethod(methodSignature.getName(), methodSignature.getParameterTypes());
-            if (EnhanceMethodInterceptor.class.isAssignableFrom(method.getDeclaringClass())) {
+            Method candidateMethod = this.getClass().getMethod(method.getName(), method.getParameterTypes());
+            if (EnhanceMethodInterceptor.class.isAssignableFrom(candidateMethod.getDeclaringClass())) {
                 //方法来自切面类的声明
-                method.invoke(this, arguments);
+                candidateMethod.invoke(this, arguments);
             }
         } catch (NoSuchMethodException | SecurityException e) {
             //没有这个方法
@@ -41,25 +41,25 @@ public interface EnhanceMethodInterceptor extends PointcutAdvisor, MethodInterce
     /**
      * 在controller的端点方法执行后
      *
-     * @param target          目标对象
-     * @param methodSignature 方法签名
-     * @param arguments       参数
-     * @param returnValue     返回值
+     * @param target      目标对象
+     * @param method      方法
+     * @param arguments   参数
+     * @param returnValue 返回值
      * @throws Exception 可能抛出异常中断后续执行
      */
-    default void after(Object target, Method methodSignature, Object[] arguments, @Nullable Object returnValue) throws Exception {
+    default void after(Object target, Method method, Object[] arguments, @Nullable Object returnValue) throws Exception {
     }
 
     /**
      * 在捕捉到异常时
      *
-     * @param target          目标对象
-     * @param methodSignature 方法签名
-     * @param arguments       参数
-     * @param exception       捕捉到了什么异常
+     * @param target    目标对象
+     * @param method    方法
+     * @param arguments 参数
+     * @param exception 捕捉到了什么异常
      * @throws Exception 可能抛出异常中断后续执行
      */
-    default void fail(Object target, Method methodSignature, Object[] arguments, Exception exception) throws Exception {
+    default void fail(Object target, Method method, Object[] arguments, Exception exception) throws Exception {
 
     }
 

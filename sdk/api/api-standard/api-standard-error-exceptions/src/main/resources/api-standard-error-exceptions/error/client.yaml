@@ -1,36 +1,36 @@
 io:
   gardenerframework:
-      fragrans:
-        api:
-          standard:
-            error:
-              exception:
-                client:
-                  BadRequestException: 请求有错误
-                  BadRequestBodyException: 请求数据格式不正确
-                  BadRequestArgumentException: 请求参数错误
-                  ConflictException: 请求冲突
-                  ExpectationFailedException: 无法满足Expect头中要求的预期
-                  FailedDependencyException: 当前请求所依赖的请求调用出错
-                  ForbiddenException: 禁止访问
-                  GoneException: 资源已被永久移除
-                  LengthRequiredException: 未指定请求长度
-                  MethodNotAllowedException: http请求方法不支持
-                  NotAcceptableException: 不支持请求方在http头中所要求的资源格式
-                  NotFoundException: 没有找到相关资源
-                  PayloadTooLargeException: 请求体过大
-                  PaymentRequiredException: 需要付费
-                  PreconditionFailedException: 当前资源不满请求所需的条件
-                  PreconditionRequiredException: 当前资源要求请求必须携带先决条件信息，如"If-Match"
-                  ProxyAuthenticationRequiredException: 代理服务器要求先进行认证
-                  RequestedRangeNotSatisfiableException: 请求要求访问的资源范围(如开始时间或起始位置)不能被满足
-                  RequestHeaderFieldsTooLargeException: 请求头中的部分字段太大了
-                  RequestTimeoutException: 请求方在规定时间内发送超时
-                  TooEarlyException: http请求头包含Early Data，但由于可能被重放，因此被拒绝处理
-                  TooManyRequestsException: 请求数量过多
-                  UnauthorizedException: 请求方身份未被认证
-                  UnavailableForLegalReasonsException: 因地方法律问题无法进行服务
-                  UnprocessableEntityException: 请求中包含了不正确的操作语义，如要求计算除0值，或返回一个大小为负数的资源
-                  UnsupportedMediaTypeException: 不支持请求方发出的数据格式
-                  UpgradeRequiredException: 客户端需按照响应的Upgrade头的要求升级http请求的版本
-                  UriTooLongException: 访问路径太长了
+    fragrans:
+      api:
+        standard:
+          error:
+            exception:
+              client:
+                BadRequestException: 请求有错误
+                BadRequestBodyException: 请求数据格式不正确
+                BadRequestArgumentException: 请求参数错误
+                ConflictException: 请求冲突
+                ExpectationFailedException: 无法满足Expect头中要求的预期
+                FailedDependencyException: 当前请求所依赖的请求调用出错
+                ForbiddenException: 禁止访问
+                GoneException: 资源已被永久移除
+                LengthRequiredException: 未指定请求长度
+                MethodNotAllowedException: http请求方法不支持
+                NotAcceptableException: 不支持请求方在http头中所要求的资源格式
+                NotFoundException: 没有找到相关资源
+                PayloadTooLargeException: 请求体过大
+                PaymentRequiredException: 需要付费
+                PreconditionFailedException: 当前资源不满请求所需的条件
+                PreconditionRequiredException: 当前资源要求请求必须携带先决条件信息，如"If-Match"
+                ProxyAuthenticationRequiredException: 代理服务器要求先进行认证
+                RequestedRangeNotSatisfiableException: 请求要求访问的资源范围(如开始时间或起始位置)不能被满足
+                RequestHeaderFieldsTooLargeException: 请求头中的部分字段太大了
+                RequestTimeoutException: 请求方在规定时间内发送超时
+                TooEarlyException: http请求头包含Early Data，但由于可能被重放，因此被拒绝处理
+                TooManyRequestsException: 请求数量过多
+                UnauthorizedException: 请求方身份未被认证
+                UnavailableForLegalReasonsException: 因地方法律问题无法进行服务
+                UnprocessableEntityException: 请求中包含了不正确的操作语义，如要求计算除0值，或返回一个大小为负数的资源
+                UnsupportedMediaTypeException: 不支持请求方发出的数据格式
+                UpgradeRequiredException: 客户端需按照响应的Upgrade头的要求升级http请求的版本
+                UriTooLongException: 访问路径太长了
