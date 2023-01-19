@@ -1,11 +1,11 @@
 io:
   gardenerframework:
-      fragrans:
-        api:
-          options:
-            exception:
-              client:
-                ApiOptionNotFoundException: 选项不存在
-                ApiOptionIsReadonlyException: 选项为只读
-                InvalidApiOptionException: 选项属性中存在非法值
-                ApiOptionVersionNumberConflictException: 版本有冲突，可能是因为已有别人进行了修改
+    fragrans:
+      api:
+        options:
+          exception:
+            client:
+              ApiOptionNotFoundException: 选项不存在
+              ApiOptionIsReadonlyException: 选项为只读
+              InvalidApiOptionException: 选项属性中存在非法值
+              ApiOptionVersionNumberConflictException: 版本有冲突，可能是因为已有别人进行了修改

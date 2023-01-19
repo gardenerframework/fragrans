@@ -93,11 +93,11 @@ String[] subprojectNames = [
 //        'sdk:api:api-security:api-security-operator-auto-logging',
         'sdk:api:api-group:api-group-core',
         'sdk:api:api-group:api-group-context-path',
-//        'sdk:api:api-options:api-options-common',
-//        'sdk:api:api-options:api-options-persistence-readonly',
-//        'sdk:api:api-options:api-options-persistence-database',
-//        'sdk:api:api-options:api-options-engine',
-//        'sdk:api:api-options:api-options-event-kafka',
+        'sdk:api:api-options:api-options-common',
+        'sdk:api:api-options:api-options-persistence-readonly',
+        'sdk:api:api-options:api-options-persistence-database',
+        'sdk:api:api-options:api-options-engine',
+        'sdk:api:api-options:api-options-event-kafka',
 //        'sdk:api:api-starter',
         //'sdk:api:api-idempotent:api-idempotent-engine'
 ]
