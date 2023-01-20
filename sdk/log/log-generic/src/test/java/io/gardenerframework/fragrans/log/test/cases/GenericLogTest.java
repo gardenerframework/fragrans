@@ -5,7 +5,6 @@ import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.annotation.LogTarget;
 import io.gardenerframework.fragrans.log.schema.content.GenericBasicLogContent;
 import io.gardenerframework.fragrans.log.schema.content.GenericOperationLogContent;
-import io.gardenerframework.fragrans.log.schema.details.OperatorDetail;
 import io.gardenerframework.fragrans.log.test.GenericLogTestApplication;
 import io.gardenerframework.fragrans.log.test.log.schema.TestDetail;
 import io.gardenerframework.fragrans.log.test.log.schema.TestHow;
@@ -13,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.UUID;
 
 /**
  * @author zhanghan30
@@ -48,7 +45,6 @@ public class GenericLogTest {
                         .operation(new TestHow())
                         .state(new TestHow())
                         .detail(new TestDetail())
-                        .operator(new OperatorDetail(UUID.randomUUID().toString(), null))
                         .build(),
                 null
         );

@@ -1,6 +1,8 @@
 package io.gardenerframework.fragrans.log.test;
 
-import io.gardenerframework.fragrans.log.event.LogEvent;
+import io.gardenerframework.fragrans.log.event.schema.LogEvent;
+import io.gardenerframework.fragrans.log.schema.content.AbstractGenericLogContent;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,6 @@ public class GenericLogTestApplication {
 
     @EventListener
     public void onLogEvent(LogEvent event) {
-
+        Assertions.assertInstanceOf(AbstractGenericLogContent.class, event.getContents());
     }
 }

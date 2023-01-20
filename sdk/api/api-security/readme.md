@@ -1,41 +1,121 @@
 # 引言
 
-接口的操作人是一个在审计领域非常重要的数据，广泛地用于日志记录、数据的创建人、更新人字段。有关如何获取操作人，不同的应用有着不同的实现方法，且在记录的时候有时候因为忘记传参等又造成了遗漏。于是，本组件就着眼这种需求进行开发
+安全包含3个部分: 认证(Authentication)、授权(Authorization)、审计(Auditing)。当前组件就着重这三点进行开发
 
-# Operator
-
-`Operator` 用于标记当前的操作人
+# User & Client
 
 ```java
-public interface Operator {
-    /**
-     * 用户id
-     */
+
+@Trait
+interface User {
     String userId = "";
+}
+
+@Trait
+interface Client {
     /**
      * 客户端id
      */
     String clientId = "";
 }
-
 ```
 
-`DefaultOperator`是由本组件生成的一个scope=request的bean，它主要在请求中提供有关操作人的详细数据，包含
+操作方(人或应用程序)是认证、授权、审计的基本要素，其主要就是包含了用户的id和应用程序(客户端)的id，这些id能够对接存储库或接口转换为详细的信息
 
-* 操作客户端的id
-* 客户端的角色(字符串集合)
-* 客户端的权限(字符串集合)
-* 操作人的id
-* 操作人的角色(字符串集合)
-* 操作人的权限(字符串集合)
+# ClientAuthorization & UserAuthorization
 
-这些常规数据来协助业务逻辑获取当前的操作人
+```java
 
-当任何在请求过程中需要操作人详情的场景下，对比以往的参数传递，都推进直接`@Autowire Operator`来获得操作人的bean
+@Trait
+public interface ClientAuthorization {
+    /**
+     * 客户端角色
+     */
+    @Nullable
+    Collection<String> clientRoles = null;
+    /**
+     * 客户端权限
+     */
+    @Nullable
+    Collection<String> clientPrivileges = null;
+}
 
-<font color=orange>警告:</font> 需要注意，这个bean只在servlet的线程内生效，无法向其它线程进行传递。如果需要传递，则线程的执行方法应当获取一份当前对象的拷贝
+public interface UserAuthorization {
+    /**
+     * 用户角色
+     */
+    Collection<String> userRoles = null;
+    /**
+     * 用户权限
+     */
+    Collection<String> userPrivileges = null;
+}
+```
 
-# 与log-generic自动配合
+包含了客户与用户的角色以及授权操作的权限，它是一个标准的数据格式定义。用例包含
 
-log-generic提供了记录带有操作人的日志的功能，于是为了简化日志记录过程中与本组件的配合，security-operator-auto-logging会使用aop拦截`GenericOperationLogger`
-的方法执行并自动注入操作人信息。同时，为了避免无意中修改了程序开发人员的设定值，这样的行为仅在操作人参数为`null`时生效
+* 查询用户的全局权限
+
+```java
+public class User implements UserAuthorization {
+    private String id;
+    //其它属性
+    private Collection<String> userRoles = null;
+    private Collection<String> userPrivileges = null;
+}
+```
+
+* 基于组织、店铺、群组等查询用户在范围内的权限
+
+```java
+public class User implements UserAuthorizationForGroup {
+    /**
+     * 权限对应的组织
+     */
+    private String groupId;
+    //其它属性
+    private Collection<String> userRoles = null;
+    private Collection<String> userPrivileges = null;
+}
+```
+
+# OperationAuditRecord
+
+审计的目标是为了说清楚发生了什么事情，包含
+
+| 属性      | 类型      | 是否必须 | 含义                       |
+|---------|---------|------|--------------------------|
+| 时间      | date    | 1    | 什么时间进行的操作                |
+| 操作人     | string  | 0    | 由谁进行的操作，通常是用户的id或用户名     |
+| 使用的设备   | string  | 0    | 使用的设备指纹                  |
+| 使用的应用   | string  | 0    | 使用的应用程序名称或id             |
+| 所在的网络位置 | string  | 1    | ip地址                     |
+| 所在的地理位置 | json    | 0    | 国家和地区                    |
+| 操作方法    | string  | 1    | http方法                   |
+| 被操作的目标  | string  | 1    | url没有查询字符串               |
+| 查询字符串   | string  | 0    | 查询字符串                    |
+| http头   | json    | 1    | http头                    |
+| 操作参数详情  | string  | 1    | 操作的入参(http Body)         |
+| 操作响应状态  | int     | 1    | http状态码                  |
+| 操作业务状态码 | String  | 0    | 操作响应自定义的状态或错误编码          |
+| 操作响应详情  | string  | 1    | 操作的响应                    |
+| 操作结果    | boolean | 1    | 是否成功的判断                  |
+| 操作前数据快照 | json    | 0    | 如果是修改，删除等操作，操作之前的数据快照是什么 |
+| 其他上下文信息 | json    | 0    | 其它扩展信息                   |
+
+* 设备指纹用来在审计中表达用户使用的硬件设备是否发生变化
+* 应用是访问端的应用id
+* ip地址一般需要网管层传入，现在的系统一般都是远程调用，因此ip地址一般会存在
+* 国家和地理位置则需要对接ip地址信息库
+* 被操作的目标往往是一个接口地址或rpc的一个方法名称(不一定是类的某个方法)
+* 操作动作则需要一定程度的分析，比如
+    * restful的接口使用http方法来表达动作，比如"get /user"和"post /user"，操作目标都是用户，但行为不同
+    * 非http服务则一般需要从参数或者方法名上进行定义了
+* 操作结果，其实一般就是成功与否的标记，如果是http接口，则4xx和5xx和接口方法抛出异常一概代表失败，其它情况则需要额外分析响应结果是否符合预期
+
+# 审计信息收集器 & 存储器
+
+审计信息收集器用来快速收集审计信息后立刻发送给独立进程的存储器，它不做任何关联查询(比如拿ip查地址库之类的)
+。采集器向消息队列存储数据后由存储器消费消息后再执行低速操作，比如查询用户的具体信息之类的
+
+# RootOperationAuditRecord

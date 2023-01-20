@@ -89,7 +89,7 @@ String[] subprojectNames = [
 //        'sdk:audit:audit-cotroller-engine',
         'sdk:api:api-advice:api-advice-engine',
         'sdk:api:api-enhance-validation',
-//        'sdk:api:api-security:api-security-operator-core',
+        'sdk:api:api-security:api-security-core',
 //        'sdk:api:api-security:api-security-operator-auto-logging',
         'sdk:api:api-group:api-group-core',
         'sdk:api:api-group:api-group-context-path',

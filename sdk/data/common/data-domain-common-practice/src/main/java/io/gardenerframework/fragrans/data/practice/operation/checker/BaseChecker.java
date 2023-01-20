@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.data.practice.operation.checker;
 
 import io.gardenerframework.fragrans.data.practice.operation.checker.log.schema.detail.IdsDetail;
-import io.gardenerframework.fragrans.log.GenericBasicLoggerMethodTemplate;
+import io.gardenerframework.fragrans.log.GenericLoggerMethodTemplate;
 import io.gardenerframework.fragrans.log.GenericLoggerStaticAccessor;
 import io.gardenerframework.fragrans.log.schema.content.GenericBasicLogContent;
 import io.gardenerframework.fragrans.log.schema.details.Detail;
@@ -35,7 +35,7 @@ public abstract class BaseChecker<I, R> implements RecordChecker<R>, RecordColle
      */
     @Builder.Default
     @Setter(AccessLevel.PROTECTED)
-    private GenericBasicLoggerMethodTemplate basicLogTemplate = GenericLoggerStaticAccessor.basicLogger()::debug;
+    private GenericLoggerMethodTemplate<GenericBasicLogContent> basicLogTemplate = GenericLoggerStaticAccessor.basicLogger()::debug;
 
     /**
      * 检查的记录类型

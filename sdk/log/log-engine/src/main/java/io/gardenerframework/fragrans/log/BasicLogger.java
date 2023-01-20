@@ -1,6 +1,8 @@
 package io.gardenerframework.fragrans.log;
 
-import io.gardenerframework.fragrans.log.event.LogEvent;
+import io.gardenerframework.fragrans.log.event.schema.LogEvent;
+import io.gardenerframework.fragrans.log.schema.content.BasicContents;
+import io.gardenerframework.fragrans.log.schema.content.Contents;
 import io.gardenerframework.fragrans.log.schema.template.Template;
 import io.gardenerframework.fragrans.log.schema.word.Word;
 import org.slf4j.Logger;
@@ -10,7 +12,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -53,11 +58,35 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      *
      * @param logger   日志类
      * @param template 模板
+     * @param contents 内容
+     * @param cause    异常
+     */
+    public void debug(Logger logger, Template template, Contents contents, @Nullable Throwable cause) {
+        logInternally(logger, logger::isDebugEnabled, logger::debug, template, contents, cause);
+    }
+
+    /**
+     * 记录debug
+     *
+     * @param logger   日志类
+     * @param template 模板
      * @param words    词汇
      * @param cause    异常
      */
     public void debug(Logger logger, Template template, Collection<Word> words, @Nullable Throwable cause) {
-        logInternally(logger, logger::isDebugEnabled, logger::debug, template, words, cause);
+        debug(logger, template, new BasicContents(words), cause);
+    }
+
+    /**
+     * 记录info
+     *
+     * @param logger   日志类
+     * @param template 模板
+     * @param contents 内容
+     * @param cause    异常
+     */
+    public void info(Logger logger, Template template, Contents contents, @Nullable Throwable cause) {
+        logInternally(logger, logger::isInfoEnabled, logger::info, template, contents, cause);
     }
 
     /**
@@ -69,7 +98,19 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      * @param cause    异常
      */
     public void info(Logger logger, Template template, Collection<Word> words, @Nullable Throwable cause) {
-        logInternally(logger, logger::isInfoEnabled, logger::info, template, words, cause);
+        info(logger, template, new BasicContents(words), cause);
+    }
+
+    /**
+     * 记录info
+     *
+     * @param logger   日志类
+     * @param template 模板
+     * @param contents 内容
+     * @param cause    异常
+     */
+    public void warn(Logger logger, Template template, Contents contents, @Nullable Throwable cause) {
+        logInternally(logger, logger::isWarnEnabled, logger::warn, template, contents, cause);
     }
 
     /**
@@ -81,7 +122,19 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      * @param cause    异常
      */
     public void warn(Logger logger, Template template, Collection<Word> words, @Nullable Throwable cause) {
-        logInternally(logger, logger::isWarnEnabled, logger::warn, template, words, cause);
+        warn(logger, template, new BasicContents(words), cause);
+    }
+
+    /**
+     * 记录info
+     *
+     * @param logger   日志类
+     * @param template 模板
+     * @param contents 内容
+     * @param cause    异常
+     */
+    public void error(Logger logger, Template template, Contents contents, @Nullable Throwable cause) {
+        logInternally(logger, logger::isErrorEnabled, logger::error, template, contents, cause);
     }
 
     /**
@@ -93,7 +146,7 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      * @param cause    异常
      */
     public void error(Logger logger, Template template, Collection<Word> words, @Nullable Throwable cause) {
-        logInternally(logger, logger::isErrorEnabled, logger::error, template, words, cause);
+        error(logger, template, new BasicContents(words), cause);
     }
 
     @Override
@@ -117,13 +170,13 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      * @param logLevelChecker 检查日志记录是否激活
      * @param methodTemplate  真正的日志记录方法
      * @param template        模板
-     * @param words           词汇
+     * @param contents        内容
      * @param cause           异常
      */
-    private void logInternally(Logger logger, LogLevelChecker logLevelChecker, LogMethodTemplate methodTemplate, Template template, Collection<Word> words, @Nullable Throwable cause) {
+    private void logInternally(Logger logger, LogLevelChecker logLevelChecker, LogMethodTemplate methodTemplate, Template template, Contents contents, @Nullable Throwable cause) {
         if (logLevelChecker.isEnabled()) {
-            Collection<Object> content = new ArrayList<>(words.size() + (cause == null ? 0 : 1));
-            content.addAll(words);
+            Collection<Object> content = new ArrayList<>(contents.getContents().size() + (cause == null ? 0 : 1));
+            content.addAll(contents.getContents());
             if (cause != null) {
                 content.add(cause);
             }
@@ -131,13 +184,13 @@ public class BasicLogger implements ApplicationEventPublisherAware {
         }
         if (logEventSenderNames.contains(logger.getName())) {
             if (eventPublisher != null) {
-                eventPublisher.publishEvent(new LogEvent(logger.getName(), template, Collections.unmodifiableCollection(words), cause));
+                eventPublisher.publishEvent(new LogEvent(logger.getName(), template, contents, cause));
                 LogEvent event;
                 while ((event = unsentEvents.poll()) != null) {
                     eventPublisher.publishEvent(event);
                 }
             } else {
-                unsentEvents.add(new LogEvent(logger.getName(), template, Collections.unmodifiableCollection(words), cause));
+                unsentEvents.add(new LogEvent(logger.getName(), template, contents, cause));
             }
         }
     }

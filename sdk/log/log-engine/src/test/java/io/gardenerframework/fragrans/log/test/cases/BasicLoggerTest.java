@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.log.test.cases;
 
 import io.gardenerframework.fragrans.log.BasicLogger;
-import io.gardenerframework.fragrans.log.event.LogEvent;
+import io.gardenerframework.fragrans.log.event.schema.LogEvent;
 import io.gardenerframework.fragrans.log.test.LogEngineTestApplication;
 import io.gardenerframework.fragrans.log.test.log.SubclassLogger;
 import io.gardenerframework.fragrans.log.test.log.schema.TestTemplate;

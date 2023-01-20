@@ -6,13 +6,12 @@ import io.gardenerframework.fragrans.data.cache.client.CacheClient;
 import io.gardenerframework.fragrans.data.cache.log.schema.detail.CacheDetail;
 import io.gardenerframework.fragrans.data.cache.manager.annotation.Cached;
 import io.gardenerframework.fragrans.data.cache.serialize.*;
+import io.gardenerframework.fragrans.log.GenericLoggerMethodTemplate;
 import io.gardenerframework.fragrans.log.GenericLoggerStaticAccessor;
-import io.gardenerframework.fragrans.log.GenericOperationLoggerMethodTemplate;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Cache;
 import io.gardenerframework.fragrans.log.common.schema.verb.Delete;
 import io.gardenerframework.fragrans.log.schema.content.GenericOperationLogContent;
-import io.gardenerframework.fragrans.data.cache.serialize.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,7 +57,7 @@ public abstract class BasicCacheManager<T> {
      * 日志记录模板
      */
     @Setter(AccessLevel.PROTECTED)
-    private GenericOperationLoggerMethodTemplate loggingMethod;
+    private GenericLoggerMethodTemplate<GenericOperationLogContent> loggingMethod;
     /**
      * 哪个日志记录器生效
      */
