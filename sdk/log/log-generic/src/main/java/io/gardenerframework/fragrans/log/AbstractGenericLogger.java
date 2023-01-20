@@ -26,7 +26,7 @@ public abstract class AbstractGenericLogger<T extends AbstractGenericTemplate, C
      * @param cause   异常
      */
     public void debug(Logger logger, C content, @Nullable Throwable cause) {
-        super.debug(logger, template, content, cause);
+        debug(logger, template, content, cause);
     }
 
     /**
@@ -37,7 +37,7 @@ public abstract class AbstractGenericLogger<T extends AbstractGenericTemplate, C
      * @param cause   异常
      */
     public void info(Logger logger, C content, @Nullable Throwable cause) {
-        super.info(logger, template, content, cause);
+        info(logger, template, content, cause);
     }
 
     /**
@@ -48,7 +48,7 @@ public abstract class AbstractGenericLogger<T extends AbstractGenericTemplate, C
      * @param cause   异常
      */
     public void warn(Logger logger, C content, @Nullable Throwable cause) {
-        super.warn(logger, template, content, cause);
+        warn(logger, template, content, cause);
     }
 
     /**
@@ -59,6 +59,6 @@ public abstract class AbstractGenericLogger<T extends AbstractGenericTemplate, C
      * @param cause   异常
      */
     public void error(Logger logger, C content, @Nullable Throwable cause) {
-        super.error(logger, template, content, cause);
+        error(logger, template, content, cause);
     }
 }

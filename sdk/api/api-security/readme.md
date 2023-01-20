@@ -2,7 +2,9 @@
 
 安全包含3个部分: 认证(Authentication)、授权(Authorization)、审计(Auditing)。当前组件就着重这三点进行开发
 
-# User & Client
+# 保准化数据
+
+## User & Client
 
 ```java
 
@@ -22,7 +24,7 @@ interface Client {
 
 操作方(人或应用程序)是认证、授权、审计的基本要素，其主要就是包含了用户的id和应用程序(客户端)的id，这些id能够对接存储库或接口转换为详细的信息
 
-# ClientAuthorization & UserAuthorization
+## ClientAuthorization & UserAuthorization
 
 ```java
 
@@ -79,43 +81,137 @@ public class User implements UserAuthorizationForGroup {
 }
 ```
 
-# OperationAuditRecord
+## OperationAuditLog
 
-审计的目标是为了说清楚发生了什么事情，包含
+顾名思义，`OperationAuditLog`代表的是审计记录
 
-| 属性      | 类型      | 是否必须 | 含义                       |
-|---------|---------|------|--------------------------|
-| 时间      | date    | 1    | 什么时间进行的操作                |
-| 操作人     | string  | 0    | 由谁进行的操作，通常是用户的id或用户名     |
-| 使用的设备   | string  | 0    | 使用的设备指纹                  |
-| 使用的应用   | string  | 0    | 使用的应用程序名称或id             |
-| 所在的网络位置 | string  | 1    | ip地址                     |
-| 所在的地理位置 | json    | 0    | 国家和地区                    |
-| 操作方法    | string  | 1    | http方法                   |
-| 被操作的目标  | string  | 1    | url没有查询字符串               |
-| 查询字符串   | string  | 0    | 查询字符串                    |
-| http头   | json    | 1    | http头                    |
-| 操作参数详情  | string  | 1    | 操作的入参(http Body)         |
-| 操作响应状态  | int     | 1    | http状态码                  |
-| 操作业务状态码 | String  | 0    | 操作响应自定义的状态或错误编码          |
-| 操作响应详情  | string  | 1    | 操作的响应                    |
-| 操作结果    | boolean | 1    | 是否成功的判断                  |
-| 操作前数据快照 | json    | 0    | 如果是修改，删除等操作，操作之前的数据快照是什么 |
-| 其他上下文信息 | json    | 0    | 其它扩展信息                   |
+```java
+public class OperationAuditLog {
+    /**
+     * 时间戳
+     */
+    @Builder.Default
+    private Date timestamp = new Date();
+    /**
+     * 操作用户
+     */
+    @Nullable
+    private String userId;
+    /**
+     * 操作客户端
+     */
+    @Nullable
+    private String clientId;
+    /**
+     * 操作设备
+     */
+    @Nullable
+    private String deviceId;
+    /**
+     * ip地址
+     */
+    @NonNull
+    private String ip;
 
-* 设备指纹用来在审计中表达用户使用的硬件设备是否发生变化
-* 应用是访问端的应用id
-* ip地址一般需要网管层传入，现在的系统一般都是远程调用，因此ip地址一般会存在
-* 国家和地理位置则需要对接ip地址信息库
-* 被操作的目标往往是一个接口地址或rpc的一个方法名称(不一定是类的某个方法)
-* 操作动作则需要一定程度的分析，比如
-    * restful的接口使用http方法来表达动作，比如"get /user"和"post /user"，操作目标都是用户，但行为不同
-    * 非http服务则一般需要从参数或者方法名上进行定义了
-* 操作结果，其实一般就是成功与否的标记，如果是http接口，则4xx和5xx和接口方法抛出异常一概代表失败，其它情况则需要额外分析响应结果是否符合预期
+    /**
+     * http方法
+     */
+    @NonNull
+    private String method;
 
-# 审计信息收集器 & 存储器
+    /**
+     * uri
+     */
+    @NonNull
+    private String uri;
 
-审计信息收集器用来快速收集审计信息后立刻发送给独立进程的存储器，它不做任何关联查询(比如拿ip查地址库之类的)
-。采集器向消息队列存储数据后由存储器消费消息后再执行低速操作，比如查询用户的具体信息之类的
+    /**
+     * queryString
+     */
+    @Nullable
+    private String queryString;
+    /**
+     * http头
+     */
+    @Singular
+    @NonNull
+    private Map<String, Collection<String>> headers;
+    /**
+     * 请求体
+     */
+    @Nullable
+    private String requestBody;
+    /**
+     * http状态码
+     */
+    @Builder.Default
+    private int status = 0;
+    /**
+     * 响应体
+     */
+    @Nullable
+    private String responseBody;
+    /**
+     * 业务编码
+     */
+    @Nullable
+    private String code;
+    /**
+     * 是否成功的标记
+     */
+    @Builder.Default
+    private boolean success = true;
+    /**
+     * 变更前快照
+     */
+    @Nullable
+    private String snapshot;
+    /**
+     * 其它上下文
+     */
+    @Nullable
+    private String context;
+}
+```
 
-# RootOperationAuditRecord
+审计的发生时间点是在任何对外暴露的接口被调用时，接口可能是被`@Controller`封装的方法，也可能是某个Filter的处理方法。
+
+# Operator感知
+
+[api-security-operator-aware](api-security-operator-aware)定义了接口操作人感知的能力
+
+```java
+public class OperatorBrief implements
+        ApiSecurityTraits.OperatorTraits.User,
+        ApiSecurityTraits.OperatorTraits.Client {
+    /**
+     * 用户id
+     */
+    private String userId;
+    /**
+     * 客户端id
+     */
+    private String clientId;
+}
+```
+
+这是一个"scope=request"的bean，主要是给controller方法或者其它请求处理期间的类进行`@Autowire`
+后获取当前的操作人。需要注意的是这个组件需要配合其它安全组件使用才有意义。因为这个对象需要从安全组件中读取出来用户后进行初始化。
+比如如果搭配spring security，则需要从`Authentication`中读取出来当前访问的用户以及客户端
+
+# 安全自动化
+
+## 日志自动化
+
+当加载了[api-security-automation-logging](api-security-automation-logging)
+和[api-security-operator-aware](api-security-operator-aware)组件后，它会在`GenericOperationLogger`写日志的时候附加上操作人信息，变成这样
+
+```log
+用户信息更新成功[userid=123, name=张三], 操作人: [userId=456, clientId=abc]
+```
+
+# 采集器与存储器的协同关系
+
+原则上一个服务的审计日志会利用单独的消息队列管道(如kafka的topic)
+发送给存储器，存储器基于管道来源决定日志所属的接口和应用并进行一些额外的逻辑操作(比如附加一些用户的姓名等业务相关的数据)
+后存储到对应的库表或es索引内。这种协同关系较为合理，理由是不同的服务由不同的团队开发，每一个团队最终落库的审计记录都不相同，没有必要由一个存储器来负责所有服务的审计记录落地工作

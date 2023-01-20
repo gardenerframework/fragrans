@@ -1,7 +1,0 @@
-dependencies {
-    api "${rootProject.group}:log-generic"
-    api "${rootProject.group}:api-security-operator-core"
-    api "org.springframework.boot:spring-boot-starter-aop"
-    testImplementation "org.springframework.boot:spring-boot-starter-web"
-    testImplementation "${rootProject.group}:log-common-words"
-}

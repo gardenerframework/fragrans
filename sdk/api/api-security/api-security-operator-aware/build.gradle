@@ -1,0 +1,3 @@
+dependencies {
+    api "${group}:api-security-core"
+}

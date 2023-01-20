@@ -5,6 +5,7 @@ import io.gardenerframework.fragrans.log.schema.content.BasicContents;
 import io.gardenerframework.fragrans.log.schema.content.Contents;
 import io.gardenerframework.fragrans.log.schema.template.Template;
 import io.gardenerframework.fragrans.log.schema.word.Word;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -38,6 +39,12 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      * 通过共享事件发布器，使得多个实例共享同一个事件发布器
      */
     private static ApplicationEventPublisher eventPublisher;
+
+    private static final Queue<LogMessageCustomizer> messageCustomizers = new ConcurrentLinkedDeque<>();
+
+    public static void addLogMessageCustomizer(@NonNull LogMessageCustomizer customizer) {
+        messageCustomizers.add(customizer);
+    }
 
     /**
      * 启用日志事件
@@ -174,6 +181,14 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      * @param cause           异常
      */
     private void logInternally(Logger logger, LogLevelChecker logLevelChecker, LogMethodTemplate methodTemplate, Template template, Contents contents, @Nullable Throwable cause) {
+        for (LogMessageCustomizer messageCustomizer : messageCustomizers) {
+            if (messageCustomizer.support(this, template, contents)) {
+                //完成客制化处理
+                template = messageCustomizer.customize(template);
+                contents = messageCustomizer.customize(contents);
+                //继续执行，更改完成后的也需要检查后面是否还有继续的更改
+            }
+        }
         if (logLevelChecker.isEnabled()) {
             Collection<Object> content = new ArrayList<>(contents.getContents().size() + (cause == null ? 0 : 1));
             content.addAll(contents.getContents());
