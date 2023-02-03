@@ -12,8 +12,11 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/12/1 6:39 下午
  */
 @Configuration
+@ConditionalOnClass({
+        GenericOperationLogger.class,
+        OperatorBrief.class
+})
 public class ApiSecurityAutomationLoggingConfiguration {
-    @ConditionalOnClass({GenericOperationLogger.class, OperatorBrief.class})
     @Bean
     public GenericOperationLoggerMessageCustomizer genericOperationLoggerAdvice(OperatorBrief operatorBrief) {
         GenericOperationLoggerMessageCustomizer customizer = new GenericOperationLoggerMessageCustomizer(operatorBrief);

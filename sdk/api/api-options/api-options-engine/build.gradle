@@ -6,7 +6,7 @@ dependencies {
     api group: "${rootProject.group}", name: 'api-standard-error-exceptions'
     api group: "${rootProject.group}", name: 'log-generic'
     api group: "${rootProject.group}", name: 'log-common-words'
-    api group: "${rootProject.group}", name: 'api-security-operator-auto-logging'
+    api group: "${rootProject.group}", name: 'api-security-automation-logging'
     api group: "${rootProject.group}", name: 'api-enhance-validation'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2'
     testImplementation group: "${rootProject.group}", name: 'api-options-persistence-database'

@@ -90,6 +90,7 @@ String[] subprojectNames = [
         'sdk:api:api-security:api-security-core',
         'sdk:api:api-security:api-security-operator-aware',
         'sdk:api:api-security:api-security-automation-logging',
+        'sdk:api:api-security:api-security-automation-data',
         'sdk:api:api-group:api-group-core',
         'sdk:api:api-group:api-group-context-path',
         'sdk:api:api-options:api-options-common',

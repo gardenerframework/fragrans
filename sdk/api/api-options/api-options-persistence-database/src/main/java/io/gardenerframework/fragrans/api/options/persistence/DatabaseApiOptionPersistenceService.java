@@ -7,7 +7,6 @@ import io.gardenerframework.fragrans.api.options.persistence.dao.ApiOptionDao;
 import io.gardenerframework.fragrans.api.options.persistence.exception.ApiOptionVersionOutOfDateException;
 import io.gardenerframework.fragrans.api.options.persistence.schema.ApiOptionDatabaseRecord;
 import io.gardenerframework.fragrans.api.options.schema.ApiOptionsRegistry;
-import io.gardenerframework.fragrans.api.security.schema.Operator;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,6 @@ public class DatabaseApiOptionPersistenceService implements ApiOptionPersistence
     private final ApiOptionsRegistry registry;
     private final ApiOptionDao dao;
     private final ObjectMapper mapper;
-    private final Operator operator;
 
     @Nullable
     @Override
@@ -53,7 +51,6 @@ public class DatabaseApiOptionPersistenceService implements ApiOptionPersistence
         record.setOption(mapper.convertValue(option, new TypeReference<Map<String, Object>>() {
         }));
         record.setVersionNumber(newVersion);
-        record.setUpdater(operator.getUserId());
         dao.updateApiOption(
                 id,
                 record
@@ -70,7 +67,6 @@ public class DatabaseApiOptionPersistenceService implements ApiOptionPersistence
         record.setOption(mapper.convertValue(option, new TypeReference<Map<String, Object>>() {
         }));
         record.setId(id);
-        record.setCreator(operator.getUserId());
         record.setVersionNumber(generateVersionNumber());
         dao.createApiOption(record);
         return record.getVersionNumber();

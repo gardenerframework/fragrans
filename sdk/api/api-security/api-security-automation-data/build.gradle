@@ -1,0 +1,8 @@
+dependencies {
+    compileOnly "${rootProject.group}:api-security-operator-aware"
+    compileOnly "${rootProject.group}:data-traits-security"
+    api "${rootProject.group}:enhance-aop"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "${rootProject.group}:api-security-operator-aware"
+    testImplementation "${rootProject.group}:data-traits-security"
+}
