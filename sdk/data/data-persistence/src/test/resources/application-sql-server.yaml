@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://sqlserver-internet-north1-a78b8e9eb3cf4c6a.rds.jdcloud.com;encrypt=false;databaseName=fragrans;
+    url: jdbc:sqlserver://sqlserver-internet-north1-e373768c34a647b0.rds.jdcloud.com;encrypt=false;databaseName=fragrans;
     username: fragrans
     password: 1qAz2WSX2020
 logging:
