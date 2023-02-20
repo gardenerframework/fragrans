@@ -98,7 +98,7 @@ String[] subprojectNames = [
         'sdk:api:api-options:api-options-persistence-database',
         'sdk:api:api-options:api-options-engine',
         'sdk:api:api-options:api-options-event-kafka',
-//        'sdk:api:api-starter',
+        'sdk:api:api-starter',
         //'sdk:api:api-idempotent:api-idempotent-engine'
 ]
 gradle.ext.subprojectNames = subprojectNames
