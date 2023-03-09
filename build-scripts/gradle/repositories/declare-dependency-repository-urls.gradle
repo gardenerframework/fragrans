@@ -1,5 +1,5 @@
 //包仓库声明
 ext {
-    snapshots = "https://oss.sonatype.org/content/repositories/snapshots" as String
+    snapshots = "https://s01.oss.sonatype.org/content/repositories/snapshots" as String
     releases = "http://maven.aliyun.com/nexus/content/groups/public/" as String
 }
