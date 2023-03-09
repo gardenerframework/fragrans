@@ -1,0 +1,4 @@
+dependencies {
+    api "${group}:sugar-trait"
+    annotationProcessor "${group}:sugar-trait-apt"
+}

@@ -1,0 +1,4 @@
+dependencies {
+    api group: "${rootProject.group}", name: 'data-cache-core'
+    api group: "org.springframework.boot", name: 'spring-boot-starter-data-redis'
+}

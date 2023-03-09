@@ -1,0 +1,9 @@
+io:
+  gardenerframework:
+    fragrans:
+      api:
+        standard:
+          error:
+            DefaultApiErrorConstants:
+              unknown: 未知错误
+              generic: 系统遇到一些问题，请联系管理员或稍后重试

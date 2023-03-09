@@ -1,0 +1,4 @@
+dependencies {
+    api "org.springframework:spring-context"
+    api group: "${rootProject.group}", name: 'data-schema'
+}

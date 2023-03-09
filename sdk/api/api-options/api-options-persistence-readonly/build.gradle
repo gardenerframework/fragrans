@@ -1,0 +1,4 @@
+dependencies {
+    api "${group}:api-options-common"
+    api "${group}:api-standard-error-exceptions"
+}

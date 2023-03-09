@@ -1,0 +1,4 @@
+dependencies {
+    api "${group}:sugar-lang"
+    annotationProcessor "${group}:sugar-lang-apt"
+}

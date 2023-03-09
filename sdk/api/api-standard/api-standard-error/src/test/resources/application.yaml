@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: test
+  profiles:
+    active: local
+logging:
+  level:
+    root: debug

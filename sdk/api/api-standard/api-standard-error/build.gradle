@@ -1,0 +1,15 @@
+dependencies {
+    api group: "${group}", name: 'enhance-message-source'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+    api group: 'org.springframework', name: 'spring-webmvc'
+    api group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core'
+    api group: 'org.reflections', name: 'reflections'
+    api group: "${group}", name: 'api-standard-data'
+    api group: "${group}", name: 'api-standard-error-exceptions'
+    api group: "${group}", name: 'api-standard-error-reveal-config'
+    api group: "${rootProject.group}", name: 'log-generic'
+    api group: "${rootProject.group}", name: 'log-common-words'
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    testImplementation group: "${group}", name: 'enhance-validation'
+}

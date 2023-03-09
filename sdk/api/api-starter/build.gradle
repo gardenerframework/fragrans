@@ -1,0 +1,14 @@
+dependencies {
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    api group: 'io.micrometer', name: 'micrometer-registry-prometheus'
+    api group: "${rootProject.group}", name: 'enhance-message-source'
+    api group: "${rootProject.group}", name: 'enhance-validation'
+    api group: "${rootProject.group}", name: 'log-generic'
+    api group: "${rootProject.group}", name: 'log-common-words'
+    api group: "${rootProject.group}", name: 'api-standard-data'
+    api group: "${rootProject.group}", name: 'api-standard-error'
+    api group: "${rootProject.group}", name: 'api-advice-engine'
+    api group: "${rootProject.group}", name: 'api-enhance-validation'
+}

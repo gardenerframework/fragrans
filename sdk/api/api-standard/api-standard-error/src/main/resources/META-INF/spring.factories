@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorConfiguration,\
+  io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorSecurityConfiguration

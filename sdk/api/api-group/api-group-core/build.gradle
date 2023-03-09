@@ -1,0 +1,5 @@
+dependencies {
+    api group: "${rootProject.group}", name: 'log-common-words'
+    api group: "${rootProject.group}", name: 'log-generic'
+    api group: "${rootProject.group}", name: 'api-standard-data'
+}

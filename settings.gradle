@@ -1,0 +1,119 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
+/**
+ * 按照gradle官方文档的意思，
+ * 在setting.gradle里可以集中管理所有子项目使用的仓库，
+ * 且可以要求子项目不能自己使用自己定义的仓库。
+ * 注意这是项目用的，而不是编译脚本用的。
+ * 搞不明白的话看这个:
+ * https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:plugin-vs-build-repos
+ */
+dependencyResolutionManagement {
+    apply from: 'build-scripts/gradle/repositories/declare-dependency-repository-urls.gradle'
+    apply from: 'build-scripts/gradle/credentials/dependency-artifactory-credentials.gradle'
+    //禁止子项目声明自己的仓库
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven {
+            url releases
+            //允许使用非https协议，启用这个选项否则会报错
+            allowInsecureProtocol true
+            mavenContent {
+                //仅搜索非快照版本
+                releasesOnly()
+            }
+            credentials {
+                username "${dependencyMavenRepositoryCredentials.user}"
+                password "${dependencyMavenRepositoryCredentials.key}"
+            }
+        }
+        maven {
+            url publishes
+            //允许使用非https协议，启用这个选项否则会报错
+            allowInsecureProtocol true
+            mavenContent {
+                //仅搜索非快照版本
+                releasesOnly()
+            }
+            credentials {
+                username "${dependencyMavenRepositoryCredentials.user}"
+                password "${dependencyMavenRepositoryCredentials.key}"
+            }
+        }
+        maven {
+            url snapshots
+            //允许使用非https协议，启用这个选项否则会报错
+            allowInsecureProtocol true
+            mavenContent {
+                //仅搜索快照版本
+                snapshotsOnly()
+            }
+            credentials {
+                username "${dependencyMavenRepositoryCredentials.user}"
+                password "${dependencyMavenRepositoryCredentials.key}"
+            }
+        }
+    }
+}
+String[] subprojectNames = [
+        'sdk:sugar:lang:sugar-lang',
+        'sdk:sugar:lang:sugar-lang-apt',
+        'sdk:sugar:lang:sugar-lang-apt-test',
+        'sdk:sugar:trait:sugar-trait',
+        'sdk:sugar:trait:sugar-trait-apt',
+        'sdk:sugar:trait:sugar-trait-apt-test',
+        'sdk:sugar:trait:sugar-trait-utils',
+        'sdk:log:log-engine-schema',
+        'sdk:log:log-engine',
+        'sdk:log:log-generic-schema',
+        'sdk:log:log-generic',
+        'sdk:log:log-common-words',
+        'sdk:design-pattern:criteria-pattern',
+        'sdk:spring-framework-enhancement:infrastructure:enhance-infrastructure',
+        'sdk:spring-framework-enhancement:message-source:enhance-message-source-core',
+        'sdk:spring-framework-enhancement:message-source:enhance-message-source',
+        'sdk:spring-framework-enhancement:validation:enhance-validation-constraints',
+        'sdk:spring-framework-enhancement:validation:enhance-validation',
+        'sdk:spring-framework-enhancement:aop:enhance-aop',
+        'sdk:generic-toolkits',
+        'sdk:data:common:data-common-codes',
+        'sdk:data:common:traits:data-traits-generic',
+        'sdk:data:common:traits:cyber-world:data-traits-account',
+        'sdk:data:common:traits:cyber-world:data-traits-application',
+        'sdk:data:common:traits:cyber-world:data-traits-data-structure',
+        'sdk:data:common:traits:cyber-world:data-traits-network',
+        'sdk:data:common:traits:cyber-world:data-traits-security',
+        'sdk:data:common:traits:real-world:data-traits-mankind',
+        'sdk:data:common:traits:real-world:data-traits-society',
+        'sdk:data:common:traits:real-world:data-traits-bio',
+        'sdk:data:common:traits:data-traits-starter',
+        'sdk:data:data-schema',
+        'sdk:data:data-persistence',
+        'sdk:data:data-cache-core',
+        'sdk:data:data-cache-spring-redis',
+        'sdk:data:data-unique-id',
+        'sdk:data:common:data-domain-common-practice',
+        'sdk:event-driven:event-standard:event-standard-schema',
+        'sdk:api:api-standard:api-standard-data',
+        'sdk:api:api-standard:api-standard-error-reveal-config',
+        'sdk:api:api-standard:api-standard-error-exceptions',
+        'sdk:api:api-standard:api-standard-error',
+        'sdk:api:api-advice:api-advice-engine',
+        'sdk:api:api-enhance-validation',
+        'sdk:api:api-security:api-security-core',
+        'sdk:api:api-security:api-security-operator-aware',
+        'sdk:api:api-security:api-security-automation-logging',
+        'sdk:api:api-security:api-security-automation-data',
+        'sdk:api:api-group:api-group-core',
+        'sdk:api:api-group:api-group-context-path',
+        'sdk:api:api-options:api-options-common',
+        'sdk:api:api-options:api-options-persistence-readonly',
+        'sdk:api:api-options:api-options-persistence-database',
+        'sdk:api:api-options:api-options-engine',
+        'sdk:api:api-options:api-options-event-kafka',
+        'sdk:api:api-starter',
+        //'sdk:api:api-idempotent:api-idempotent-engine'
+]
+gradle.ext.subprojectNames = subprojectNames
+rootProject.name = 'fragrans'
+include subprojectNames

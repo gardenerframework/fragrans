@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.gardenerframework.fragrans.messages.configuration.EnhanceMessageSourceConfiguration

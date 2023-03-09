@@ -1,0 +1,6 @@
+dependencies {
+    api "${rootProject.group}:log-generic"
+    api "${rootProject.group}:log-common-words"
+    api "${rootProject.group}:enhance-message-source-core"
+    api "org.springframework.boot:spring-boot-starter"
+}

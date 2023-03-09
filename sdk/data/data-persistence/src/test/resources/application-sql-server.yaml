@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://sqlserver-internet-north1-e373768c34a647b0.rds.jdcloud.com;encrypt=false;databaseName=fragrans;
+    username: fragrans
+    password: 1qAz2WSX2020
+logging:
+  level:
+    root: debug

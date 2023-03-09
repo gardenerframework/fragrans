@@ -1,0 +1,11 @@
+dependencies {
+    //提供了2个种锁上线，其中servlet上下文依赖这个组件，但只是编译用
+    compileOnly "org.springframework:spring-web"
+    api "org.springframework.boot:spring-boot-starter-json"
+    api group: 'org.apache.commons', name: 'commons-text'
+    api group: "${rootProject.group}", name: 'log-generic'
+    api group: "${rootProject.group}", name: 'log-common-words'
+    testCompileOnly group: "org.springframework.boot", name: 'spring-boot-starter-data-redis'
+    testImplementation group: "org.springframework.boot", name: 'spring-boot-starter-data-redis'
+    testImplementation group: "org.springframework.boot", name: 'spring-boot-starter-web'
+}

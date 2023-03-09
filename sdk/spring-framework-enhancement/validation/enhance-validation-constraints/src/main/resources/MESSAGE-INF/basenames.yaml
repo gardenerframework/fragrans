@@ -1,0 +1,9 @@
+io:
+  gardenerframework:
+    fragrans:
+      messages:
+        basenames:
+          - enhance-validation-constraints/violations/text
+          - enhance-validation-constraints/violations/collection
+          - enhance-validation-constraints/violations/map
+          - enhance-validation-constraints/violations/range

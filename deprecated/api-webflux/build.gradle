@@ -1,0 +1,7 @@
+dependencies {
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
+    api group: "${rootProject.group}", name: 'api-common'
+    api group: "${rootProject.group}", name: 'api-error'
+
+}

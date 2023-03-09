@@ -1,0 +1,3 @@
+dependencies {
+    api "${rootProject.group}:domain-event-core"
+}

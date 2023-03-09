@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceConfiguration,\
+  io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceMybatisConfiguration

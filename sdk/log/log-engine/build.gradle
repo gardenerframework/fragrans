@@ -1,0 +1,4 @@
+dependencies {
+    api "${rootProject.group}:log-engine-schema"
+    api "org.springframework.boot:spring-boot-starter"
+}

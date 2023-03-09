@@ -1,0 +1,7 @@
+dependencies {
+    api group: "${rootProject.group}", name: "data-schema"
+    api group: "${rootProject.group}", name: "data-persistence"
+    api group: "${rootProject.group}", name: "log-generic"
+    api group: "${rootProject.group}", name: "log-common-words"
+    testImplementation "mysql:mysql-connector-java"
+}

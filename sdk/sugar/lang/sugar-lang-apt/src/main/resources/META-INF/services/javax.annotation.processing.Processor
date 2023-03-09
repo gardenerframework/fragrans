@@ -1,0 +1,2 @@
+io.gardenerframework.fragrans.sugar.lang.method.apt.RewriteReturnValueTypeAnnotationProcessor
+io.gardenerframework.fragrans.sugar.lang.type.apt.UninheritAnnotationProcessor

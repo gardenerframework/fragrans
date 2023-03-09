@@ -1,0 +1,7 @@
+logging:
+  level:
+    root: debug
+server:
+  tomcat:
+    threads:
+      max: 1

@@ -1,0 +1,5 @@
+dependencies {
+    api 'org.springframework.boot:spring-boot-starter-validation'
+    api "${group}:enhance-validation-constraints"
+    api "${group}:enhance-message-source"
+}

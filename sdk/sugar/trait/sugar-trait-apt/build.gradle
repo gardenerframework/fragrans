@@ -1,0 +1,4 @@
+dependencies {
+    api "${group}:sugar-trait"
+    compileOnly files("${System.properties['java.home']}/../lib/tools.jar")
+}

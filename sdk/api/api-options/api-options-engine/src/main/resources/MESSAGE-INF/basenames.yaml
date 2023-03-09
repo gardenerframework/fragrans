@@ -1,0 +1,6 @@
+io:
+  gardenerframework:
+    fragrans:
+      messages:
+        basenames:
+          - api-options-engine/error/client

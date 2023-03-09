@@ -1,0 +1,7 @@
+io:
+  gardenerframework:
+    fragrans:
+      validation:
+        constraints:
+          collection:
+            DistinctItem: 有重复数据

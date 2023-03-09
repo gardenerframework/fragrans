@@ -1,0 +1,5 @@
+dependencies {
+    api "org.hibernate.validator:hibernate-validator"
+    api "org.springframework:spring-context"
+    testImplementation 'org.springframework.boot:spring-boot-starter-validation'
+}

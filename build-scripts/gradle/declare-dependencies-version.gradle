@@ -1,0 +1,23 @@
+/**
+ * 整体定义项目的依赖
+ */
+ext {
+    spring = new Properties(
+            //spring boot 版本
+            boot: '2.7.3',
+            //spring cloud 版本
+            cloud: '2021.0.4'
+    ) as Properties
+    sonar = '2.7' as String
+    groupConstraints = [
+            //升级spring后应该不需要升级这个了
+            //[group: 'org.apache.logging.log4j', version: '2.17.0'],
+            [group: 'com.google.zxing', version: '3.4.1']
+    ] as ArrayList<Properties>
+    constraints = [
+            [group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.2.2'],
+            [group: 'org.reflections', name: 'reflections', version: '0.9.12'],
+            [group: 'org.apache.commons', name: 'commons-text', version: '1.9'],
+            [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre']
+    ] as ArrayList<Properties>
+}

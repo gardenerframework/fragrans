@@ -1,0 +1,5 @@
+dependencies {
+    api group: "${rootProject.group}", name: 'api-group-core'
+    api group: 'org.springframework', name: 'spring-webmvc'
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+}
