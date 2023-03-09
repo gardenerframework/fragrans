@@ -28,6 +28,7 @@ public class QrCodeTool {
      *
      * @param data            编码数据
      * @param size            大小
+     * @param margin          间距
      * @param logoPath        图标地址
      * @param logoRatio       图标比例 0 - 0.99
      * @param codeColor       码的颜色
@@ -91,6 +92,8 @@ public class QrCodeTool {
      *
      * @param image base64的二维码
      * @return 二维码的内容
+     * @throws IOException IOException
+     * @throws NotFoundException NotFoundException
      */
     public String parseQrCode(String image) throws IOException, NotFoundException {
         BufferedImage qrCodeImage = ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(image)));
