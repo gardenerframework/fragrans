@@ -163,20 +163,8 @@ allprojects {
         from javadoc
         archiveClassifier = "javadoc"
     }
-    /**
-     * 在编译打包的基础上，
-     * 执行源代码打包任务
-     */
-    artifacts {
-        archives javadocJar, sourceJar
-    }
 
-    /**
-     * 签名构件
-     */
-    signing {
-        sign configurations.archives
-    }
+
 
     /**
      * 配置发布任务
@@ -213,10 +201,38 @@ allprojects {
                         fromResolutionResult()
                     }
                 }
+                pom {
+                    name = rootProject.name
+                    url = "http://gardenerframework.io/"
+                    description = "用于api接口开发所需的基础研发组件"
+                    licenses {
+                        license {
+                            name = 'BSD 2-Clause License'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'chris'
+                            name = 'chris820313'
+                            email = '27232975@qq.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:https://github.com/gardenerframework/fragrans.git'
+                        developerConnection = 'scm:git:https://github.com/gardenerframework/fragrans.git'
+                        url = 'https://github.com/gardenerframework/fragrans'
+                    }
+                }
                 /**
                  * java插件会声明一个组件类型叫java
                  */
                 from components.java
+                /**
+                 * 在编译打包的基础上，
+                 * 执行源代码打包任务
+                 */
+                artifact sourceJar
+                artifact javadocJar
             }
         }
         /**
@@ -245,6 +261,14 @@ allprojects {
             }
         }
     }
+
+    /**
+     * 签名构件
+     */
+    signing {
+        sign publishing.publications["${project.name}"]
+    }
+
     /*令javadoc支持中文*/
     tasks.withType(Javadoc) {
         options.encoding = "UTF-8"
