@@ -20,8 +20,7 @@ import java.util.Set;
  * 用来验证那种map格式的数据
  */
 @RequiredArgsConstructor
-@SuppressWarnings("rawtypes")
-public class ObjectMapperEnhanceValidationSupport {
+public class ValidationEnhancedObjectMapper {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final Validator validator;
 

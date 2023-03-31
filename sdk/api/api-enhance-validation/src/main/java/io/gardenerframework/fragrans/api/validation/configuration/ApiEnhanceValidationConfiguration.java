@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.api.validation.configuration;
 
 import io.gardenerframework.fragrans.api.validation.HandlerMethodArgumentsValidationEnhanceSupport;
-import io.gardenerframework.fragrans.api.validation.ObjectMapperEnhanceValidationSupport;
+import io.gardenerframework.fragrans.api.validation.ValidationEnhancedObjectMapper;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @AutoConfigureAfter(ValidationAutoConfiguration.class)
-@Import({HandlerMethodArgumentsValidationEnhanceSupport.class, ObjectMapperEnhanceValidationSupport.class})
+@Import({HandlerMethodArgumentsValidationEnhanceSupport.class, ValidationEnhancedObjectMapper.class})
 public class ApiEnhanceValidationConfiguration {
 }

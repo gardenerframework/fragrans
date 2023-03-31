@@ -1,6 +1,6 @@
 package io.gardenerframework.fragrans.api.test.endpoints;
 
-import io.gardenerframework.fragrans.api.validation.ObjectMapperEnhanceValidationSupport;
+import io.gardenerframework.fragrans.api.validation.ValidationEnhancedObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ValidateEndpoint {
 
-    private final ObjectMapperEnhanceValidationSupport objectMapperEnhanceValidationSupport;
+    private final ValidationEnhancedObjectMapper validationEnhancedObjectMapper;
 
     @GetMapping("/{id}")
     public void validate(@Valid @PathVariable @Positive String id, @Valid @Negative @NotNull @RequestParam(required = false) Long depth, @Valid @NotNull Long noParam) {
@@ -40,7 +40,7 @@ public class ValidateEndpoint {
 
     @PostMapping("/json")
     public void validate(@Valid @RequestBody Map<String, ?> param) {
-        objectMapperEnhanceValidationSupport.convert(param, Param.class);
+        validationEnhancedObjectMapper.convert(param, Param.class);
     }
 
     public static class Body {
