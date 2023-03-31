@@ -21,7 +21,7 @@ import java.util.Set;
  */
 @RequiredArgsConstructor
 @SuppressWarnings("rawtypes")
-public class JsonParameterValidator {
+public class ObjectMapperEnhanceValidationSupport {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final Validator validator;
 
