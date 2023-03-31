@@ -40,7 +40,7 @@ public class ValidateEndpoint {
 
     @PostMapping("/json")
     public void validate(@Valid @RequestBody Map<String, ?> param) {
-        objectMapperEnhanceValidationSupport.validate(param, Param.class);
+        objectMapperEnhanceValidationSupport.convert(param, Param.class);
     }
 
     public static class Body {

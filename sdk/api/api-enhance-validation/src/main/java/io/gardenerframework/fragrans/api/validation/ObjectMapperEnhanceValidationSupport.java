@@ -51,13 +51,13 @@ public class ObjectMapperEnhanceValidationSupport {
     /**
      * 尝试验证，不抛异常
      *
-     * @param json      json
+     * @param source    源
      * @param targetTpe 目标类型
      * @return 验证是否成功
      */
     @Nullable
-    public <T> T tryValidate(@NonNull Map json, @NotNull Class<T> targetTpe) {
-        T t = objectMapper.convertValue(json, targetTpe);
+    public <S, T> T tryConvert(@NonNull S source, @NotNull Class<T> targetTpe) {
+        T t = objectMapper.convertValue(source, targetTpe);
         Map<String, Object> violations = doValidate(t);
         if (violations != null) {
             return null;
@@ -68,12 +68,12 @@ public class ObjectMapperEnhanceValidationSupport {
     /**
      * 验证，失败了就抛异常
      *
-     * @param json      json
+     * @param source    源
      * @param targetTpe 目标类型
      * @throws BadRequestArgumentException 验证失败
      */
-    public <T> T validate(@NonNull Map json, @NotNull Class<T> targetTpe) throws BadRequestArgumentException {
-        T t = objectMapper.convertValue(json, targetTpe);
+    public <S, T> T convert(@NonNull S source, @NotNull Class<T> targetTpe) throws BadRequestArgumentException {
+        T t = objectMapper.convertValue(source, targetTpe);
         Map<String, Object> violations = doValidate(t);
         if (violations != null) {
             throw new BadRequestArgumentException(violations);
