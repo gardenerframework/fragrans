@@ -1,18 +1,27 @@
 package io.gardenerframework.fragrans.api.test.endpoints;
 
+import io.gardenerframework.fragrans.api.validation.JsonParameterValidator;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Negative;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 测试一下reactive的编程方式
  */
 @RequestMapping("/validate")
 @RestController
+@RequiredArgsConstructor
 public class ValidateEndpoint {
+
+    private final JsonParameterValidator jsonParameterValidator;
 
     @GetMapping("/{id}")
     public void validate(@Valid @PathVariable @Positive String id, @Valid @Negative @NotNull @RequestParam(required = false) Long depth, @Valid @NotNull Long noParam) {
@@ -27,6 +36,11 @@ public class ValidateEndpoint {
     @GetMapping("/param")
     public void validate(@Valid Param param) {
 
+    }
+
+    @PostMapping("/json")
+    public void validate(@Valid @RequestBody Map<String, ?> param) {
+        jsonParameterValidator.validate(param, Param.class);
     }
 
     public static class Body {
@@ -56,18 +70,15 @@ public class ValidateEndpoint {
             this.nested = nested;
         }
 
+        @Getter
+        @Setter
         public static class Nested {
             @Positive
             @NotNull
             Integer name;
 
-            public Integer getName() {
-                return name;
-            }
-
-            public void setName(Integer name) {
-                this.name = name;
-            }
+            @NotNull
+            private Date date;
         }
     }
 }

@@ -1,12 +1,11 @@
 package io.gardenerframework.fragrans.api.validation.configuration;
 
-import io.gardenerframework.fragrans.api.validation.ApiEnhanceValidationSupport;
+import io.gardenerframework.fragrans.api.validation.HandlerMethodArgumentsValidationEnhanceSupport;
+import io.gardenerframework.fragrans.api.validation.JsonParameterValidator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.validation.Validator;
+import org.springframework.context.annotation.Import;
 
 /**
  * api追踪自动配置
@@ -16,11 +15,6 @@ import javax.validation.Validator;
  */
 @Configuration
 @AutoConfigureAfter(ValidationAutoConfiguration.class)
+@Import({HandlerMethodArgumentsValidationEnhanceSupport.class, JsonParameterValidator.class})
 public class ApiEnhanceValidationConfiguration {
-    @Bean
-    public ApiEnhanceValidationSupport pathVariableAndRequestParamValidationAdvice(
-            Validator validator
-    ) {
-        return new ApiEnhanceValidationSupport(validator);
-    }
 }

@@ -31,14 +31,14 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class ApiEnhanceValidationSupport implements EndpointHandlerMethodAdvice {
+public class HandlerMethodArgumentsValidationEnhanceSupport implements EndpointHandlerMethodAdvice {
     private final Validator validator;
     /**
      * 方法签名的缓存
      */
     private final Map<String, Boolean> methodCache = new ConcurrentHashMap<>();
 
-    public ApiEnhanceValidationSupport(Validator validator) {
+    public HandlerMethodArgumentsValidationEnhanceSupport(Validator validator) {
         //从spring的代码上抄的
         // Unwrap to the native Validator with forExecutables support
         if (validator instanceof LocalValidatorFactoryBean) {
