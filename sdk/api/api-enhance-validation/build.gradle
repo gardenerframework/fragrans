@@ -2,5 +2,7 @@ dependencies {
     api group: "${group}", name: 'enhance-validation'
     api group: "${group}", name: 'api-standard-error-exceptions'
     api group: "${group}", name: 'api-advice-engine'
+    api "com.fasterxml.jackson.core:jackson-databind"
     testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "${group}:api-standard-error"
 }

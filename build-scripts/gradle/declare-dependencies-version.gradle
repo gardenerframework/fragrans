@@ -4,7 +4,7 @@
 ext {
     spring = new Properties(
             //spring boot 版本
-            boot: '2.7.3',
+            boot: '2.7.9',
             //spring cloud 版本
             cloud: '2021.0.4'
     ) as Properties
@@ -18,6 +18,7 @@ ext {
             [group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.2.2'],
             [group: 'org.reflections', name: 'reflections', version: '0.9.12'],
             [group: 'org.apache.commons', name: 'commons-text', version: '1.9'],
-            [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre']
+            [group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'],
+            [group: 'mysql', name: 'mysql-connector-java', version: '8.0.32']
     ] as ArrayList<Properties>
 }

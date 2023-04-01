@@ -22,13 +22,14 @@ dependencyResolutionManagement {
                 //仅搜索非快照版本
                 releasesOnly()
             }
-            credentials {
-                username "${dependencyMavenRepositoryCredentials.user}"
-                password "${dependencyMavenRepositoryCredentials.key}"
-            }
+//            credentials {
+//                username "${dependencyMavenRepositoryCredentials.user}"
+//                password "${dependencyMavenRepositoryCredentials.key}"
+//            }
         }
+        mavenCentral()
         maven {
-            url publishes
+            url staging
             //允许使用非https协议，启用这个选项否则会报错
             allowInsecureProtocol true
             mavenContent {

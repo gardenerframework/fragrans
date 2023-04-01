@@ -8,6 +8,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,14 +31,14 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class ApiEnhanceValidationSupport implements EndpointHandlerMethodAdvice {
+public class HandlerMethodArgumentsValidationEnhanceSupport implements EndpointHandlerMethodAdvice {
     private final Validator validator;
     /**
      * 方法签名的缓存
      */
     private final Map<String, Boolean> methodCache = new ConcurrentHashMap<>();
 
-    public ApiEnhanceValidationSupport(Validator validator) {
+    public HandlerMethodArgumentsValidationEnhanceSupport(Validator validator) {
         //从spring的代码上抄的
         // Unwrap to the native Validator with forExecutables support
         if (validator instanceof LocalValidatorFactoryBean) {
@@ -157,26 +158,22 @@ public class ApiEnhanceValidationSupport implements EndpointHandlerMethodAdvice 
             log.error("Exception caught:", throwable);
             throw new IllegalStateException(throwable);
         }
-        if (method == null || constraintViolations == null || constraintViolations.isEmpty()) {
-            //没有发现参数错误
-            return;
-        } else {
-            List<String> messages = new ArrayList<>(constraintViolations.size());
+        if (!CollectionUtils.isEmpty(constraintViolations)) {
+            Map<String, Object> details = new HashMap<>(constraintViolations.size());
             constraintViolations.forEach(
                     constraintViolation -> {
                         Path propertyPath = constraintViolation.getPropertyPath();
-                        List<String> argumentName = new ArrayList<>(10);
+
                         propertyPath.forEach(
                                 node -> {
-                                    if (!ElementKind.METHOD.equals(node.getKind())) {
-                                        argumentName.add(node.getName());
+                                    if (ElementKind.PARAMETER.equals(node.getKind())) {
+                                        details.put(node.getName(), constraintViolation.getMessage());
                                     }
                                 }
                         );
-                        messages.add(String.format("[%s]%s", String.join(".", argumentName), constraintViolation.getMessage()));
                     }
             );
-            throw new BadRequestArgumentException(String.join(",", messages));
+            throw new BadRequestArgumentException(details);
         }
     }
 
