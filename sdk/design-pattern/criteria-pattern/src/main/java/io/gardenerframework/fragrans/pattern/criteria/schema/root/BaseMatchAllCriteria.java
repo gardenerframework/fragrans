@@ -19,7 +19,6 @@ public abstract class BaseMatchAllCriteria<C extends Criteria> {
     private List<C> criteriaList;
 
 
-
     /**
      * 是否没有任何条件
      *

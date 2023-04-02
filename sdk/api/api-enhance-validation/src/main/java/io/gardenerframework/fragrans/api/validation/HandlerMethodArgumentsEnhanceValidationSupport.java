@@ -31,14 +31,14 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class HandlerMethodArgumentsValidationEnhanceSupport implements EndpointHandlerMethodAdvice {
+public class HandlerMethodArgumentsEnhanceValidationSupport implements EndpointHandlerMethodAdvice {
     private final Validator validator;
     /**
      * 方法签名的缓存
      */
     private final Map<String, Boolean> methodCache = new ConcurrentHashMap<>();
 
-    public HandlerMethodArgumentsValidationEnhanceSupport(Validator validator) {
+    public HandlerMethodArgumentsEnhanceValidationSupport(Validator validator) {
         //从spring的代码上抄的
         // Unwrap to the native Validator with forExecutables support
         if (validator instanceof LocalValidatorFactoryBean) {
@@ -163,7 +163,6 @@ public class HandlerMethodArgumentsValidationEnhanceSupport implements EndpointH
             constraintViolations.forEach(
                     constraintViolation -> {
                         Path propertyPath = constraintViolation.getPropertyPath();
-
                         propertyPath.forEach(
                                 node -> {
                                     if (ElementKind.PARAMETER.equals(node.getKind())) {

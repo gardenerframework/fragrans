@@ -1,9 +1,9 @@
 package io.gardenerframework.fragrans.sugar.lang.type.apt;
 
-import io.gardenerframework.fragrans.sugar.lang.type.annotation.Uninherit;
 import com.sun.tools.javac.api.JavacTrees;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeTranslator;
+import io.gardenerframework.fragrans.sugar.lang.type.annotation.Uninherit;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;

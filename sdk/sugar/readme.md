@@ -37,7 +37,8 @@ public interface SampleTraitInterface {
 }
 ```
 
-Trait构成一种能够被编译器检查的属性名称和类型约定，当VO和PO由2个不同的人编写时，可以引用同样的trait jar，并声明实现同样的"Trait"，从而在编译上就避免了双方因为语言沟通导致的问题，比如
+Trait构成一种能够被编译器检查的属性名称和类型约定，当VO和PO由2个不同的人编写时，可以引用同样的trait jar，并声明实现同样的"
+Trait"，从而在编译上就避免了双方因为语言沟通导致的问题，比如
 
 * 甲: "属性叫用户名，类型是字符串"
 
@@ -85,11 +86,13 @@ public class UserPo implements Username {
 }
 ```
 
-最后，推荐的方法是按照属性，每一个属性为一个"ElementalTrait"，如果一个Trait要包含多个属性，则由多个"ElementalTrait"接口组合为一个聚合接口
+最后，推荐的方法是按照属性，每一个属性为一个"ElementalTrait"，如果一个Trait要包含多个属性，则由多个"ElementalTrait"
+接口组合为一个聚合接口
 
 * lang
 
-提供一些java语言上的语法糖，目前主要是`RewriteReturnValueType`。这个语法糖的主要场景是当编写一些类级别的切面时，可能希望按照原方法的signature进行方法路由。比如切入一个"Controller"
+提供一些java语言上的语法糖，目前主要是`RewriteReturnValueType`
+。这个语法糖的主要场景是当编写一些类级别的切面时，可能希望按照原方法的signature进行方法路由。比如切入一个"Controller"
 类，并希望在每一个接口方法执行前做一些权限判
 
 ```java

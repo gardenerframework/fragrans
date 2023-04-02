@@ -11,7 +11,8 @@ server:
 
 ## 选项的注册
 
-`@ApiOption`注解用于定义一个api选项，被定义的选项需要将自己声明为bean，选项的id就是bean name。此外，注解提供readonly属性，表明选项是一个只读的数据。 只读选项是真实存在的，比如当前服务器的加密公钥。
+`@ApiOption`注解用于定义一个api选项，被定义的选项需要将自己声明为bean，选项的id就是bean
+name。此外，注解提供readonly属性，表明选项是一个只读的数据。 只读选项是真实存在的，比如当前服务器的加密公钥。
 选项除去id外还有名称和版本号属性
 
 ```java
@@ -65,4 +66,5 @@ public class ApiOptionRegistryItem {
 
 ## 选项持久化
 
-选项的持久化由`ApiOptionPersistenceService`来完成，目前给出的是基于mysql数据库的版本"api-options-persistence-database"，它会要求固定读写"api-option"表
+选项的持久化由`ApiOptionPersistenceService`来完成，目前给出的是基于mysql数据库的版本"api-options-persistence-database"
+，它会要求固定读写"api-option"表

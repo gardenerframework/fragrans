@@ -60,8 +60,8 @@ public abstract class BasicStatement<S extends BasicStatement<S>> implements Sql
     /**
      * 使用子查询作为表
      *
-     * @param subQuery       子查询
-     * @param alias          子查询的名称
+     * @param subQuery             子查询
+     * @param alias                子查询的名称
      * @param addDelimitIdentifier 是否加重音
      * @return 语句
      */

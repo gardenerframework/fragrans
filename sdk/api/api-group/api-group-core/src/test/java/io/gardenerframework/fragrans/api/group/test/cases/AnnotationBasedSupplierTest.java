@@ -3,7 +3,6 @@ package io.gardenerframework.fragrans.api.group.test.cases;
 import io.gardenerframework.fragrans.api.group.registry.ApiGroupRegistry;
 import io.gardenerframework.fragrans.api.group.test.ApiGroupTestApplication;
 import io.gardenerframework.fragrans.api.group.test.cases.utils.*;
-import io.gardenerframework.fragrans.api.group.test.cases.utils.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

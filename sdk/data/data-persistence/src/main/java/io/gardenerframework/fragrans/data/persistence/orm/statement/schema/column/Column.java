@@ -52,8 +52,8 @@ public class Column implements SqlElement {
     /**
      * 列名
      *
-     * @param columnExpression 列或表达式
-     * @param addDelimitIdentifier   是不是加上界定符
+     * @param columnExpression     列或表达式
+     * @param addDelimitIdentifier 是不是加上界定符
      */
     public Column(String columnExpression, boolean addDelimitIdentifier) {
         this(null, columnExpression, addDelimitIdentifier, null);
@@ -72,9 +72,9 @@ public class Column implements SqlElement {
     /**
      * 表.列名
      *
-     * @param table            表名
-     * @param columnExpression 列名或表达式
-     * @param addDelimitIdentifier   是不是加上界定符
+     * @param table                表名
+     * @param columnExpression     列名或表达式
+     * @param addDelimitIdentifier 是不是加上界定符
      */
     public Column(@Nullable String table, String columnExpression, boolean addDelimitIdentifier) {
         this(table, columnExpression, addDelimitIdentifier, null);
@@ -94,10 +94,10 @@ public class Column implements SqlElement {
     /**
      * 全量构建
      *
-     * @param table            表名
-     * @param columnExpression 列名或表达式
-     * @param addDelimitIdentifier   是不是加上界定符
-     * @param alias            别名
+     * @param table                表名
+     * @param columnExpression     列名或表达式
+     * @param addDelimitIdentifier 是不是加上界定符
+     * @param alias                别名
      */
     public Column(@Nullable String table, String columnExpression, boolean addDelimitIdentifier, @Nullable String alias) {
         this.table = table;

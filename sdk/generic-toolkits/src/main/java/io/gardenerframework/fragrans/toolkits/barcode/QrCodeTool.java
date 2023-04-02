@@ -92,7 +92,7 @@ public class QrCodeTool {
      *
      * @param image base64的二维码
      * @return 二维码的内容
-     * @throws IOException IOException
+     * @throws IOException       IOException
      * @throws NotFoundException NotFoundException
      */
     public String parseQrCode(String image) throws IOException, NotFoundException {

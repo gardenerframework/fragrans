@@ -1,7 +1,5 @@
 package io.gardenerframework.fragrans.sugar.trait.apt;
 
-import io.gardenerframework.fragrans.sugar.trait.annotation.Trait;
-import io.gardenerframework.fragrans.sugar.trait.annotation.TraitNamespace;
 import com.sun.source.tree.Tree;
 import com.sun.tools.javac.api.JavacTrees;
 import com.sun.tools.javac.code.Flags;
@@ -12,6 +10,8 @@ import com.sun.tools.javac.tree.TreeTranslator;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Names;
+import io.gardenerframework.fragrans.sugar.trait.annotation.Trait;
+import io.gardenerframework.fragrans.sugar.trait.annotation.TraitNamespace;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;

@@ -48,7 +48,8 @@ io:
 
 # 添加资源格式
 
-第二个问题解决只能读取properties文件的问题。在此，首先开发人员需要确定资源的格式。 格式并不只是文件的格式，比如yaml、xml，而是代表了资源如何读取和解析，例如"database"格式的资源表达需要从数据库中进行读取。
+第二个问题解决只能读取properties文件的问题。在此，首先开发人员需要确定资源的格式。
+格式并不只是文件的格式，比如yaml、xml，而是代表了资源如何读取和解析，例如"database"格式的资源表达需要从数据库中进行读取。
 因此可以简单地将格式理解为资源的类型，开发人员觉得一个类型的名称，并编写一个`ResourceBundleLoader`来进行读取。
 
 ```java
@@ -76,7 +77,8 @@ public interface ResourceBundleLoader {
 这样，当本组件认为需要加载资源时，就会调用loader去实现资源的加载和解析
 
 目前组件实现了`PropertyFileResourceBundleLoader`和`YamlFileResourceBundleLoader`
-，一个加载properties文件，一个加载yaml文件。所以配合basename来说，`BasenameProvider`给出的资源名称或者有一个properties文件或者有一个yaml文件，两者有一个就行
+，一个加载properties文件，一个加载yaml文件。所以配合basename来说，`BasenameProvider`
+给出的资源名称或者有一个properties文件或者有一个yaml文件，两者有一个就行
 
 # 简化消息源使用
 
@@ -149,7 +151,8 @@ public interface EnhancedMessageSource extends MessageSource {
 }
 ```
 
-对此，本组件对原来的消息源接口进行了增强。说白了就是可以用一个类名或者一个对象作为"编码"使用，并且如果这个对象实现了`MessageArgumentsSupplier`，在格式化消息的时候会直接调用接口给出消息模板所需的所有参数
+对此，本组件对原来的消息源接口进行了增强。说白了就是可以用一个类名或者一个对象作为"编码"
+使用，并且如果这个对象实现了`MessageArgumentsSupplier`，在格式化消息的时候会直接调用接口给出消息模板所需的所有参数
 
 ```java
 public interface MessageArgumentsSupplier {

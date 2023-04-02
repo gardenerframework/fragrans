@@ -1,6 +1,9 @@
 package io.gardenerframework.fragrans.pattern.criteria.schema.root;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 /**

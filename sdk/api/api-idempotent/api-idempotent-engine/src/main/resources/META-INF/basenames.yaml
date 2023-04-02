@@ -1,6 +1,6 @@
 io:
   gardenerframework:
-      fragrans:
-        messages:
-          basenames:
-            - api-idempotent/errors
+    fragrans:
+      messages:
+        basenames:
+          - api-idempotent/errors

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Singular;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 基本内容

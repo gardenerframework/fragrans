@@ -35,12 +35,11 @@ public class BasicLogger implements ApplicationEventPublisherAware {
      * 引入现场安全的队列
      */
     private static final Queue<LogEvent> unsentEvents = new ConcurrentLinkedDeque<>();
+    private static final Queue<LogMessageCustomizer> messageCustomizers = new ConcurrentLinkedDeque<>();
     /**
      * 通过共享事件发布器，使得多个实例共享同一个事件发布器
      */
     private static ApplicationEventPublisher eventPublisher;
-
-    private static final Queue<LogMessageCustomizer> messageCustomizers = new ConcurrentLinkedDeque<>();
 
     public static void addLogMessageCustomizer(@NonNull LogMessageCustomizer customizer) {
         messageCustomizers.add(customizer);

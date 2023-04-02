@@ -28,9 +28,9 @@ public abstract class BasicBinaryOperatorCriteria implements DatabaseCriteria {
     /**
      * 给一个双目操作条件
      *
-     * @param column         列名
+     * @param column               列名
      * @param addDelimitIdentifier 列是否加重音
-     * @param value          值
+     * @param value                值
      */
     public BasicBinaryOperatorCriteria(String column, boolean addDelimitIdentifier, String value) {
         this(new Column(column, addDelimitIdentifier), value);
@@ -39,9 +39,9 @@ public abstract class BasicBinaryOperatorCriteria implements DatabaseCriteria {
     /**
      * 给一个双目操作条件
      *
-     * @param column         列名
+     * @param column               列名
      * @param addDelimitIdentifier 列是否加重音
-     * @param value          值
+     * @param value                值
      */
     public BasicBinaryOperatorCriteria(String column, boolean addDelimitIdentifier, BasicValue value) {
         this(new Column(column, addDelimitIdentifier), value);
