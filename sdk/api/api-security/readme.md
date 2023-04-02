@@ -196,7 +196,8 @@ public class OperatorBrief implements
 ```
 
 这是一个"scope=request"的bean，主要是给controller方法或者其它请求处理期间的类进行`@Autowire`
-后获取当前的操作人。需要注意的是这个组件需要配合其它安全组件使用才有意义。因为这个对象需要从安全组件中读取出来用户后进行初始化。 比如如果搭配spring security，则需要从`Authentication`
+后获取当前的操作人。需要注意的是这个组件需要配合其它安全组件使用才有意义。因为这个对象需要从安全组件中读取出来用户后进行初始化。
+比如如果搭配spring security，则需要从`Authentication`
 中读取出来当前访问的用户以及客户端
 
 # 安全自动化
@@ -212,14 +213,13 @@ public class OperatorBrief implements
 
 ## 操作人员数据持久自动化
 
-"data-schema"组件中定义了保存创建人，更新人以及相关时间的数据属性，这些属性需要开发人员在操作数据库的过程中自行编写代码，通过获取用户信息，客户端信息等完成。 在"Operator感知"
+"data-schema"组件中定义了保存创建人，更新人以及相关时间的数据属性，这些属性需要开发人员在操作数据库的过程中自行编写代码，通过获取用户信息，客户端信息等完成。
+在"Operator感知"
 模块的帮助下，可以通过aop拦截等方法，自动向dao的操作方法中注入操作人以及相关的时间数据
 
 ### 要求dao的参数对象实现的trait
 
 要使用这一特性，首先dao mapper的操作对象需要实现`Creator`、`Updater`的trait
-
-
 
 # 采集器与存储器的协同关系
 

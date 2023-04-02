@@ -1,7 +1,5 @@
 package io.gardenerframework.fragrans.sugar.lang.method.apt;
 
-import io.gardenerframework.fragrans.sugar.lang.method.annotation.KeepReturnValueType;
-import io.gardenerframework.fragrans.sugar.lang.method.annotation.RewriteReturnValueType;
 import com.sun.tools.javac.api.JavacTrees;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.code.Symbol;
@@ -11,6 +9,8 @@ import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeTranslator;
 import com.sun.tools.javac.util.Context;
+import io.gardenerframework.fragrans.sugar.lang.method.annotation.KeepReturnValueType;
+import io.gardenerframework.fragrans.sugar.lang.method.annotation.RewriteReturnValueType;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;

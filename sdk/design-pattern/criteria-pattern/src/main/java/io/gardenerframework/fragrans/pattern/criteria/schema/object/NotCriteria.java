@@ -1,8 +1,6 @@
 package io.gardenerframework.fragrans.pattern.criteria.schema.object;
 
-import io.gardenerframework.fragrans.pattern.criteria.schema.root.BaseBooleanCriteria;
 import io.gardenerframework.fragrans.pattern.criteria.schema.root.BaseNotCriteria;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 

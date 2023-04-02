@@ -16,7 +16,8 @@
 * `Sort` & `Sorts`: 排序的列名(可选)以及升序还是降序的`order`属性。如果支持多个列进行排序，则使用`Sorts`
 * `Contents`: 包含了批量请求或响应的内容，内容类型由范型参数决定
 
-以上标准化的数据结构使用了接口的形式实现，这种实现方式有利于开发人员在参数/响应的类上自由组合实现的接口，并通过lombok的`Getter`/`Setter`注解快速生成数据对象，例如查询用户的请求
+以上标准化的数据结构使用了接口的形式实现，这种实现方式有利于开发人员在参数/响应的类上自由组合实现的接口，并通过lombok的`Getter`/`Setter`
+注解快速生成数据对象，例如查询用户的请求
 
 ```java
 
@@ -76,7 +77,8 @@ public class UserEndpoint {
 ```
 
 <font color=red>注意</font>: `GET`请求参数上并没有`@RequestParam`
-注解，这是因为不需要这个注解，spring也能将`GET /user?keyword=xxx&pageNo=1&pageSize=50` 中的各个请求参数正确的填入`SearchUserParameter`对象中
+注解，这是因为不需要这个注解，spring也能将`GET /user?keyword=xxx&pageNo=1&pageSize=50`
+中的各个请求参数正确的填入`SearchUserParameter`对象中
 
 ## 预定好的ApiStandardDataTraits实现
 
@@ -90,7 +92,8 @@ public class UserEndpoint {
 * `GenericPageSize`: 通用的一页请求大小，要求必须是个正数，由GenericNaxPageSizeProvider的实现类bean来提供页码的最大值,
   接口有一个默认实现DefaultGenericNaxPageSizeProvider，返回值为50
 
-因此，<font color=red>简单的</font>情况下，开发人员可以直接使用这些已经预定义好的参数，但是由于java的单类继承问题，无法完成类似`SearchUserParameter`的组合效果。
+因此，<font color=red>简单的</font>
+情况下，开发人员可以直接使用这些已经预定义好的参数，但是由于java的单类继承问题，无法完成类似`SearchUserParameter`的组合效果。
 这时，开发人员可以巧妙的利用lombok组件的`@Delegate`注解来实现自由组合的目标，如下所示
 
 ```java
@@ -134,7 +137,8 @@ public class SearchUserParameter implements
 
 ## ApiErrorFactory
 
-从spring mvc的原理出发，所有错误最终都到达"/error"这个地址，由`BasicErrorController`完成输出任务，`BasicErrorController`调用一个叫`ErrorAttributes`
+从spring mvc的原理出发，所有错误最终都到达"/error"这个地址，由`BasicErrorController`完成输出任务，`BasicErrorController`
+调用一个叫`ErrorAttributes`
 的接口将具体的请求和问题转为Map类型的映射。在这基础上，组件首先提供了一个`ServletApiErrorAttributes`
 作为api接口报错的统一处理入口，然后由这个标准化的处理器调用`ApiErrorFacotry`来完成默认错误属性向标准错误的转换。
 
@@ -186,7 +190,8 @@ public interface ApiErrorFactory {
 
 #### RevealError & HideError
 
-这两个注解实现的就是非业务错误的展示或屏蔽，比如mybatis的底层报错，redis的底层报错等，不会因为没有处理而直接暴露给使用方。 因此，开发人员需要将自己的业务错误暴露出去时，或者
+这两个注解实现的就是非业务错误的展示或屏蔽，比如mybatis的底层报错，redis的底层报错等，不会因为没有处理而直接暴露给使用方。
+因此，开发人员需要将自己的业务错误暴露出去时，或者
 
 * 在某个配置类上注解`RevealError`配置错误类所在的包(或基类)
 * 或者在需要需要暴露的错误类上直接注解`RevealError`
@@ -224,7 +229,8 @@ public interface ApiErrorFactory {
 
 通过以上监听器，实现的结果是
 
-* 使用异常的类路径作为`ApiError`字段的编码，比如应用程序抛出了`com.jdcloud.gardener.fragrans.api.standard.error.exception.client.GoneException`
+* 使用异常的类路径作为`ApiError`
+  字段的编码，比如应用程序抛出了`com.jdcloud.gardener.fragrans.api.standard.error.exception.client.GoneException`
   ，则对应的响应结果就变成了
 
 ```json
@@ -283,7 +289,8 @@ public class BadRequestException extends RuntimeException {
 }
 ```
 
-这个异常会基于ApiErrorFactory的默认实现转为http 400。其它标准化异常参考"com.jdcloud.gardener.fragrans.api.standard.error.exception"
+这个异常会基于ApiErrorFactory的默认实现转为http 400。其它标准化异常参考"
+com.jdcloud.gardener.fragrans.api.standard.error.exception"
 包中的异常定义，基本包含了所有http错误状态
 
 此外，作为标准化api错误的调用房，可以单独引用"api-standard-error-exceptions"，然后基于`ApiError`对象中的`error`属性做出如下判断
@@ -304,14 +311,18 @@ public class Sample {
 
 这时，可以使用标准异常的类名进行判断，从而做到如果标准异常的类路径或名称发生变化，代码编译时有感
 
-<font color=red>警告</font>: "api-standard-error-exceptions"引用了"enhance-message-source"，后者会自动生成一个`MessageSource`
-的bean，使得原应用程序中如果开发人员声明了自己的`MessageSource` bean并进行依赖注入时，可能会错误地注入由"enhance-message-source"生成的。
-要解决这个问题，推荐原来注入`MessageSource`的位置加上`@Qualifier`注解。之所以这么做，是因为错误代码的国际化输出依赖于"enhance-message-source"的功能。<font color=red>
+<font color=red>警告</font>: "api-standard-error-exceptions"引用了"enhance-message-source"
+，后者会自动生成一个`MessageSource`
+的bean，使得原应用程序中如果开发人员声明了自己的`MessageSource` bean并进行依赖注入时，可能会错误地注入由"
+enhance-message-source"生成的。
+要解决这个问题，推荐原来注入`MessageSource`的位置加上`@Qualifier`注解。之所以这么做，是因为错误代码的国际化输出依赖于"
+enhance-message-source"的功能。<font color=red>
 实际上</font>大部分工程编写的时候根本也不生成什么`MessageSource`进行i18n国际化
 
 ## 配合 spring security 使用
 
-目前主要针对spring boot security的兼容，在配合spring security使用时，会通过`WebSecurityCustomizer`类的bean来放开`/error`路径以防错误无法正常输出
+目前主要针对spring boot security的兼容，在配合spring security使用时，会通过`WebSecurityCustomizer`类的bean来放开`/error`
+路径以防错误无法正常输出
 
 ## 小结
 

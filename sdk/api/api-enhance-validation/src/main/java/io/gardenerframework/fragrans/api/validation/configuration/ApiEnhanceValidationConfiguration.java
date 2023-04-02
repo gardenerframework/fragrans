@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.api.validation.configuration;
 
-import io.gardenerframework.fragrans.api.validation.HandlerMethodArgumentsEnhanceValidationSupport;
 import io.gardenerframework.fragrans.api.validation.HandlerMethodArgumentBeanValidator;
+import io.gardenerframework.fragrans.api.validation.HandlerMethodArgumentsEnhanceValidationSupport;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 import org.springframework.context.annotation.Configuration;

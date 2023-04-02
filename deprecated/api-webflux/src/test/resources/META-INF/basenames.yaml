@@ -1,6 +1,6 @@
 io:
   gardenerframework:
-      fragrans:
-        messages:
-          basenames:
-            - api-webflux-test/errors
+    fragrans:
+      messages:
+        basenames:
+          - api-webflux-test/errors

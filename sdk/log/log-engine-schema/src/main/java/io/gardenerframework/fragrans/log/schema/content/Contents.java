@@ -3,7 +3,6 @@ package io.gardenerframework.fragrans.log.schema.content;
 import io.gardenerframework.fragrans.log.schema.word.Word;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface Contents {
     /**
