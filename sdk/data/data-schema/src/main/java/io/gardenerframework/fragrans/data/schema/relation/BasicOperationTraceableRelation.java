@@ -2,7 +2,6 @@ package io.gardenerframework.fragrans.data.schema.relation;
 
 import io.gardenerframework.fragrans.data.schema.annotation.ImmutableField;
 import io.gardenerframework.fragrans.data.schema.annotation.OperationTracingField;
-import io.gardenerframework.fragrans.data.schema.common.OperationTraceable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,8 +21,7 @@ import java.util.Date;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public abstract class BasicOperationTraceableRelation extends BasicRelation implements
-        BasicRelationSkeleton,
-        OperationTraceable {
+        BasicOperationTraceableRelationSkeleton {
     /**
      * 创建人
      */
