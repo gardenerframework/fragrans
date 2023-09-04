@@ -21,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public abstract class BasicRelation extends BasicRecord {
+public abstract class BasicRelation extends BasicRecord implements BasicRelationSkeleton {
     protected BasicRelation(Date createdTime, Date lastUpdateTime) {
         super(createdTime, lastUpdateTime);
     }

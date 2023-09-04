@@ -2,7 +2,6 @@ package io.gardenerframework.fragrans.data.schema.entity;
 
 import io.gardenerframework.fragrans.data.schema.annotation.ImmutableField;
 import io.gardenerframework.fragrans.data.schema.common.BasicRecord;
-import io.gardenerframework.fragrans.data.trait.generic.GenericTraits;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.Date;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public abstract class BasicEntity<T> extends BasicRecord implements
-        GenericTraits.IdentifierTraits.Id<T> {
+        BasicEntitySkeleton<T> {
     /**
      * 实体的识别符号
      */

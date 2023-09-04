@@ -2,7 +2,7 @@ package io.gardenerframework.fragrans.data.schema.entity;
 
 import io.gardenerframework.fragrans.data.schema.annotation.ImmutableField;
 import io.gardenerframework.fragrans.data.schema.annotation.OperationTracingField;
-import io.gardenerframework.fragrans.data.trait.security.SecurityTraits;
+import io.gardenerframework.fragrans.data.schema.common.OperationTraceable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,8 +22,8 @@ import java.util.Date;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public abstract class BasicOperationTraceableEntity<T> extends BasicEntity<T> implements
-        SecurityTraits.AuditingTraits.IdentifierTraits.Creator,
-        SecurityTraits.AuditingTraits.IdentifierTraits.Updater {
+        BasicEntitySkeleton<T>,
+        OperationTraceable {
     /**
      * 创建人
      */

@@ -2,7 +2,6 @@ package io.gardenerframework.fragrans.data.schema.trash;
 
 import io.gardenerframework.fragrans.data.schema.annotation.ImmutableField;
 import io.gardenerframework.fragrans.data.schema.common.BasicRecord;
-import io.gardenerframework.fragrans.data.schema.trash.trait.Item;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.Date;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Data
-public abstract class BasicTrash<I> extends BasicRecord implements Item<I> {
+public abstract class BasicTrash<I> extends BasicRecord implements BasicTrashSkeleton<I> {
     /**
      * 被删除的，仍在垃圾箱中的物体
      */

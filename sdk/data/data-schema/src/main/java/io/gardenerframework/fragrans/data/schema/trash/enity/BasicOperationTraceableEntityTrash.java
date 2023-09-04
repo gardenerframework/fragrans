@@ -21,6 +21,7 @@ import java.util.Date;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public abstract class BasicOperationTraceableEntityTrash<T, I> extends BasicEntityTrash<T, I> implements
+        BasicEntityTrashSkeleton<T, I>,
         SecurityTraits.AuditingTraits.IdentifierTraits.Deleter {
     /**
      * 删除人

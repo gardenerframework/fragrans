@@ -2,7 +2,6 @@ package io.gardenerframework.fragrans.data.schema.common;
 
 import io.gardenerframework.fragrans.data.schema.annotation.DatabaseControlledField;
 import io.gardenerframework.fragrans.data.schema.annotation.ImmutableField;
-import io.gardenerframework.fragrans.data.trait.security.SecurityTraits;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @SuperBuilder
 public abstract class BasicRecord implements
-        SecurityTraits.AuditingTraits.DatetimeTraits.CreatedTime,
-        SecurityTraits.AuditingTraits.DatetimeTraits.LastUpdateTime {
+        BasicRecordSkeleton {
     /**
      * 记录的创建时间，一般存储在落地表内，可由数据库产生默认值。
      * 创建时间一旦生成也是不可变的，请编程人员遵守这项设计
