@@ -11,6 +11,10 @@ import io.gardenerframework.fragrans.data.schema.entity.BasicEntity;
 import io.gardenerframework.fragrans.data.schema.entity.BasicOperationTraceableEntity;
 import io.gardenerframework.fragrans.data.trait.generic.GenericTraits;
 import io.gardenerframework.fragrans.data.trait.security.SecurityTraits;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +27,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 
 /**
  * @author zhanghan30
@@ -53,14 +56,12 @@ public class FieldScannerTest {
         //下面这2是不可变的
         Assertions.assertTrue(fields.containsAll(Arrays.asList("id", "created_time")));
         fields = fieldScanner.columns(TestObject.class, new TestColumnNameConverter());
-        Assertions.assertEquals(3, fields.size());
-        Assertions.assertEquals(1, new HashSet<>(fields).size());
-        Assertions.assertTrue(new HashSet<>(fields).contains("all-same"));
+        Assertions.assertEquals(1, fields.size());
+        Assertions.assertTrue(fields.contains("all-same"));
 
         fields = fieldScanner.columns(TestObjectWithConverterAnnotation.class);
-        Assertions.assertEquals(3, fields.size());
-        Assertions.assertEquals(1, new HashSet<>(fields).size());
-        Assertions.assertTrue(new HashSet<>(fields).contains("all-same"));
+        Assertions.assertEquals(1, fields.size());
+        Assertions.assertTrue(fields.contains("all-same"));
 
         Collection<String> scan = fieldScanner.columns(BasicOperationTraceableEntity.class, Arrays.asList(GenericTraits.IdentifierTraits.Id.class, SecurityTraits.AuditingTraits.IdentifierTraits.Updater.class));
         Assertions.assertTrue(scan.contains("id"));
@@ -77,6 +78,11 @@ public class FieldScannerTest {
         Assertions.assertNotEquals(scanCached, scanNotCached);
         scanCached = fieldScanner.column(BasicEntity.class, SecurityTraits.AuditingTraits.DatetimeTraits.CreatedTime.class);
         Assertions.assertEquals(scanNotCached, scanCached);
+        scan = fieldScanner.columns(TestObjectForBasicEntity.class);
+        Assertions.assertTrue(scan.contains("id"));
+        scan = fieldScanner.columns(TestObjectForBasicEntityButDifferentType.class);
+        Assertions.assertTrue(scan.contains("id"));
+
     }
 
     public static class TestObject extends BasicEntity<String> {
@@ -85,5 +91,17 @@ public class FieldScannerTest {
     @UsingColumnNameConverter(TestColumnNameConverter.class)
     public static class TestObjectWithConverterAnnotation extends BasicEntity<String> {
 
+    }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    public static class TestObjectForBasicEntity extends TestObject {
+        @NonNull
+        private String id;
+    }
+
+    public static class TestObjectForBasicEntityButDifferentType extends TestObject {
+        private int id;
     }
 }

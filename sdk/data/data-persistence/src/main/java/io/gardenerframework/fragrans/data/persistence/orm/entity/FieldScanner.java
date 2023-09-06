@@ -277,7 +277,11 @@ public class FieldScanner {
                     if (!Boolean.TRUE.equals(filter.apply(field))) {
                         return;
                     }
-                    columns.add((columnNameConverter == null ? getConverter(clazz) : columnNameConverter).fieldToColumn(field.getName()));
+                    String columnName = (columnNameConverter == null ? getConverter(clazz) : columnNameConverter).fieldToColumn(field.getName());
+                    if (columns.contains(columnName)) {
+                        return;
+                    }
+                    columns.add(columnName);
                 }
         );
         return columns;
