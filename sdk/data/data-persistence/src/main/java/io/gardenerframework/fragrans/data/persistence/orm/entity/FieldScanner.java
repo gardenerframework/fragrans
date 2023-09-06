@@ -278,6 +278,7 @@ public class FieldScanner {
                         return;
                     }
                     String columnName = (columnNameConverter == null ? getConverter(clazz) : columnNameConverter).fieldToColumn(field.getName());
+                    //相同的列已经出现
                     if (columns.contains(columnName)) {
                         return;
                     }
