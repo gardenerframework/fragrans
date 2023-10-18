@@ -1,17 +1,16 @@
 package io.gardenerframework.fragrans.log;
 
 import io.gardenerframework.fragrans.log.event.schema.LogEvent;
-import io.gardenerframework.fragrans.log.schema.content.BasicContents;
 import io.gardenerframework.fragrans.log.schema.content.Contents;
 import io.gardenerframework.fragrans.log.schema.template.Template;
 import io.gardenerframework.fragrans.log.schema.word.Word;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.annotation.Primary;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,8 +23,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * @author zhanghan30
  * @date 2022/6/8 2:21 下午
  */
-@Component
-@Primary
 public class BasicLogger implements ApplicationEventPublisherAware {
     /**
      * 引入线程安全的集合
@@ -235,5 +232,12 @@ public class BasicLogger implements ApplicationEventPublisherAware {
          * @param arguments 参数
          */
         void log(String format, Object... arguments);
+    }
+
+    @AllArgsConstructor
+    @Getter
+    private static class BasicContents implements Contents {
+        @NonNull
+        private final Collection<Word> contents;
     }
 }
