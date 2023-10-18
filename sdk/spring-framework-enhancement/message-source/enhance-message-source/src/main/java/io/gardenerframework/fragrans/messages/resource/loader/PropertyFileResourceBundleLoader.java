@@ -1,8 +1,8 @@
 package io.gardenerframework.fragrans.messages.resource.loader;
 
+import io.gardenerframework.fragrans.messages.configuration.EnhanceMessageSourceComponent;
 import io.gardenerframework.fragrans.messages.resource.annotation.ResourceFormat;
 import io.gardenerframework.fragrans.messages.resource.utils.ResourceUtils;
-import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
  * @date 2022/6/10 0:15
  */
 @ResourceFormat("java.properties")
-@Component
+@EnhanceMessageSourceComponent
 public class PropertyFileResourceBundleLoader implements ResourceBundleLoader {
     @Override
     public ResourceBundle load(String baseName, String bundleName, Locale locale, String charset, ClassLoader loader, boolean reload) throws Exception {

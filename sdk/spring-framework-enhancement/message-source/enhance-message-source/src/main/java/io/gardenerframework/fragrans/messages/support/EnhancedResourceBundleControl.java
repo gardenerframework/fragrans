@@ -1,6 +1,7 @@
 package io.gardenerframework.fragrans.messages.support;
 
 import io.gardenerframework.fragrans.log.GenericBasicLogger;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.reason.AlreadyExisted;
 import io.gardenerframework.fragrans.log.common.schema.reason.NotFound;
@@ -9,6 +10,7 @@ import io.gardenerframework.fragrans.log.common.schema.verb.Register;
 import io.gardenerframework.fragrans.log.schema.content.GenericBasicLogContent;
 import io.gardenerframework.fragrans.log.schema.content.GenericOperationLogContent;
 import io.gardenerframework.fragrans.log.schema.details.Detail;
+import io.gardenerframework.fragrans.messages.configuration.EnhanceMessageSourceComponent;
 import io.gardenerframework.fragrans.messages.resource.annotation.ResourceFormat;
 import io.gardenerframework.fragrans.messages.resource.loader.ResourceBundleLoader;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -34,10 +35,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RequiredArgsConstructor
-@Component
+@EnhanceMessageSourceComponent
 class EnhancedResourceBundleControl extends ResourceBundle.Control implements InitializingBean {
-    private final GenericBasicLogger basicLogger;
-    private final GenericOperationLogger operationLogger;
+    private final GenericBasicLogger basicLogger = GenericLoggers.basicLogger();
+    private final GenericOperationLogger operationLogger = GenericLoggers.operationLogger();
     private final Collection<ResourceBundleLoader> resourceBundleLoaders;
     /**
      * 声明一个格式与加载器的注册表

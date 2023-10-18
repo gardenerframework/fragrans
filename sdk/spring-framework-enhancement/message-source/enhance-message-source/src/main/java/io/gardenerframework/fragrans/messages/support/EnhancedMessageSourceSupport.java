@@ -1,11 +1,13 @@
 package io.gardenerframework.fragrans.messages.support;
 
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Register;
 import io.gardenerframework.fragrans.log.schema.content.GenericOperationLogContent;
 import io.gardenerframework.fragrans.log.schema.details.Detail;
 import io.gardenerframework.fragrans.messages.EnhancedMessageSource;
+import io.gardenerframework.fragrans.messages.configuration.EnhanceMessageSourceComponent;
 import io.gardenerframework.fragrans.messages.configuration.basename.BasenameProvider;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +16,6 @@ import org.springframework.boot.autoconfigure.context.MessageSourceProperties;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -28,7 +29,7 @@ import java.util.*;
  * @author zhanghan30
  * @date 2022/6/9 5:48 下午
  */
-@Component
+@EnhanceMessageSourceComponent
 @Primary
 @Slf4j
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class EnhancedMessageSourceSupport extends ResourceBundleMessageSource im
     private final MessageSourceProperties messageSourceProperties;
     private final EnhancedResourceBundleControl control;
     private final Collection<BasenameProvider> basenameProviders;
-    private final GenericOperationLogger operationLogger;
+    private final GenericOperationLogger operationLogger = GenericLoggers.operationLogger();
 
 
     /**

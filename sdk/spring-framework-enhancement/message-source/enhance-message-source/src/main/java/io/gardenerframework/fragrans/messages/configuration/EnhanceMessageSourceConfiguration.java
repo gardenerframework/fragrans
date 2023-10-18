@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 @AutoConfigureBefore(MessageSourceAutoConfiguration.class)
 @Slf4j
 @EnableConfigurationProperties
-@ComponentScan(basePackageClasses = EnhanceMessageSourcePackage.class)
+@ComponentScan(basePackageClasses = EnhanceMessageSourcePackage.class, includeFilters = @ComponentScan.Filter(EnhanceMessageSourceComponent.class))
 public class EnhanceMessageSourceConfiguration {
     /**
      * 生成配置属性，照抄自{@link MessageSourceAutoConfiguration}

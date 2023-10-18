@@ -1,9 +1,9 @@
 package io.gardenerframework.fragrans.messages.configuration.basename;
 
+import io.gardenerframework.fragrans.messages.configuration.EnhanceMessageSourceComponent;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.*;
  * @author ZhangHan
  * @date 2022/6/10 9:51
  */
-@Component
+@EnhanceMessageSourceComponent
 public class MessageInfBasenameProvider implements BasenameProvider {
     private static final String MESSAGE_INF_DIR_NAME = "MESSAGE-INF";
     private static final String BASENAME_KEY = "io.gardenerframework.fragrans.messages.basenames";

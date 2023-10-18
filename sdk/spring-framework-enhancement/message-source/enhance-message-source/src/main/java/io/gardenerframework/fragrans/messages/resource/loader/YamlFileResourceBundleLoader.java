@@ -1,11 +1,11 @@
 package io.gardenerframework.fragrans.messages.resource.loader;
 
+import io.gardenerframework.fragrans.messages.configuration.EnhanceMessageSourceComponent;
 import io.gardenerframework.fragrans.messages.resource.annotation.ResourceFormat;
 import io.gardenerframework.fragrans.messages.resource.utils.ResourceUtils;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @date 2022/6/10 1:06
  */
 @ResourceFormat("file.yaml")
-@Component
+@EnhanceMessageSourceComponent
 public class YamlFileResourceBundleLoader implements ResourceBundleLoader {
     @Nullable
     @Override
