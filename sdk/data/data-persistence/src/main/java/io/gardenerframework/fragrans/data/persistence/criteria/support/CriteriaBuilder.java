@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.criteria.support;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Batch;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.CriteriaProvider;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory.CriteriaFactory;
@@ -34,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author ZhangHan
  * @date 2022/11/28 13:51
  */
-@Component
+@DataPersistenceComponent
 public class CriteriaBuilder {
     /**
      * 存储一下每个criteria类型实现的trait清单

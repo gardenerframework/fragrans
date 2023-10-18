@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.template.support;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import io.gardenerframework.fragrans.data.persistence.configuration.MapperBeanDefinitionProcessorAdapter;
 import io.gardenerframework.fragrans.data.persistence.template.annotation.DomainDaoTemplate;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -14,7 +15,7 @@ import java.util.Collection;
  * @author ZhangHan
  * @date 2022/11/2 10:32
  */
-@Component
+@DataPersistenceComponent
 public class DomainDaoTemplateRegistryInitializer extends MapperBeanDefinitionProcessorAdapter {
     @Override
     public void process(String beanName, BeanDefinition beanDefinition, @Nullable Class<?> mapperType) {

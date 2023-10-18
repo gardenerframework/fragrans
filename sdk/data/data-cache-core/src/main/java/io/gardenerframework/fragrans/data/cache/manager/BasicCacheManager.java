@@ -7,7 +7,7 @@ import io.gardenerframework.fragrans.data.cache.log.schema.detail.CacheDetail;
 import io.gardenerframework.fragrans.data.cache.manager.annotation.Cached;
 import io.gardenerframework.fragrans.data.cache.serialize.*;
 import io.gardenerframework.fragrans.log.GenericLoggerMethodTemplate;
-import io.gardenerframework.fragrans.log.GenericLoggerStaticAccessor;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Cache;
 import io.gardenerframework.fragrans.log.common.schema.verb.Delete;
@@ -76,7 +76,7 @@ public abstract class BasicCacheManager<T> {
         this.cacheClient = cacheClient;
         this.targetType = targetType == null ? getSubclassParameterizedType() : targetType;
         this.serializer = deduceSerializer(objectMapper);
-        loggingMethod = GenericLoggerStaticAccessor.operationLogger()::debug;
+        loggingMethod = GenericLoggers.operationLogger()::debug;
     }
 
     /**

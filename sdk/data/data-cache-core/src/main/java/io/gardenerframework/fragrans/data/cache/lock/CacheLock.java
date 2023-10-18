@@ -6,8 +6,7 @@ import io.gardenerframework.fragrans.data.cache.lock.context.LockContext;
 import io.gardenerframework.fragrans.data.cache.lock.context.LockContextHolder;
 import io.gardenerframework.fragrans.data.cache.lock.log.schema.detail.CacheLockDetail;
 import io.gardenerframework.fragrans.data.cache.serialize.StringSerializer;
-import io.gardenerframework.fragrans.log.GenericLoggerStaticAccessor;
-import io.gardenerframework.fragrans.log.annotation.LogTarget;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Lock;
 import io.gardenerframework.fragrans.log.common.schema.verb.Release;
@@ -32,7 +31,6 @@ import java.util.function.Supplier;
  * @author zhanghan30
  * @date 2022/2/14 12:01 下午
  */
-@LogTarget("缓存锁")
 @Slf4j
 public class CacheLock {
     private final CacheClient cacheClient;
@@ -99,7 +97,7 @@ public class CacheLock {
         Date expiresAt = context == null ? null : context.getExpiresAt();
         //查看当前线程是否已经有外部方法上锁且锁的过期时间还没有到
         if (expiresAt != null && new Date().before(expiresAt)) {
-            GenericLoggerStaticAccessor.operationLogger()
+            GenericLoggers.operationLogger()
                     .debug(log,
                             GenericOperationLogContent
                                     .builder()
@@ -116,7 +114,7 @@ public class CacheLock {
             LockContext lockContext = new LockContext(false, Date.from(Instant.now().plus(ttl)));
             //设置一个非重入的上下文
             lockContextHolder.set(lockKey, lockContext);
-            GenericLoggerStaticAccessor.operationLogger()
+            GenericLoggers.operationLogger()
                     .debug(log,
                             GenericOperationLogContent.builder()
                                     .what(CacheLock.class)
@@ -169,7 +167,7 @@ public class CacheLock {
             }
             lockContextHolder.remove(lockKey);
         }
-        GenericLoggerStaticAccessor.operationLogger()
+        GenericLoggers.operationLogger()
                 .debug(
                         log,
                         GenericOperationLogContent.builder().what(CacheLock.class)

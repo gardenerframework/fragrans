@@ -1,13 +1,14 @@
 package io.gardenerframework.fragrans.data.persistence.orm.entity.converter;
 
 import com.google.common.base.CaseFormat;
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import org.springframework.stereotype.Component;
 
 /**
  * @author zhanghan30
  * @date 2022/6/14 5:18 下午
  */
-@Component
+@DataPersistenceComponent
 public class CamelToUnderscoreConverter implements ColumnNameConverter {
     @Override
     public String fieldToColumn(String field) {

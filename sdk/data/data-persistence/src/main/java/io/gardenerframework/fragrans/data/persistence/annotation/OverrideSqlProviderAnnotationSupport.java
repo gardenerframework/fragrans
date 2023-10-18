@@ -1,5 +1,7 @@
 package io.gardenerframework.fragrans.data.persistence.annotation;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Change;
@@ -24,10 +26,10 @@ import java.lang.reflect.Modifier;
  * @author zhanghan30
  * @date 2022/9/23 00:42
  */
-@Component
+@DataPersistenceComponent
 @Slf4j
 public class OverrideSqlProviderAnnotationSupport implements BeanPostProcessor {
-    private final GenericOperationLogger operationLogger = new GenericOperationLogger();
+    private final GenericOperationLogger operationLogger = GenericLoggers.operationLogger();
 
     @Nullable
     @Override

@@ -1,12 +1,13 @@
 package io.gardenerframework.fragrans.data.persistence.orm.entity;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import org.springframework.stereotype.Component;
 
 /**
  * @author zhanghan30
  * @date 2022/9/24 01:25
  */
-@Component
+@DataPersistenceComponent
 public class FieldScannerStaticAccessor {
 
     /**

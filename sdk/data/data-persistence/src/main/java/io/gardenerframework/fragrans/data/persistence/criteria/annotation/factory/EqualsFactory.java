@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.Column;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.EqualsCriteria;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author ZhangHan
  * @date 2022/11/29 16:43
  */
-@Component
+@DataPersistenceComponent
 public class EqualsFactory implements CriteriaFactory {
 
     @Override

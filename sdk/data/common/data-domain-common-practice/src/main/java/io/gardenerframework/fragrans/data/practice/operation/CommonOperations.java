@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.practice.operation;
 
+import io.gardenerframework.fragrans.data.practice.configuration.DataDomainCommonPracticeComponent;
 import io.gardenerframework.fragrans.data.practice.operation.checker.RecordChecker;
 import io.gardenerframework.fragrans.data.practice.operation.checker.RecordCollectionChecker;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.function.Supplier;
  * @author ZhangHan
  * @date 2022/6/17 1:33
  */
-@Component
+@DataDomainCommonPracticeComponent
 @AllArgsConstructor
 public class CommonOperations {
 

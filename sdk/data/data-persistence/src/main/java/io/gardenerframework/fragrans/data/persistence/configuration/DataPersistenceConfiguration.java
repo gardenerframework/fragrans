@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022/6/14 5:32 下午
  */
 @Configuration
-@ComponentScan(basePackageClasses = DataPersistencePackage.class)
+@ComponentScan(basePackageClasses = DataPersistencePackage.class, includeFilters = @ComponentScan.Filter(DataPersistenceComponent.class))
 public class DataPersistenceConfiguration {
     public DataPersistenceConfiguration(DataSourceProperties dataSourceProperties) {
         Database.setDriver(DatabaseDriver.fromJdbcUrl(dataSourceProperties.getUrl()));

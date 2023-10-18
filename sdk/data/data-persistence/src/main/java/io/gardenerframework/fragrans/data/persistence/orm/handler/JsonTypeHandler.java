@@ -3,6 +3,7 @@ package io.gardenerframework.fragrans.data.persistence.orm.handler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import lombok.AccessLevel;
 import lombok.Setter;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -104,7 +105,7 @@ public class JsonTypeHandler<J> extends BaseTypeHandler<J> {
         return convertJsonToObject(cs.getString(columnIndex));
     }
 
-    @Component
+    @DataPersistenceComponent
     private static class ObjectMapperAccessor {
         private static ObjectMapper objectMapper = null;
 

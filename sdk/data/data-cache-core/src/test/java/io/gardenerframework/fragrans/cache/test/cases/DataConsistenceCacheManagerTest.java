@@ -7,7 +7,7 @@ import io.gardenerframework.fragrans.cache.test.TestRedisClient;
 import io.gardenerframework.fragrans.data.cache.lock.context.ThreadLocalLockContextHolder;
 import io.gardenerframework.fragrans.data.cache.manager.DataConsistenceCacheManager;
 import io.gardenerframework.fragrans.data.cache.manager.annotation.Cached;
-import io.gardenerframework.fragrans.log.GenericLoggerStaticAccessor;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,7 @@ public class DataConsistenceCacheManagerTest {
     @Test
     public void smokeTest() throws IOException, InterruptedException {
         DataConsistenceCacheManager<TestObject> manager = new DataConsistenceCacheManager<TestObject>(new TestRedisClient(connectionFactory), new ThreadLocalLockContextHolder(), taskScheduler, (id) -> null) {{
-            this.setLoggingMethod(GenericLoggerStaticAccessor.operationLogger()::error);
+            this.setLoggingMethod(GenericLoggers.operationLogger()::error);
         }};
         manager.setDataConsistenceTaskDelay(Duration.ofSeconds(10));
         TestObject testObject = new TestObject(UUID.randomUUID().toString());
@@ -73,7 +73,7 @@ public class DataConsistenceCacheManagerTest {
         TestObject testObject = new TestObject(primaryId);
         //默认总是返回最开始的对象
         DataConsistenceCacheManager<TestObject> manager = new DataConsistenceCacheManager<TestObject>(new NoScriptingTestRedisClient(connectionFactory), new ThreadLocalLockContextHolder(), new ObjectMapper(), taskScheduler, (id) -> new TestObject(primaryId)) {{
-            this.setLoggingMethod(GenericLoggerStaticAccessor.operationLogger()::error);
+            this.setLoggingMethod(GenericLoggers.operationLogger()::error);
         }};
         manager.setDataConsistenceTaskDelay(Duration.ofSeconds(10));
         manager.set("test", testObject, null);

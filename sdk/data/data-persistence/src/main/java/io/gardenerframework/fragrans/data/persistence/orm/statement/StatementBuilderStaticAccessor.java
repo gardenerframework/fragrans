@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.orm.statement;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author ZhangHan
  * @date 2022/6/16 0:46
  */
-@Component
+@DataPersistenceComponent
 public class StatementBuilderStaticAccessor {
 
     /**

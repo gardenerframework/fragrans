@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.criteria.support;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -7,7 +8,7 @@ import org.springframework.util.Assert;
  * @author ZhangHan
  * @date 2022/11/28 17:34
  */
-@Component
+@DataPersistenceComponent
 public class CriteriaBuilderStaticAccessor {
     /**
      * 用于{@link org.springframework.context.annotation.DependsOn}注解使用

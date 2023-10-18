@@ -8,7 +8,7 @@ import io.gardenerframework.fragrans.data.cache.lock.CacheLock;
 import io.gardenerframework.fragrans.data.cache.lock.context.LockContextHolder;
 import io.gardenerframework.fragrans.data.cache.manager.log.schema.detail.DigestCacheDetail;
 import io.gardenerframework.fragrans.data.cache.serialize.StringSerializer;
-import io.gardenerframework.fragrans.log.GenericLoggerStaticAccessor;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.common.schema.reason.NotFound;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Create;
@@ -325,7 +325,7 @@ public abstract class DataConsistenceCacheManager<T> extends BasicCacheManager<T
             if (cacheLock.tryLock(composeTaskKey(key), dataConsistenceTaskDelay) != null) {
                 Instant eta = Instant.now().plus(dataConsistenceTaskDelay);
                 taskScheduler.schedule(new DataConsistenceTask(namespaces, id, suffix), eta);
-                GenericLoggerStaticAccessor.operationLogger().debug(
+                GenericLoggers.operationLogger().debug(
                         log,
                         GenericOperationLogContent.builder().what(DataConsistenceTask.class).operation(new Create()).state(new Done()).detail(
                                 new DigestCacheDataConsistenceTaskDetail(key, null, digestKey, null, eta)
@@ -350,7 +350,7 @@ public abstract class DataConsistenceCacheManager<T> extends BasicCacheManager<T
             public void run() {
                 String key = composeCacheKey(namespaces, id, suffix);
                 String digestKey = composeDigestKey(key);
-                GenericLoggerStaticAccessor.operationLogger().debug(
+                GenericLoggers.operationLogger().debug(
                         log,
                         GenericOperationLogContent.builder().what(DataConsistenceTask.class).operation(new Process()).state(new Start()).detail(
                                 new DigestCacheDetail(key, null, digestKey, null)
@@ -360,7 +360,7 @@ public abstract class DataConsistenceCacheManager<T> extends BasicCacheManager<T
                 T source = sourceReader.apply(id);
                 if (source == null) {
                     //原始数据已经不存在，删除缓存
-                    GenericLoggerStaticAccessor.basicLogger().warn(
+                    GenericLoggers.basicLogger().warn(
                             log,
                             GenericBasicLogContent.builder().what(getTargetType()).how(new NotFound()).detail(
                                     new Detail() {
@@ -379,7 +379,7 @@ public abstract class DataConsistenceCacheManager<T> extends BasicCacheManager<T
                 String digestFromDatabase = digestObject(source);
                 String digest = stringSerializer.deserialize(getCacheClient().get(digestKey));
                 if (!Objects.equals(digestFromDatabase, digest)) {
-                    GenericLoggerStaticAccessor.basicLogger().warn(
+                    GenericLoggers.basicLogger().warn(
                             log,
                             GenericBasicLogContent.builder().what(getTargetType()).how(new SourceUpdated()).detail(
                                     new Detail() {
@@ -397,7 +397,7 @@ public abstract class DataConsistenceCacheManager<T> extends BasicCacheManager<T
                     );
                     delete(namespaces, id, suffix);
                 }
-                GenericLoggerStaticAccessor.operationLogger().debug(
+                GenericLoggers.operationLogger().debug(
                         log,
                         GenericOperationLogContent.builder().what(DataConsistenceTask.class).operation(new Process()).state(new Done()).detail(
                                 new DigestCacheDetail(key, null, digestKey, null)

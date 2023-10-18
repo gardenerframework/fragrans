@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.orm.mapping.annotation;
 
+import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.session.Configuration;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  * @author zhanghan30
  * @date 2022/9/25 05:09
  */
-@Component
+@DataPersistenceComponent
 public class ColumnTypeHandlerSupport implements BeanPostProcessor {
     @Nullable
     @Override
