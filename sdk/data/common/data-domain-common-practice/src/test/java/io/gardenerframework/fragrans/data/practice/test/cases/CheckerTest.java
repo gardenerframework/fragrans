@@ -8,7 +8,6 @@ import io.gardenerframework.fragrans.data.practice.operation.checker.BaseEntityN
 import io.gardenerframework.fragrans.data.practice.test.DataDomainCommonPracticeApplication;
 import io.gardenerframework.fragrans.data.schema.entity.BasicEntity;
 import io.gardenerframework.fragrans.data.trait.generic.GenericTraits;
-import io.gardenerframework.fragrans.log.annotation.LogTarget;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -134,7 +133,6 @@ public class CheckerTest {
         );
     }
 
-    @LogTarget("测试用对象")
     @Getter
     @Setter
     public static class TestObject extends BasicEntity<String> implements
