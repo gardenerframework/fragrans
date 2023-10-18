@@ -1,24 +1,21 @@
 package io.gardenerframework.fragrans.api.standard.error.support.listener;
 
 import io.gardenerframework.fragrans.api.standard.error.DefaultApiErrorConstants;
-import io.gardenerframework.fragrans.api.standard.error.support.DefaultApiErrorFactory;
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.messages.EnhancedMessageSource;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 /**
  * @author zhanghan30
  * @date 2022/5/9 9:40 下午
  */
-@Component
+@ApiStandardErrorComponent
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @AllArgsConstructor
-@ConditionalOnBean(DefaultApiErrorFactory.class)
 public class InitializingWithGenericErrorListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
     private final EnhancedMessageSource messageSource;
 

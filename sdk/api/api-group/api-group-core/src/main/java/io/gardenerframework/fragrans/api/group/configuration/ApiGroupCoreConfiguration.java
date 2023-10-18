@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022/5/10 19:24
  */
 @Configuration
-@ComponentScan(basePackageClasses = ApiGroupPackage.class)
+@ComponentScan(basePackageClasses = ApiGroupPackage.class, includeFilters = @ComponentScan.Filter(ApiGroupComponent.class))
 public class ApiGroupCoreConfiguration {
 }

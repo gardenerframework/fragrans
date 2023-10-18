@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022/5/10 9:36 上午
  */
 @Configuration
-@ComponentScan(basePackageClasses = ApiOptionsEventKafkaPackage.class)
+@ComponentScan(basePackageClasses = ApiOptionsEventKafkaPackage.class, includeFilters = @ComponentScan.Filter(ApiOptionsEventKafkaComponent.class))
 public class ApiOptionsEventKafkaConfiguration {
 }

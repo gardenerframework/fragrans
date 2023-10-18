@@ -2,6 +2,7 @@ package io.gardenerframework.fragrans.api.standard.error;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,10 +30,9 @@ import java.util.Map;
  * @date 2020-11-13 15:42
  * @since 1.0.0
  */
-@Component
+@ApiStandardErrorComponent
 @Primary
 @RequiredArgsConstructor
-@ConditionalOnBean(BasicErrorController.class)
 public class ServletApiErrorAttributes extends DefaultErrorAttributes implements InitializingBean {
     private final AntPathMatcher matcher = new AntPathMatcher();
     private final ObjectMapper mapper;

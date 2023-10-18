@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.api.options.event;
 
+import io.gardenerframework.fragrans.api.options.event.configuration.ApiOptionsEventKafkaComponent;
 import io.gardenerframework.fragrans.api.options.lifecycle.event.ApiOptionChangedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -7,7 +8,6 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  * @author zhanghan30
  * @date 2022/7/19 2:30 下午
  */
-@Component
+@ApiOptionsEventKafkaComponent
 @RequiredArgsConstructor
 public class ApiOptionsEventHandler implements ApplicationEventPublisherAware {
     public static final String API_OPTIONS_NOTIFICATION_TOPIC = "api-options";

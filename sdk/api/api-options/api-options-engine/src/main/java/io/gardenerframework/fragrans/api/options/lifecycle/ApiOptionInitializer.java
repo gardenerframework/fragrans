@@ -1,6 +1,7 @@
 package io.gardenerframework.fragrans.api.options.lifecycle;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.gardenerframework.fragrans.api.options.configuration.ApiOptionsEngineComponent;
 import io.gardenerframework.fragrans.api.options.configuration.ApiOptionsEngineProperties;
 import io.gardenerframework.fragrans.api.options.lifecycle.event.ApiOptionChangedEvent;
 import io.gardenerframework.fragrans.api.options.persistence.ApiOptionPersistenceService;
@@ -8,6 +9,7 @@ import io.gardenerframework.fragrans.api.options.persistence.schema.ApiOptionRec
 import io.gardenerframework.fragrans.api.options.schema.ApiOption;
 import io.gardenerframework.fragrans.api.options.schema.ApiOptionRegistryItem;
 import io.gardenerframework.fragrans.api.options.schema.ApiOptionsRegistry;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Create;
@@ -40,14 +42,14 @@ import java.util.stream.Collectors;
  * @author zhanghan30
  * @date 2022/5/10 2:14 上午
  */
-@Component
+@ApiOptionsEngineComponent
 @Slf4j
 @RequiredArgsConstructor
 public class ApiOptionInitializer implements ApplicationContextAware, InitializingBean {
     private final ApiOptionsRegistry apiOptionsRegistry;
     private final ApiOptionPersistenceService<?> apiOptionPersistenceService;
     private final ObjectMapper mapper;
-    private final GenericOperationLogger logger;
+    private final GenericOperationLogger logger = GenericLoggers.operationLogger();
     private final ApiOptionsEngineProperties apiOptionsEngineProperties;
     private final Validator validator;
     private ApplicationContext applicationContext;

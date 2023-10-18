@@ -1,15 +1,13 @@
 package io.gardenerframework.fragrans.api.standard.error.support.listener;
 
 import io.gardenerframework.fragrans.api.standard.error.configuration.ApiErrorRegistry;
-import io.gardenerframework.fragrans.api.standard.error.support.DefaultApiErrorFactory;
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.messages.EnhancedMessageSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 /**
  * 处理在业务错误定义包内的错误
@@ -17,10 +15,9 @@ import org.springframework.stereotype.Component;
  * @author zhanghan30
  * @date 2022/5/9 9:12 下午
  */
-@Component
+@ApiStandardErrorComponent
 @Slf4j
 @RequiredArgsConstructor
-@ConditionalOnBean(DefaultApiErrorFactory.class)
 @Order(0)
 public class ErrorRevealHandlingListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
     /**

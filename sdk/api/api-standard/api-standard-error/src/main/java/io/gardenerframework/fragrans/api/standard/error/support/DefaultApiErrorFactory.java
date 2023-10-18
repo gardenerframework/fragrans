@@ -1,6 +1,7 @@
 package io.gardenerframework.fragrans.api.standard.error.support;
 
 import io.gardenerframework.fragrans.api.standard.error.ApiErrorFactory;
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.api.standard.schema.ApiError;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,7 @@ import java.util.Map;
  * @since 1.3.1
  */
 @Slf4j
-@Component
-@ConditionalOnMissingBean(value = ApiErrorFactory.class, ignored = DefaultApiErrorFactory.class)
+@ApiStandardErrorComponent
 public class DefaultApiErrorFactory implements ApiErrorFactory, ApplicationEventPublisherAware {
     private ApplicationEventPublisher eventPublisher;
 

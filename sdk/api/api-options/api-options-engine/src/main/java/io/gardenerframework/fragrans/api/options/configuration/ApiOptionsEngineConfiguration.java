@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Slf4j
-@ComponentScan(basePackageClasses = ApiOptionsEnginePackage.class)
+@ComponentScan(basePackageClasses = ApiOptionsEnginePackage.class, includeFilters = @ComponentScan.Filter(ApiOptionsEngineComponent.class))
 @Import(ApiOptionsRegistry.class)
 public class ApiOptionsEngineConfiguration {
     //todo 没有办法解决api选项bean生成后到被初始化器初始化之前的差异时间内使用造成的选项数据不一致的问题

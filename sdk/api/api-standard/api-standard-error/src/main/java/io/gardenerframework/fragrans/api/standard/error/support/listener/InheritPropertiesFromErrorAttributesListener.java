@@ -1,12 +1,10 @@
 package io.gardenerframework.fragrans.api.standard.error.support.listener;
 
-import io.gardenerframework.fragrans.api.standard.error.support.DefaultApiErrorFactory;
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.api.standard.schema.ApiError;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Priority;
 import java.util.Date;
@@ -18,9 +16,8 @@ import java.util.Map;
  * @author zhanghan30
  * @date 2022/5/9 6:04 下午
  */
-@Component
+@ApiStandardErrorComponent
 @Priority(Ordered.HIGHEST_PRECEDENCE)
-@ConditionalOnBean(DefaultApiErrorFactory.class)
 public class InheritPropertiesFromErrorAttributesListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
     @Override
     public void onApplicationEvent(InitializingApiErrorPropertiesEvent event) {

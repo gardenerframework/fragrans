@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022/6/24 7:39 下午
  */
 @Configuration
-@ComponentScan(basePackageClasses = ApiStandardErrorPackage.class)
+@ComponentScan(
+        basePackageClasses = ApiStandardErrorPackage.class,
+        includeFilters = @ComponentScan.Filter(ApiStandardErrorComponent.class)
+)
 @RevealError(superClasses = {
         ApiStandardExceptions.ClientSideException.class,
         ApiStandardExceptions.ServerSideException.class

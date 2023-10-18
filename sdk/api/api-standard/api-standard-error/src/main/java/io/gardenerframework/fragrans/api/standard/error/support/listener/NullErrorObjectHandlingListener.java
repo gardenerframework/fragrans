@@ -1,20 +1,18 @@
 package io.gardenerframework.fragrans.api.standard.error.support.listener;
 
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.exception.HttpStatusRepresentative;
 import io.gardenerframework.fragrans.api.standard.error.exception.client.BadRequestException;
 import io.gardenerframework.fragrans.api.standard.error.exception.server.InternalServerErrorException;
-import io.gardenerframework.fragrans.api.standard.error.support.DefaultApiErrorFactory;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.messages.EnhancedMessageSource;
 import lombok.AllArgsConstructor;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,9 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zhanghan30
  * @date 2022/5/9 6:12 下午
  */
-@Component
+@ApiStandardErrorComponent
 @AllArgsConstructor
-@ConditionalOnBean(DefaultApiErrorFactory.class)
 @Order(0)
 public class NullErrorObjectHandlingListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
     private static final Map<Integer, Class<? extends RuntimeException>> HTTP_STATUS_REPRESENTATIVE_REGISTRY = new ConcurrentHashMap<>();

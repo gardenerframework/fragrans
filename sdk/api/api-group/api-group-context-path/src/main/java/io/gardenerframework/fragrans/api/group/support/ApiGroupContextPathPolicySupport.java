@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.api.group.support;
 
+import io.gardenerframework.fragrans.api.group.configuration.ApiGroupComponent;
 import io.gardenerframework.fragrans.api.group.policy.ApiGroupContextPathPolicy;
 import io.gardenerframework.fragrans.api.group.registry.ApiGroupRegistry;
 import org.springframework.beans.BeansException;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -21,7 +21,7 @@ import java.util.function.Predicate;
  * @author zhanghan30
  * @date 2022/8/18 2:52 上午
  */
-@Component
+@ApiGroupComponent
 public class ApiGroupContextPathPolicySupport implements BeanPostProcessor, ApplicationContextAware {
     private ApplicationContext applicationContext;
 

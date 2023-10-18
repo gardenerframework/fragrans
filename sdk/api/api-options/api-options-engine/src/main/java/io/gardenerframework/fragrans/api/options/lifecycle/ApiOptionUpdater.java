@@ -1,11 +1,13 @@
 package io.gardenerframework.fragrans.api.options.lifecycle;
 
+import io.gardenerframework.fragrans.api.options.configuration.ApiOptionsEngineComponent;
 import io.gardenerframework.fragrans.api.options.exception.client.ApiOptionVersionNumberConflictException;
 import io.gardenerframework.fragrans.api.options.lifecycle.event.ApiOptionChangedEvent;
 import io.gardenerframework.fragrans.api.options.persistence.ApiOptionPersistenceService;
 import io.gardenerframework.fragrans.api.options.persistence.exception.ApiOptionVersionOutOfDateException;
 import io.gardenerframework.fragrans.api.options.schema.ApiOptionRegistryItem;
 import io.gardenerframework.fragrans.api.options.schema.ApiOptionsRegistry;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Update;
@@ -27,14 +29,14 @@ import java.util.Objects;
  * @author zhanghan30
  * @date 2022/5/10 5:51 上午
  */
-@Component
+@ApiOptionsEngineComponent
 @Slf4j
 @RequiredArgsConstructor
 @Priority(Ordered.HIGHEST_PRECEDENCE)
 public class ApiOptionUpdater {
     private final ApiOptionsRegistry apiOptionsRegistry;
     private final ApiOptionPersistenceService<?> apiOptionPersistenceService;
-    private final GenericOperationLogger logger;
+    private final GenericOperationLogger logger = GenericLoggers.operationLogger();
 
     @EventListener
     @Order(Ordered.HIGHEST_PRECEDENCE)

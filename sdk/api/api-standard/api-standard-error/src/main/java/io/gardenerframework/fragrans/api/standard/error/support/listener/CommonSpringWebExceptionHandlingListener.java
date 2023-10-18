@@ -1,16 +1,13 @@
 package io.gardenerframework.fragrans.api.standard.error.support.listener;
 
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.exception.client.*;
-import io.gardenerframework.fragrans.api.standard.error.support.DefaultApiErrorFactory;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.messages.EnhancedMessageSource;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -27,10 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zhanghan30
  * @date 2022/5/9 10:01 下午
  */
-@Component
+@ApiStandardErrorComponent
 @AllArgsConstructor
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnBean(DefaultApiErrorFactory.class)
 @Order(0)
 public class CommonSpringWebExceptionHandlingListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
     private static final Map<Class<?>, Class<? extends RuntimeException>> SPRING_EXCEPTION_MAP = new ConcurrentHashMap<>();

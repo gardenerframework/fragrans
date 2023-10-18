@@ -1,6 +1,8 @@
 package io.gardenerframework.fragrans.api.standard.error;
 
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.log.GenericBasicLogger;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.common.schema.reason.ExceptionCaught;
 import io.gardenerframework.fragrans.log.schema.content.GenericBasicLogContent;
 import io.gardenerframework.fragrans.log.schema.details.Detail;
@@ -31,11 +33,10 @@ import java.util.Map;
  */
 @Aspect
 @Slf4j
-@Component
+@ApiStandardErrorComponent
 @AllArgsConstructor
-@ConditionalOnBean(BasicErrorController.class)
 public class BasicErrorControllerProxy {
-    private final GenericBasicLogger basicLogger;
+    private final GenericBasicLogger basicLogger = GenericLoggers.basicLogger();
 
     /**
      * 拦截{@link BasicErrorController#error(HttpServletRequest)}方法的执行，将状态码修正为预期值

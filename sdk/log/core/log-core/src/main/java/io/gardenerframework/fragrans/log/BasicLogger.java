@@ -19,9 +19,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * @date 2022/6/8 2:21 下午
  */
 public class BasicLogger {
-    private final Queue<LogMessageCustomizer> messageCustomizers = new ConcurrentLinkedDeque<>();
+    private static final Queue<LogMessageCustomizer> messageCustomizers = new ConcurrentLinkedDeque<>();
 
-    public void addLogMessageCustomizer(@NonNull LogMessageCustomizer customizer) {
+    public static void addLogMessageCustomizer(@NonNull LogMessageCustomizer customizer) {
         messageCustomizers.add(customizer);
     }
 

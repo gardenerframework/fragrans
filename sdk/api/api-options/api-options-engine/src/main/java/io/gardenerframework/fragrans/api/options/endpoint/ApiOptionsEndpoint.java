@@ -1,6 +1,7 @@
 package io.gardenerframework.fragrans.api.options.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.gardenerframework.fragrans.api.options.configuration.ApiOptionsEngineComponent;
 import io.gardenerframework.fragrans.api.options.configuration.ApiOptionsEngineProperties;
 import io.gardenerframework.fragrans.api.options.exception.client.ApiOptionIsReadonlyException;
 import io.gardenerframework.fragrans.api.options.exception.client.ApiOptionNotFoundException;
@@ -38,7 +39,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/options")
-@Component
+@ApiOptionsEngineComponent
 @Slf4j
 public class ApiOptionsEndpoint implements ApiOptionsEndpointSkeleton, ApplicationEventPublisherAware {
     private final ApiOptionsRegistry registry;

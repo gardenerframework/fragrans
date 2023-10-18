@@ -1,8 +1,10 @@
 package io.gardenerframework.fragrans.api.group.registry;
 
 import io.gardenerframework.fragrans.api.group.ApiGroupProvider;
+import io.gardenerframework.fragrans.api.group.configuration.ApiGroupComponent;
 import io.gardenerframework.fragrans.api.group.policy.ApiGroupPolicy;
 import io.gardenerframework.fragrans.api.group.policy.ApiGroupPolicyProvider;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Register;
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
@@ -31,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author ZhangHan
  * @date 2022/5/10 19:07
  */
-@Component
+@ApiGroupComponent
 @RequiredArgsConstructor
 @Slf4j
 public class ApiGroupRegistry implements InitializingBean, ApplicationContextAware {
@@ -46,7 +47,7 @@ public class ApiGroupRegistry implements InitializingBean, ApplicationContextAwa
     /**
      * 记日志的
      */
-    private final GenericOperationLogger operationLogger;
+    private final GenericOperationLogger operationLogger = GenericLoggers.operationLogger();
     /**
      * 支持从注解找到所有组成员
      */

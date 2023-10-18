@@ -4,6 +4,7 @@ import io.gardenerframework.fragrans.api.standard.error.configuration.ApiErrorRe
 import io.gardenerframework.fragrans.api.standard.error.configuration.HideError;
 import io.gardenerframework.fragrans.api.standard.error.configuration.RevealError;
 import io.gardenerframework.fragrans.log.GenericBasicLogger;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.common.schema.verb.Register;
 import io.gardenerframework.fragrans.log.schema.content.GenericBasicLogContent;
 import io.gardenerframework.fragrans.log.schema.details.Detail;
@@ -33,7 +34,7 @@ import java.util.function.Consumer;
 public class AnnotationBasesApiErrorRegistry implements ApplicationContextAware, InitializingBean, ApiErrorRegistry {
     private final Item revealed = new Item();
     private final Item hidden = new Item();
-    private final GenericBasicLogger logger;
+    private final GenericBasicLogger logger = GenericLoggers.basicLogger();
     private ApplicationContext applicationContext;
 
 

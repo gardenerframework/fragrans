@@ -1,15 +1,13 @@
 package io.gardenerframework.fragrans.api.standard.error.support.listener;
 
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.exception.client.BadRequestArgumentException;
-import io.gardenerframework.fragrans.api.standard.error.support.DefaultApiErrorFactory;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.messages.EnhancedMessageSource;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
 import java.util.HashMap;
@@ -23,9 +21,8 @@ import java.util.Map;
  * @see org.springframework.web.bind.MethodArgumentNotValidException
  * @see org.springframework.validation.BindException
  */
-@Component
+@ApiStandardErrorComponent
 @AllArgsConstructor
-@ConditionalOnBean(DefaultApiErrorFactory.class)
 @Order(0)
 public class BadRequestArgumentRegulationListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
     private final EnhancedMessageSource messageSource;

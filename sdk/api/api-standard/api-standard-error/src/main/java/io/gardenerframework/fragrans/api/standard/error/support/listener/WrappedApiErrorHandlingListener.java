@@ -1,12 +1,10 @@
 package io.gardenerframework.fragrans.api.standard.error.support.listener;
 
+import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandardErrorComponent;
 import io.gardenerframework.fragrans.api.standard.error.exception.ApiErrorWrappingException;
-import io.gardenerframework.fragrans.api.standard.error.support.DefaultApiErrorFactory;
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 /**
  * 处理捕捉到的{@link ApiErrorWrappingException}
@@ -14,8 +12,7 @@ import org.springframework.stereotype.Component;
  * @author zhanghan30
  * @date 2022/5/9 6:45 下午
  */
-@Component
-@ConditionalOnBean(DefaultApiErrorFactory.class)
+@ApiStandardErrorComponent
 @Order(0)
 public class WrappedApiErrorHandlingListener implements ApplicationListener<InitializingApiErrorPropertiesEvent> {
     @Override

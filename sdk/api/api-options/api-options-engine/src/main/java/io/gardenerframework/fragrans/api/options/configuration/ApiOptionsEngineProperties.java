@@ -10,7 +10,7 @@ import java.util.UUID;
  * @author zhanghan30
  * @date 2022/7/19 4:04 下午
  */
-@Component
+@ApiOptionsEngineComponent
 @Getter
 @Setter
 public class ApiOptionsEngineProperties {
