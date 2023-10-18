@@ -1,4 +1,0 @@
-dependencies {
-    api "${rootProject.group}:log-engine"
-    api "${rootProject.group}:log-generic-schema"
-}
