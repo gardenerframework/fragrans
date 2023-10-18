@@ -17,7 +17,7 @@ public class TestUtilsTest {
     @Test
     public void smokeTest() {
         Assertions.assertTrue(TraitUtils.isTrait(Trait.class));
-        Assertions.assertTrue(TraitUtils.isTraitField(Trait.class));
+        Assertions.assertTrue(TraitUtils.isSingleFieldTrait(Trait.class));
         Collection<String> traitFields = TraitUtils.getTraitFieldNames(Trait.class);
         Assertions.assertEquals(1, traitFields.size());
         Assertions.assertTrue(traitFields.contains("some"));

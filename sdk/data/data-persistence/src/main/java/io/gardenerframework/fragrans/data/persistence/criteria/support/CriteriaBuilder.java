@@ -292,7 +292,7 @@ public class CriteriaBuilder {
                 //该接口实现其它接口，解析父接口
                 traits.addAll(resolveTraits(_interface));
             } else {
-                if (TraitUtils.isTraitField(_interface)) {
+                if (TraitUtils.isSingleFieldTrait(_interface)) {
                     traits.add(_interface);
                 } else {
                     //原则上来说，搜索条件应当只实现trait接口，不应当实现别的什么功能性的接口

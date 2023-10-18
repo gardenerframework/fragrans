@@ -38,7 +38,7 @@ public abstract class TraitUtils {
      * @param type 类型
      * @return 是否是 field trait
      */
-    public static boolean isTraitField(@NonNull Class<?> type) {
+    public static boolean isSingleFieldTrait(@NonNull Class<?> type) {
         Collection<String> traitFieldNames = getTraitFieldNames(type);
         return traitFieldNames.size() == 1;
     }
