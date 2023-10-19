@@ -1,6 +1,7 @@
 package io.gardenerframework.fragrans.api.security.test.cases;
 
 import io.gardenerframework.fragrans.api.security.operator.schema.OperatorBrief;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Process;
@@ -24,7 +25,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Component
 public class TestEndpoint {
-    private final GenericOperationLogger logger;
+    private final GenericOperationLogger logger = GenericLoggers.operationLogger();
     private final OperatorBrief operator;
 
     @GetMapping

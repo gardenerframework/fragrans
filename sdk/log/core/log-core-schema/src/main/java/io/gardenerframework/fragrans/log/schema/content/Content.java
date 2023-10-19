@@ -4,11 +4,11 @@ import io.gardenerframework.fragrans.log.schema.word.Word;
 
 import java.util.Collection;
 
-public interface Contents {
+public interface Content {
     /**
      * 返回日志内容
      *
      * @return 内容清单
      */
-    Collection<Word> getContents();
+    Collection<Word> getContent();
 }

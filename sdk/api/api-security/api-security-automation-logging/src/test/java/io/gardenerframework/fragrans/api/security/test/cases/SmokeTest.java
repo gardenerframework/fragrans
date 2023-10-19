@@ -1,13 +1,13 @@
 package io.gardenerframework.fragrans.api.security.test.cases;
 
 import io.gardenerframework.fragrans.api.security.test.SecurityOperatorAutoLoggingTestApplication;
+import io.gardenerframework.fragrans.log.GenericLoggers;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.common.schema.state.Done;
 import io.gardenerframework.fragrans.log.common.schema.verb.Register;
 import io.gardenerframework.fragrans.log.schema.content.GenericOperationLogContent;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.web.client.RestTemplate;
@@ -19,8 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {SecurityOperatorAutoLoggingTestApplication.class})
 @Slf4j
 public class SmokeTest {
-    @Autowired
-    private GenericOperationLogger logger;
+    private GenericOperationLogger logger = GenericLoggers.operationLogger();
     @LocalServerPort
     private int port;
 

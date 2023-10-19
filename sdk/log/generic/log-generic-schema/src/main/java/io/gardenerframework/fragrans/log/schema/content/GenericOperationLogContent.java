@@ -1,8 +1,8 @@
 package io.gardenerframework.fragrans.log.schema.content;
 
-import io.gardenerframework.fragrans.log.schema.word.SimpleWord;
 import io.gardenerframework.fragrans.log.schema.word.Word;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Arrays;
@@ -18,14 +18,16 @@ public class GenericOperationLogContent extends AbstractGenericLogContent {
     /**
      * 发生了什么
      */
+    @NonNull
     private final Word operation;
     /**
      * 最后怎么样了
      */
+    @NonNull
     private final Word state;
 
     @Override
-    public Collection<Word> getContents() {
-        return Arrays.asList(getWhatInWord(), getOperation() == null ? new SimpleWord("") : getOperation(), getState() == null ? new SimpleWord("") : getState(), getDetailInWord());
+    public Collection<Word> getContent() {
+        return Arrays.asList(getWhatInWord(), getOperation(), getState(), getDetailInWord());
     }
 }

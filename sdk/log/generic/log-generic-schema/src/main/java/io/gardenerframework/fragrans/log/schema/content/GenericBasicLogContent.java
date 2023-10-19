@@ -3,6 +3,7 @@ package io.gardenerframework.fragrans.log.schema.content;
 import io.gardenerframework.fragrans.log.schema.word.SimpleWord;
 import io.gardenerframework.fragrans.log.schema.word.Word;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Arrays;
@@ -18,10 +19,11 @@ public class GenericBasicLogContent extends AbstractGenericLogContent {
     /**
      * 发生了什么
      */
+    @NonNull
     private final Word how;
 
     @Override
-    public Collection<Word> getContents() {
+    public Collection<Word> getContent() {
         return Arrays.asList(getWhatInWord(), getHow() == null ? new SimpleWord("") : getHow(), getDetailInWord());
     }
 }

@@ -1,6 +1,6 @@
 package io.gardenerframework.fragrans.log;
 
-import io.gardenerframework.fragrans.log.schema.content.Contents;
+import io.gardenerframework.fragrans.log.schema.content.Content;
 import io.gardenerframework.fragrans.log.schema.template.Template;
 import io.gardenerframework.fragrans.log.schema.word.Word;
 import lombok.AllArgsConstructor;
@@ -30,11 +30,11 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      * @param cause    异常
      */
-    public void debug(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents, @Nullable Throwable cause) {
-        logInternally(logger, logger::isDebugEnabled, logger::debug, template, contents, cause);
+    public void debug(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
+        logInternally(logger, logger::isDebugEnabled, logger::debug, template, content, cause);
     }
 
     /**
@@ -46,7 +46,7 @@ public class BasicLogger {
      * @param cause    异常
      */
     public void debug(@NonNull Logger logger, @NonNull Template template, @NonNull Collection<Word> words, @Nullable Throwable cause) {
-        debug(logger, template, new BasicContents(words), cause);
+        debug(logger, template, new BasicContent(words), cause);
     }
 
     /**
@@ -54,10 +54,10 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      */
-    public void debug(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents) {
-        debug(logger, template, contents, null);
+    public void debug(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
+        debug(logger, template, content, null);
     }
 
     /**
@@ -76,11 +76,11 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      * @param cause    异常
      */
-    public void info(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents, @Nullable Throwable cause) {
-        logInternally(logger, logger::isInfoEnabled, logger::info, template, contents, cause);
+    public void info(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
+        logInternally(logger, logger::isInfoEnabled, logger::info, template, content, cause);
     }
 
     /**
@@ -92,7 +92,7 @@ public class BasicLogger {
      * @param cause    异常
      */
     public void info(@NonNull Logger logger, @NonNull Template template, @NonNull Collection<Word> words, @Nullable Throwable cause) {
-        info(logger, template, new BasicContents(words), cause);
+        info(logger, template, new BasicContent(words), cause);
     }
 
     /**
@@ -100,10 +100,10 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      */
-    public void info(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents) {
-        info(logger, template, contents, null);
+    public void info(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
+        info(logger, template, content, null);
     }
 
     /**
@@ -122,11 +122,11 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      * @param cause    异常
      */
-    public void warn(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents, @Nullable Throwable cause) {
-        logInternally(logger, logger::isWarnEnabled, logger::warn, template, contents, cause);
+    public void warn(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
+        logInternally(logger, logger::isWarnEnabled, logger::warn, template, content, cause);
     }
 
     /**
@@ -138,7 +138,7 @@ public class BasicLogger {
      * @param cause    异常
      */
     public void warn(@NonNull Logger logger, @NonNull Template template, @NonNull Collection<Word> words, @Nullable Throwable cause) {
-        warn(logger, template, new BasicContents(words), cause);
+        warn(logger, template, new BasicContent(words), cause);
     }
 
 
@@ -147,10 +147,10 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      */
-    public void warn(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents) {
-        warn(logger, template, contents, null);
+    public void warn(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
+        warn(logger, template, content, null);
     }
 
     /**
@@ -169,11 +169,11 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      * @param cause    异常
      */
-    public void error(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents, @Nullable Throwable cause) {
-        logInternally(logger, logger::isErrorEnabled, logger::error, template, contents, cause);
+    public void error(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
+        logInternally(logger, logger::isErrorEnabled, logger::error, template, content, cause);
     }
 
     /**
@@ -185,7 +185,7 @@ public class BasicLogger {
      * @param cause    异常
      */
     public void error(@NonNull Logger logger, @NonNull Template template, @NonNull Collection<Word> words, @Nullable Throwable cause) {
-        error(logger, template, new BasicContents(words), cause);
+        error(logger, template, new BasicContent(words), cause);
     }
 
     /**
@@ -193,10 +193,10 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param contents 内容
+     * @param content 内容
      */
-    public void error(@NonNull Logger logger, @NonNull Template template, @NonNull Contents contents) {
-        error(logger, template, contents, null);
+    public void error(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
+        error(logger, template, content, null);
     }
 
     /**
@@ -217,25 +217,25 @@ public class BasicLogger {
      * @param logLevelChecker 检查日志记录是否激活
      * @param methodTemplate  真正的日志记录方法
      * @param template        模板
-     * @param contents        内容
+     * @param content        内容
      * @param cause           异常
      */
-    protected void logInternally(@NonNull Logger logger, @NonNull LogLevelChecker logLevelChecker, @NonNull LogMethodTemplate methodTemplate, @NonNull Template template, @NonNull Contents contents, @Nullable Throwable cause) {
+    protected void logInternally(@NonNull Logger logger, @NonNull LogLevelChecker logLevelChecker, @NonNull LogMethodTemplate methodTemplate, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
         for (LogMessageCustomizer messageCustomizer : messageCustomizers) {
-            if (messageCustomizer.support(this, template, contents)) {
+            if (messageCustomizer.support(this, template, content)) {
                 //完成客制化处理
                 template = messageCustomizer.customize(template);
-                contents = messageCustomizer.customize(contents);
+                content = messageCustomizer.customize(content);
                 //继续执行，更改完成后的也需要检查后面是否还有继续的更改
             }
         }
         if (logLevelChecker.isEnabled()) {
-            Collection<Object> content = new ArrayList<>(contents.getContents().size() + (cause == null ? 0 : 1));
-            content.addAll(contents.getContents());
+            Collection<Object> contents = new ArrayList<>(content.getContent().size() + (cause == null ? 0 : 1));
+            contents.addAll(content.getContent());
             if (cause != null) {
-                content.add(cause);
+                contents.add(cause);
             }
-            methodTemplate.log(template.toString(), content.toArray(new Object[]{}));
+            methodTemplate.log(template.toString(), contents.toArray(new Object[]{}));
         }
     }
 
@@ -269,8 +269,8 @@ public class BasicLogger {
 
     @AllArgsConstructor
     @Getter
-    private static class BasicContents implements Contents {
+    private static class BasicContent implements Content {
         @NonNull
-        private final Collection<Word> contents;
+        private final Collection<Word> content;
     }
 }

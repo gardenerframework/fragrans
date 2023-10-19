@@ -2,10 +2,10 @@ package io.gardenerframework.fragrans.api.security.automation.log.customizer;
 
 import io.gardenerframework.fragrans.api.security.operator.schema.OperatorBrief;
 import io.gardenerframework.fragrans.log.BasicLogger;
+import io.gardenerframework.fragrans.log.GenericBasicLogger;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import io.gardenerframework.fragrans.log.LogMessageCustomizer;
-import io.gardenerframework.fragrans.log.schema.content.Contents;
-import io.gardenerframework.fragrans.log.schema.content.GenericOperationLogContent;
+import io.gardenerframework.fragrans.log.schema.content.Content;
 import io.gardenerframework.fragrans.log.schema.details.Detail;
 import io.gardenerframework.fragrans.log.schema.template.GenericOperationLogTemplate;
 import io.gardenerframework.fragrans.log.schema.template.Template;
@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.experimental.Delegate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -28,8 +27,8 @@ public class GenericOperationLoggerMessageCustomizer implements LogMessageCustom
     private final OperatorBrief operatorBrief;
 
     @Override
-    public boolean support(BasicLogger logger, Template template, Contents contents) {
-        return logger instanceof GenericOperationLogger && RequestContextHolder.getRequestAttributes() != null;
+    public boolean support(BasicLogger logger, Template template, Content content) {
+        return (logger instanceof GenericOperationLogger || logger instanceof GenericBasicLogger) && RequestContextHolder.getRequestAttributes() != null;
     }
 
     @Override
@@ -38,14 +37,14 @@ public class GenericOperationLoggerMessageCustomizer implements LogMessageCustom
     }
 
     @Override
-    public Contents customize(Contents contents) {
-        return new GenericOperationAuditLogContent(GenericOperationLogContent.builder(), (GenericOperationLogContent) contents, operatorBrief);
+    public Content customize(Content content) {
+        return new GenericOperationAuditLogContent(content, operatorBrief);
     }
 
     @AllArgsConstructor
-    public static class GenericOperationAuditLogTemplate extends GenericOperationLogTemplate {
+    @Getter
+    public static class GenericOperationAuditLogTemplate implements Template {
         @NonNull
-        @Delegate
         private final GenericOperationLogTemplate template;
 
         @Override
@@ -54,32 +53,30 @@ public class GenericOperationLoggerMessageCustomizer implements LogMessageCustom
         }
     }
 
-    public static class GenericOperationAuditLogContent extends GenericOperationLogContent {
-        @Delegate(excludes = Contents.class)
+    @Getter
+    public static class GenericOperationAuditLogContent implements Content {
         @NonNull
-        private final GenericOperationLogContent target;
+        private final Content target;
         @NonNull
-        @Getter
         private final OperatorDetail operatorDetail;
 
-        protected GenericOperationAuditLogContent(GenericOperationLogContentBuilder<?, ?> b, @NonNull GenericOperationLogContent target, @NonNull OperatorBrief operatorBrief) {
-            super(b);
+        protected GenericOperationAuditLogContent(@NonNull Content target, @NonNull OperatorBrief operatorBrief) {
             this.target = target;
             this.operatorDetail = new OperatorDetail();
             BeanUtils.copyProperties(operatorBrief, operatorDetail);
         }
 
         @Override
-        public Collection<Word> getContents() {
-            List<Word> contents = new LinkedList<>(target.getContents());
-            contents.add(new Word() {
+        public Collection<Word> getContent() {
+            List<Word> content = new LinkedList<>(target.getContent());
+            content.add(new Word() {
                 @Override
                 public String toString() {
                     return String.format("[%s]",
                             String.join(", ", operatorDetail.getPairs()));
                 }
             });
-            return contents;
+            return content;
         }
     }
 

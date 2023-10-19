@@ -13,7 +13,7 @@ import org.springframework.lang.Nullable;
  */
 @SuperBuilder
 @Getter
-public abstract class AbstractGenericLogContent implements Contents {
+public abstract class AbstractGenericLogContent implements Content {
     /**
      * 什么东西
      */
@@ -29,7 +29,6 @@ public abstract class AbstractGenericLogContent implements Contents {
         return new Word() {
             @Override
             public String toString() {
-
                 return what.getSimpleName();
             }
         };
