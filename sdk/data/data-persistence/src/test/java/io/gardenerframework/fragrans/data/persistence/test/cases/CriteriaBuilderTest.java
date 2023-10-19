@@ -2,7 +2,6 @@ package io.gardenerframework.fragrans.data.persistence.test.cases;
 
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Equals;
 import io.gardenerframework.fragrans.data.persistence.criteria.support.CriteriaBuilder;
-import io.gardenerframework.fragrans.data.persistence.criteria.support.CriteriaBuilderStaticAccessor;
 import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.EqualsCriteria;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -34,8 +32,7 @@ import java.util.UUID;
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
 @ActiveProfiles("mysql")
 public class CriteriaBuilderTest {
-    @Autowired
-    private CriteriaBuilder criteriaBuilder;
+    private final CriteriaBuilder criteriaBuilder = CriteriaBuilder.getInstance();
 
     @BeforeEach
     public void ensureDriver() {
@@ -68,7 +65,7 @@ public class CriteriaBuilderTest {
         Assertions.assertTrue(basicCriteria instanceof EqualsCriteria);
         Assertions.assertEquals("`name` = #{test.name}", basicCriteria.build());
 
-        MatchAllCriteria criteria = CriteriaBuilderStaticAccessor.builder().createCriteria(
+        MatchAllCriteria criteria = CriteriaBuilder.getInstance().createCriteria(
                 "test",
                 TestEntity.class,
                 new TestCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
@@ -77,7 +74,7 @@ public class CriteriaBuilderTest {
                 null
         );
         Assertions.assertEquals("((((`test`.`id` = #{test.id}) AND (`test`.`name` = #{test.name}))))", criteria.build());
-        criteria = CriteriaBuilderStaticAccessor.builder().createCriteria(
+        criteria = CriteriaBuilder.getInstance().createCriteria(
                 "test",
                 TestEntity.class,
                 new TestCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
@@ -86,7 +83,7 @@ public class CriteriaBuilderTest {
                 Arrays.asList(GenericTraits.IdentifierTraits.Id.class, GenericTraits.LiteralTraits.Name.class)
         );
         Assertions.assertEquals("((((`test`.`id` = #{test.id}) OR (`test`.`name` = #{test.name}))))", criteria.build());
-        criteria = CriteriaBuilderStaticAccessor.builder().createCriteria(
+        criteria = CriteriaBuilder.getInstance().createCriteria(
                 "test",
                 ExtendCriteria.class,
                 new TestCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),

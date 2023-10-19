@@ -1,6 +1,5 @@
 package io.gardenerframework.fragrans.data.persistence.criteria.support;
 
-import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Batch;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.CriteriaProvider;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory.CriteriaFactory;
@@ -34,25 +33,22 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author ZhangHan
  * @date 2022/11/28 13:51
  */
-@DataPersistenceComponent
 public class CriteriaBuilder {
     /**
      * 存储一下每个criteria类型实现的trait清单
      */
     private final static Map<Class<?>, Collection<Class<?>>> criteriaTraitClasses = new ConcurrentHashMap<>();
-    private final Map<Class<?>, CriteriaFactory> factoryCache = new ConcurrentHashMap<>();
+    private final static Map<Class<? extends CriteriaFactory>, CriteriaFactory> factories = new ConcurrentHashMap<>();
+    @Getter
+    private final static CriteriaBuilder instance = new CriteriaBuilder();
     /**
      * 当没有注解出现时自动使用判等
      */
     @Setter
     private boolean usingEqualsIfNoAnnotationPresent = true;
 
-    public CriteriaBuilder(Collection<CriteriaFactory> criteriaFactories) {
-        if (!CollectionUtils.isEmpty(criteriaFactories)) {
-            criteriaFactories.forEach(
-                    criteriaFactory -> factoryCache.put(criteriaFactory.getClass(), criteriaFactory)
-            );
-        }
+    public static void addCriteriaFactory(CriteriaFactory factory) {
+        factories.put(factory.getClass(), factory);
     }
 
     /**
@@ -253,7 +249,7 @@ public class CriteriaBuilder {
                         CriteriaProvider criteriaProvider = AnnotationUtils.findAnnotation(criteriaField, CriteriaProvider.class);
                         if (criteriaProvider != null || usingEqualsIfNoAnnotationPresent) {
                             //不是集合
-                            CriteriaFactory criteriaFactory = factoryCache.get(criteriaProvider == null ? EqualsFactory.class : criteriaProvider.value());
+                            CriteriaFactory criteriaFactory = factories.get(criteriaProvider == null ? EqualsFactory.class : criteriaProvider.value());
                             Assert.notNull(criteriaFactory, "cannot get CriteriaFactory bean of " + (criteriaProvider == null ? EqualsFactory.class : criteriaProvider.value()));
                             if (criteriaCreated == null) {
                                 criteriaCreated = criteriaFactory.createCriteria(
