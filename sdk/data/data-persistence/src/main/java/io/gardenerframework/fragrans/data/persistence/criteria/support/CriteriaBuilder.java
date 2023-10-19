@@ -21,7 +21,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.function.TriFunction;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;

@@ -1,6 +1,5 @@
 package io.gardenerframework.fragrans.data.persistence.test.utils.fieldTest;
 
-import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
 import io.gardenerframework.fragrans.data.schema.query.GenericQueryResult;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

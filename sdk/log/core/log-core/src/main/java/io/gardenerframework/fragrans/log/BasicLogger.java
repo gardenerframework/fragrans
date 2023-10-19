@@ -30,7 +30,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      * @param cause    异常
      */
     public void debug(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
@@ -54,7 +54,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      */
     public void debug(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
         debug(logger, template, content, null);
@@ -76,7 +76,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      * @param cause    异常
      */
     public void info(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
@@ -100,7 +100,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      */
     public void info(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
         info(logger, template, content, null);
@@ -122,7 +122,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      * @param cause    异常
      */
     public void warn(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
@@ -147,7 +147,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      */
     public void warn(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
         warn(logger, template, content, null);
@@ -169,7 +169,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      * @param cause    异常
      */
     public void error(@NonNull Logger logger, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {
@@ -193,7 +193,7 @@ public class BasicLogger {
      *
      * @param logger   日志类
      * @param template 模板
-     * @param content 内容
+     * @param content  内容
      */
     public void error(@NonNull Logger logger, @NonNull Template template, @NonNull Content content) {
         error(logger, template, content, null);
@@ -217,7 +217,7 @@ public class BasicLogger {
      * @param logLevelChecker 检查日志记录是否激活
      * @param methodTemplate  真正的日志记录方法
      * @param template        模板
-     * @param content        内容
+     * @param content         内容
      * @param cause           异常
      */
     protected void logInternally(@NonNull Logger logger, @NonNull LogLevelChecker logLevelChecker, @NonNull LogMethodTemplate methodTemplate, @NonNull Template template, @NonNull Content content, @Nullable Throwable cause) {

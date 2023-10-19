@@ -1,7 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.criteria.support;
 
 import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**

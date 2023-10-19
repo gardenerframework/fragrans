@@ -5,11 +5,9 @@ import io.gardenerframework.fragrans.api.standard.error.configuration.ApiStandar
 import io.gardenerframework.fragrans.api.standard.error.support.event.InitializingApiErrorPropertiesEvent;
 import io.gardenerframework.fragrans.api.standard.schema.ApiError;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Locale;

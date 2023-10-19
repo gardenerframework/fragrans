@@ -1,7 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.orm.statement;
 
 import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
-import org.springframework.stereotype.Component;
 
 /**
  * 一个静态的访问类

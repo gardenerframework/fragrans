@@ -5,7 +5,6 @@ import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.colum
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.EqualsCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.value.BasicValue;
-import org.springframework.stereotype.Component;
 
 /**
  * @author ZhangHan

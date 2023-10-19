@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Setter;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Type;

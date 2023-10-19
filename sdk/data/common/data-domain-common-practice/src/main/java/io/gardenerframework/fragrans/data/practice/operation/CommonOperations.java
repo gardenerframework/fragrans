@@ -5,7 +5,6 @@ import io.gardenerframework.fragrans.data.practice.operation.checker.RecordCheck
 import io.gardenerframework.fragrans.data.practice.operation.checker.RecordCollectionChecker;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.function.Supplier;

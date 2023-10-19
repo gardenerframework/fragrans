@@ -1,7 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.orm.entity;
 
 import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
-import org.springframework.stereotype.Component;
 
 /**
  * @author zhanghan30

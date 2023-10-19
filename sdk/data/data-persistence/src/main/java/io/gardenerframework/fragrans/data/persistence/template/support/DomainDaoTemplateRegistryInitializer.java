@@ -5,7 +5,6 @@ import io.gardenerframework.fragrans.data.persistence.configuration.MapperBeanDe
 import io.gardenerframework.fragrans.data.persistence.template.annotation.DomainDaoTemplate;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
