@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.data.persistence.test.cases;
 
 import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
-import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScannerStaticAccessor;
+import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.JsonObjectArrayColumn;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.JsonObjectColumn;
 import io.gardenerframework.fragrans.data.persistence.test.DataPersistenceTestApplication;
@@ -30,18 +30,18 @@ public class JsonColumnTest {
     @Test
     public void smokeTest() {
         JsonObjectColumn hehe = new JsonObjectColumn(
-                FieldScannerStaticAccessor.scanner().columns(
+                FieldScanner.getInstance().columns(
                         BasicEntity.class
                 ),
-                column -> FieldScannerStaticAccessor.scanner().getConverter(BasicEntity.class).columnToField(column),
+                column -> FieldScanner.getInstance().getConverter(BasicEntity.class).columnToField(column),
                 "hehe"
         );
         Assertions.assertEquals("JSON_OBJECT(\"id\",`id`,\"createdTime\",`created_time`,\"lastUpdateTime\",`last_update_time`) AS `hehe`", hehe.build());
         JsonObjectArrayColumn haha = new JsonObjectArrayColumn(
-                FieldScannerStaticAccessor.scanner().columns(
+                FieldScanner.getInstance().columns(
                         BasicEntity.class
                 ),
-                column -> FieldScannerStaticAccessor.scanner().getConverter(BasicEntity.class).columnToField(column),
+                column -> FieldScanner.getInstance().getConverter(BasicEntity.class).columnToField(column),
                 "haha"
         );
         Assertions.assertEquals("JSON_ARRAYAGG(JSON_OBJECT(\"id\",`id`,\"createdTime\",`created_time`,\"lastUpdateTime\",`last_update_time`)) AS `haha`", haha.build());

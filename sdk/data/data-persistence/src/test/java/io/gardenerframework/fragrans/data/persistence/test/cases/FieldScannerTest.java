@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -36,8 +35,7 @@ import java.util.Collections;
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
 @ActiveProfiles("mysql")
 public class FieldScannerTest {
-    @Autowired
-    private FieldScanner fieldScanner;
+    private final FieldScanner fieldScanner = FieldScanner.getInstance();
 
     @BeforeEach
     public void ensureDriver() {

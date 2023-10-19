@@ -5,7 +5,7 @@ import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Batch;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.CriteriaProvider;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory.CriteriaFactory;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory.EqualsFactory;
-import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScannerStaticAccessor;
+import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.Column;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.BatchCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
@@ -248,7 +248,7 @@ public class CriteriaBuilder {
                         );
                         ReflectionUtils.doWithFields(entityType, fieldFinder);
                         //反向获取列名 - 使用实体的列名而不是搜索条件通过扫描获得的列名
-                        String column = FieldScannerStaticAccessor.scanner().column(entityType, entityTrait);
+                        String column = FieldScanner.getInstance().column(entityType, entityTrait);
                         //最后一个处理equals
                         CriteriaProvider criteriaProvider = AnnotationUtils.findAnnotation(criteriaField, CriteriaProvider.class);
                         if (criteriaProvider != null || usingEqualsIfNoAnnotationPresent) {
@@ -319,7 +319,7 @@ public class CriteriaBuilder {
         @Override
         public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
             if (field.getName().equals(
-                    FieldScannerStaticAccessor.scanner().field(
+                    FieldScanner.getInstance().field(
                             type,
                             trait
                     )

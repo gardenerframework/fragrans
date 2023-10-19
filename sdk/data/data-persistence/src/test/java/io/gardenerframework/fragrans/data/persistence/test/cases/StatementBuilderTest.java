@@ -32,8 +32,7 @@ import java.util.Collections;
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
 @ActiveProfiles("mysql")
 public class StatementBuilderTest {
-    @Autowired
-    private FieldScanner scanner;
+    private final FieldScanner scanner = FieldScanner.getInstance();
     @Autowired
     private StatementBuilder builder;
 

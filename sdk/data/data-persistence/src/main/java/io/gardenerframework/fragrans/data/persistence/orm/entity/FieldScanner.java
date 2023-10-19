@@ -4,7 +4,6 @@ import io.gardenerframework.fragrans.data.persistence.orm.entity.annotation.Usin
 import io.gardenerframework.fragrans.data.persistence.orm.entity.converter.CamelToUnderscoreConverter;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.converter.ColumnNameConverter;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.converter.NoopConverter;
-import io.gardenerframework.fragrans.infrastructure.context.ApplicationContextStaticAccessor;
 import io.gardenerframework.fragrans.sugar.trait.utils.TraitUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +31,10 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class FieldScanner {
     /**
+     * 转换器缓存
+     */
+    private static final Map<Class<? extends ColumnNameConverter>, ColumnNameConverter> converters = new ConcurrentHashMap<>();
+    /**
      * 扫描缓存
      * <p>
      * 在多个实例间共享
@@ -47,6 +50,15 @@ public class FieldScanner {
      */
     @Getter
     private final ColumnNameConverter defaultConverter = new CamelToUnderscoreConverter();
+    /**
+     * 静态单例
+     */
+    @Getter
+    private static final FieldScanner instance = new FieldScanner();
+
+    public static void addColumnNameConverter(ColumnNameConverter converter) {
+        converters.put(converter.getClass(), converter);
+    }
 
     /**
      * 使用注解或trait获取类型的属性，这个属性必须是唯一确定的
@@ -337,7 +349,7 @@ public class FieldScanner {
         if (annotation == null) {
             return defaultConverter;
         } else {
-            return ApplicationContextStaticAccessor.applicationContext().getBean(annotation.value());
+            return Objects.requireNonNull(converters.get(annotation.value()));
         }
     }
 
