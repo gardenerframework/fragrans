@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.api.options.persistence.dao;
 
 import io.gardenerframework.fragrans.api.options.persistence.schema.ApiOptionDatabaseRecord;
-import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilderStaticAccessor;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilder;
 import io.gardenerframework.fragrans.data.practice.persistence.orm.statement.CommonScannerCallbacks;
 import io.gardenerframework.fragrans.data.practice.persistence.orm.statement.schema.criteria.CommonCriteria;
 import org.apache.ibatis.annotations.*;
@@ -46,7 +46,7 @@ public interface ApiOptionMysqlDao extends ApiOptionDao {
 
     class SqlProvider implements ProviderMethodResolver {
         public String createApiOption(ApiOptionDatabaseRecord record) {
-            return StatementBuilderStaticAccessor.builder()
+            return StatementBuilder.getInstance()
                     .insert(
                             ApiOptionDatabaseRecord.class,
                             new CommonScannerCallbacks.InsertStatementIgnoredAnnotations(),
@@ -56,14 +56,14 @@ public interface ApiOptionMysqlDao extends ApiOptionDao {
         }
 
         public String readApiOption(String id) {
-            return StatementBuilderStaticAccessor.builder().select(
+            return StatementBuilder.getInstance().select(
                     ApiOptionDatabaseRecord.class,
                     new CommonScannerCallbacks.SelectStatementIgnoredAnnotations()
             ).where(new CommonCriteria.QueryByIdCriteria()).build();
         }
 
         public String updateApiOption(String id, ApiOptionDatabaseRecord record) {
-            return StatementBuilderStaticAccessor.builder().update(
+            return StatementBuilder.getInstance().update(
                     ApiOptionDatabaseRecord.class,
                     new CommonScannerCallbacks.UpdateStatementIgnoredAnnotations(),
                     "record"

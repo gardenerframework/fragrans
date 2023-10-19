@@ -17,6 +17,6 @@ public class ColumnNameConverterAutoConfiguration implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-       converters.forEach(FieldScanner::addColumnNameConverter);
+        converters.forEach(FieldScanner::addColumnNameConverter);
     }
 }

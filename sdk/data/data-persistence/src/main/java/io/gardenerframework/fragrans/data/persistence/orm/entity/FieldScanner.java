@@ -41,6 +41,11 @@ public class FieldScanner {
      */
     private final static SingleFieldResultCache singleFieldResultCache = new SingleFieldResultCache();
     /**
+     * 静态单例
+     */
+    @Getter
+    private static final FieldScanner instance = new FieldScanner();
+    /**
      * 设置是否使用缓存
      */
     @Setter
@@ -50,11 +55,6 @@ public class FieldScanner {
      */
     @Getter
     private final ColumnNameConverter defaultConverter = new CamelToUnderscoreConverter();
-    /**
-     * 静态单例
-     */
-    @Getter
-    private static final FieldScanner instance = new FieldScanner();
 
     public static void addColumnNameConverter(ColumnNameConverter converter) {
         converters.put(converter.getClass(), converter);
