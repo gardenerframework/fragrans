@@ -1,7 +1,7 @@
 package io.gardenerframework.fragrans.data.persistence.test.utils.fieldTest;
 
 import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
-import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilderStaticAccessor;
+import io.gardenerframework.fragrans.data.persistence.orm.statement.StatementBuilder;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.Column;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.BatchCriteria;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
@@ -74,23 +74,23 @@ public interface FieldTestDao extends ApplicationContextAware {
     class SqlProvider implements ProviderMethodResolver {
 
         public StatementCharSequenceAdapter<InsertStatement> add(@Param("object") FieldTestObject object) {
-            return new StatementCharSequenceAdapter<>(StatementBuilderStaticAccessor.builder().insert(FieldTestObject.class, new CommonScannerCallbacks.InsertStatementIgnoredAnnotations(), "object"));
+            return new StatementCharSequenceAdapter<>(StatementBuilder.getInstance().insert(FieldTestObject.class, new CommonScannerCallbacks.InsertStatementIgnoredAnnotations(), "object"));
         }
 
         public String batchAdd(@Param("list") List<FieldTestObject> list) {
-            return StatementBuilderStaticAccessor.builder().insert(FieldTestObject.class, new CommonScannerCallbacks.InsertStatementIgnoredAnnotations(), "list", "item").build();
+            return StatementBuilder.getInstance().insert(FieldTestObject.class, new CommonScannerCallbacks.InsertStatementIgnoredAnnotations(), "list", "item").build();
         }
 
         public String deleteAll() {
-            return StatementBuilderStaticAccessor.builder().delete(FieldTestObject.class).build();
+            return StatementBuilder.getInstance().delete(FieldTestObject.class).build();
         }
 
         public String count() {
-            return StatementBuilderStaticAccessor.builder().select().table(FieldTestObject.class).column("count(1)", false).build();
+            return StatementBuilder.getInstance().select().table(FieldTestObject.class).column("count(1)", false).build();
         }
 
         public String foundRows(@Param("prefix") String prefix) {
-            return StatementBuilderStaticAccessor.builder()
+            return StatementBuilder.getInstance()
                     .select(FieldTestObject.class, FieldScanner::columns)
                     .countFoundRows(true)
                     .where(
@@ -100,7 +100,7 @@ public interface FieldTestDao extends ApplicationContextAware {
         }
 
         public String query(@Param("prefix") String prefix, int pageNo, int pageSize) {
-            return StatementBuilderStaticAccessor.builder()
+            return StatementBuilder.getInstance()
                     .select(FieldTestObject.class, FieldScanner::columns)
                     .where(
                             StringUtils.hasText(prefix) ?
@@ -111,22 +111,22 @@ public interface FieldTestDao extends ApplicationContextAware {
         }
 
         public String get(@Param("id") String id) {
-            return StatementBuilderStaticAccessor.builder().select(FieldTestObject.class, FieldScanner::columns).where(new CommonCriteria.QueryByIdCriteria()).build();
+            return StatementBuilder.getInstance().select(FieldTestObject.class, FieldScanner::columns).where(new CommonCriteria.QueryByIdCriteria()).build();
         }
 
         public String deleteById(@Param("id") String id) {
-            return StatementBuilderStaticAccessor.builder().delete(FieldTestObject.class).where(new CommonCriteria.QueryByIdCriteria()).build();
+            return StatementBuilder.getInstance().delete(FieldTestObject.class).where(new CommonCriteria.QueryByIdCriteria()).build();
         }
 
         public String update(@Param("id") String id, @Param("test") String test) {
-            return StatementBuilderStaticAccessor.builder().update(FieldTestObject.class)
+            return StatementBuilder.getInstance().update(FieldTestObject.class)
                     .column("test", ParameterNameValue::new)
                     .where(new CommonCriteria.QueryByIdCriteria())
                     .build();
         }
 
         public String updateRecord(@Param("id") String id, @Param("object") FieldTestObject object) {
-            return StatementBuilderStaticAccessor.builder()
+            return StatementBuilder.getInstance()
                     .update(
                             FieldTestObject.class,
                             new CommonScannerCallbacks.UpdateStatementIgnoredAnnotations(), "object"
@@ -135,16 +135,16 @@ public interface FieldTestDao extends ApplicationContextAware {
         }
 
         public String updateTwinFiled(@Param("id") String id, @Param("test") String test, @Param("other") boolean other) {
-            return StatementBuilderStaticAccessor.builder().update(FieldTestObject.class)
+            return StatementBuilder.getInstance().update(FieldTestObject.class)
                     .column("test", ParameterNameValue::new)
                     .column("other", ParameterNameValue::new)
                     .where(new CommonCriteria.QueryByIdCriteria()).build();
         }
 
         public String batchNestedSelect(@Param("ids") Collection<String> ids) {
-            return StatementBuilderStaticAccessor.builder().
+            return StatementBuilder.getInstance().
                     select(FieldTestObject.class, FieldScanner::columns).table(
-                            StatementBuilderStaticAccessor.builder().select(
+                            StatementBuilder.getInstance().select(
                                     FieldTestObject.class, FieldScanner::columns
                             ).where(new BatchCriteria().collection("ids").item("id").criteria(
                                     new EqualsCriteria("id", new ParameterNameValue("id"))
@@ -158,9 +158,9 @@ public interface FieldTestDao extends ApplicationContextAware {
         }
 
         public String batchNestedCollectionSelect(@Param("idHolder") IdsInNestedObject param) {
-            return StatementBuilderStaticAccessor.builder().
+            return StatementBuilder.getInstance().
                     select(FieldTestObject.class, FieldScanner::columns, "t").table(
-                            StatementBuilderStaticAccessor.builder().select(
+                            StatementBuilder.getInstance().select(
                                     FieldTestObject.class, FieldScanner::columns
                             ).where(new BatchCriteria().collection("idHolder.ids").item("id").criteria(
                                     new EqualsCriteria("id", new ParameterNameValue("id"))

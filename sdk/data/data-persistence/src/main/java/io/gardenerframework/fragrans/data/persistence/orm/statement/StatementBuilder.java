@@ -21,8 +21,16 @@ import java.util.function.BiFunction;
  */
 @AllArgsConstructor
 public class StatementBuilder {
+    /**
+     * 与属性扫描共用默认单例对象
+     */
     @Getter
-    private final FieldScanner fieldScanner = new FieldScanner();
+    private final FieldScanner fieldScanner = FieldScanner.getInstance();
+    /**
+     * 静态单例对象
+     */
+    @Getter
+    private static final StatementBuilder instance = new StatementBuilder();
 
     /**
      * 给一个select 语句
