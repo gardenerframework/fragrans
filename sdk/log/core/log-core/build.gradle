@@ -1,3 +1,4 @@
 dependencies {
     api "${rootProject.group}:log-core-schema"
+    api "org.springframework:spring-context"
 }

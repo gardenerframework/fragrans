@@ -2,9 +2,9 @@ package io.gardenerframework.fragrans.api.security.automation.configuration;
 
 import io.gardenerframework.fragrans.api.security.automation.log.customizer.GenericOperationLoggerMessageCustomizer;
 import io.gardenerframework.fragrans.api.security.operator.schema.OperatorBrief;
-import io.gardenerframework.fragrans.log.GenericBasicLogger;
 import io.gardenerframework.fragrans.log.GenericOperationLogger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
         OperatorBrief.class
 })
 public class ApiSecurityAutomationLoggingConfiguration {
-    public ApiSecurityAutomationLoggingConfiguration(OperatorBrief operatorBrief) {
-        GenericOperationLoggerMessageCustomizer customizer = new GenericOperationLoggerMessageCustomizer(operatorBrief);
-        GenericBasicLogger.addLogMessageCustomizer(customizer);
+    @Bean
+    public GenericOperationLoggerMessageCustomizer genericOperationLoggerMessageCustomizer(OperatorBrief operatorBrief) {
+        return new GenericOperationLoggerMessageCustomizer(operatorBrief);
     }
 }
