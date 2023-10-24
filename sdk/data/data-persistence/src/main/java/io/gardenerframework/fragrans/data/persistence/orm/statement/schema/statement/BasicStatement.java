@@ -114,8 +114,11 @@ public abstract class BasicStatement<S extends BasicStatement<S>> implements Sql
      * @return 加完的结果
      */
     protected String appendQueryCriteria(String statement, @Nullable DatabaseCriteria criteria) {
-        if (criteria != null ||
+        //条件不是match all 也不是 match any 而且还不是null
+        if ((!(criteria instanceof MatchAllCriteria) && !(criteria instanceof MatchAnyCriteria) && criteria != null) ||
+                //或者条件是match all 且不是空的
                 (criteria instanceof MatchAllCriteria && !((MatchAllCriteria) criteria).isEmpty()) ||
+                //或者条件是match any 且不是空的
                 (criteria instanceof MatchAnyCriteria && !((MatchAnyCriteria) criteria).isEmpty())
         ) {
             return String.format("%s WHERE (%s)", statement, criteria.build());
