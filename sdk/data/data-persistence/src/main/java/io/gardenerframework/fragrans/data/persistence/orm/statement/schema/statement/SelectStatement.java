@@ -443,6 +443,18 @@ public class SelectStatement extends BasicStatement<SelectStatement> {
         return this;
     }
 
+    /**
+     * 套用limit执行分页
+     *
+     * @param no   要访问的页码
+     * @param size 页大小
+     * @return 语句
+     */
+    public SelectStatement pagination(long no, long size) {
+        limit((no - 1) * size, size);
+        return this;
+    }
+
     @Override
     protected String buildInternally() {
         return appendLimit(
