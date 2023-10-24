@@ -116,7 +116,9 @@ public class CriteriaBuilder {
                         }
                     }
             );
-            criteriaCreated.and(mustCriteria);
+            if (!mustCriteria.isEmpty()) {
+                criteriaCreated.and(mustCriteria);
+            }
         }
         if (!CollectionUtils.isEmpty(should)) {
             MatchAnyCriteria shouldCriteria = new MatchAnyCriteria();
@@ -128,7 +130,9 @@ public class CriteriaBuilder {
                         }
                     }
             );
-            criteriaCreated.and(shouldCriteria);
+            if (!shouldCriteria.isEmpty()) {
+                criteriaCreated.and(shouldCriteria);
+            }
         }
         return criteriaCreated;
     }
