@@ -122,7 +122,13 @@ public interface CommonScannerCallbacks {
     class UpdateStatementIgnoredAnnotations extends IgnoreAnnotations {
 
         public UpdateStatementIgnoredAnnotations() {
-            super(Arrays.asList(ImmutableField.class, DatabaseControlledField.class, SkipInGenericUpdateOperation.class));
+            this(true);
+        }
+
+        public UpdateStatementIgnoredAnnotations(boolean skipGenericUpdate) {
+            super(skipGenericUpdate ?
+                    Arrays.asList(ImmutableField.class, DatabaseControlledField.class, SkipInGenericUpdateOperation.class)
+                    : Arrays.asList(ImmutableField.class, DatabaseControlledField.class));
         }
     }
 }
