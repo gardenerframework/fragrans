@@ -14,10 +14,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Batch {
-    /**
-     * 批量查询时，当前属性对应的trait已经被转为实体的哪个trait
-     *
-     * @return 转换后的trait类
-     */
-    Class<?> value() default void.class;
 }

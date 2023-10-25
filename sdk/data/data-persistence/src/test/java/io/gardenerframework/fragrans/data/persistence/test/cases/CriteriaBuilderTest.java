@@ -8,13 +8,13 @@ import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.crite
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.MatchAllCriteria;
 import io.gardenerframework.fragrans.data.persistence.test.DataPersistenceTestApplication;
 import io.gardenerframework.fragrans.data.trait.generic.GenericTraits;
+import io.gardenerframework.fragrans.sugar.trait.utils.TraitUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +28,6 @@ import java.util.UUID;
  * @author ZhangHan
  * @date 2022/11/28 17:03
  */
-@DisplayName("类扫描测试")
 @SpringBootTest(classes = DataPersistenceTestApplication.class)
 @ActiveProfiles("mysql")
 public class CriteriaBuilderTest {
@@ -41,26 +40,26 @@ public class CriteriaBuilderTest {
 
     @Test
     public void smokeTest() {
-        Map<Class<?>, DatabaseCriteria> test = criteriaBuilder.createCriteriaTraitMapping(
+        Map<String, DatabaseCriteria> test = criteriaBuilder.createFieldCriteriaMapping(
                 null,
                 TestEntity.class,
                 new TestCriteria(),
                 "test"
         );
-        DatabaseCriteria basicCriteria = test.get(GenericTraits.IdentifierTraits.Id.class);
+        DatabaseCriteria basicCriteria = test.get(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get());
         //没有任何搜索值，条件被忽略
         Assertions.assertNull(basicCriteria);
-        test = criteriaBuilder.createCriteriaTraitMapping(
+        test = criteriaBuilder.createFieldCriteriaMapping(
                 null,
                 TestEntity.class,
                 new TestCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
                 "test"
         );
-        basicCriteria = test.get(GenericTraits.IdentifierTraits.Id.class);
+        basicCriteria = test.get(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get());
         //给了值之后有了
         Assertions.assertTrue(basicCriteria instanceof EqualsCriteria);
         Assertions.assertEquals("`id` = #{test.id}", basicCriteria.build());
-        basicCriteria = test.get(GenericTraits.LiteralTraits.Name.class);
+        basicCriteria = test.get(TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get());
         //默认判等
         Assertions.assertTrue(basicCriteria instanceof EqualsCriteria);
         Assertions.assertEquals("`name` = #{test.name}", basicCriteria.build());
@@ -70,7 +69,7 @@ public class CriteriaBuilderTest {
                 TestEntity.class,
                 new TestCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
                 "test",
-                Arrays.asList(GenericTraits.IdentifierTraits.Id.class, GenericTraits.LiteralTraits.Name.class),
+                Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get()),
                 null
         );
         Assertions.assertEquals("((((`test`.`id` = #{test.id}) AND (`test`.`name` = #{test.name}))))", criteria.build());
@@ -80,7 +79,7 @@ public class CriteriaBuilderTest {
                 new TestCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
                 "test",
                 null,
-                Arrays.asList(GenericTraits.IdentifierTraits.Id.class, GenericTraits.LiteralTraits.Name.class)
+                Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get())
         );
         Assertions.assertEquals("((((`test`.`id` = #{test.id}) OR (`test`.`name` = #{test.name}))))", criteria.build());
         criteria = CriteriaBuilder.getInstance().createCriteria(
@@ -89,7 +88,7 @@ public class CriteriaBuilderTest {
                 new TestCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
                 "test",
                 null,
-                Arrays.asList(GenericTraits.IdentifierTraits.Id.class, GenericTraits.LiteralTraits.Name.class)
+                Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get())
         );
         Assertions.assertEquals("((((`test`.`id` = #{test.id}) OR (`test`.`name` = #{test.name}))))", criteria.build());
     }
