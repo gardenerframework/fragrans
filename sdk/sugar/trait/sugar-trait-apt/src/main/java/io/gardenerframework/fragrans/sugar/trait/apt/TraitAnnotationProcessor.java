@@ -16,6 +16,7 @@ import io.gardenerframework.fragrans.sugar.trait.annotation.TraitNamespace;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
@@ -157,7 +158,9 @@ public class TraitAnnotationProcessor extends AbstractProcessor {
                 for (JCTree.JCVariableDecl variable : variables) {
                     temp.remove(variable);
                     temp.add(createGetter(variable));
-                    temp.add(createSetter(variable));
+                    if (!variable.getModifiers().getFlags().contains(Modifier.FINAL)) {
+                        temp.add(createSetter(variable));
+                    }
                 }
                 jcClassDecl.defs = List.from(temp);
                 super.visitClassDef(jcClassDecl);
