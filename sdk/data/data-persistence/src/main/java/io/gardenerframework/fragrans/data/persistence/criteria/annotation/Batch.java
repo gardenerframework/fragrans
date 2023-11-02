@@ -14,4 +14,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Batch {
+    /**
+     * @return 批量查询条件中的字段映射为实体类中的那个字段，
+     * 比如 ids对应Id.class
+     */
+    Class<?> value() default void.class;
 }

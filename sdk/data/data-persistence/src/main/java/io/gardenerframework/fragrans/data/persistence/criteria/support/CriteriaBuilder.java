@@ -202,6 +202,8 @@ public class CriteriaBuilder {
                             //如果当前过滤器说不需要处理这个字段
                             return;
                         }
+                        //条件字段映射的实体字段名
+                        String criteriaMappedEntityFieldName = criteriaField.getName();
                         //查看是否是批量操作
                         DatabaseCriteria criteriaCreated = null;
                         //判断集合逻辑
@@ -228,14 +230,21 @@ public class CriteriaBuilder {
                             ((BatchCriteria) criteriaCreated).collection(criteriaParameterName, criteriaField.getName());
                             //设置元素为item
                             ((BatchCriteria) criteriaCreated).item("item");
+                            if (!void.class.equals(batch.value()) && batch.value() != null) {
+                                Class<?> fieldTrait = batch.value();
+                                //在实体类中检查是否有这个字段
+                                //修改映射的字段名称
+                                criteriaMappedEntityFieldName = FieldScanner.getInstance().field(entityType, fieldTrait);
+                            }
                         }
                         //检查同名字段在实体的类型中是否存在
-                        if (ReflectionUtils.findField(entityType, criteriaField.getName()) == null) {
+                        //在@Batch注解中，有可能将复数命名的字段转为实体的某个字段
+                        if (ReflectionUtils.findField(entityType, criteriaMappedEntityFieldName) == null) {
                             //不存在不创建条件 - 与约定不同
-                            return;
+                            throw new IllegalArgumentException(entityType + " did not have a field of " + criteriaMappedEntityFieldName);
                         }
                         //反向获取列名 - 使用实体的列名而不是搜索条件通过扫描获得的列名
-                        String column = FieldScanner.getInstance().getConverter(entityType).fieldToColumn(criteriaField.getName());
+                        String column = FieldScanner.getInstance().getConverter(entityType).fieldToColumn(criteriaMappedEntityFieldName);
                         //最后一个处理equals
                         CriteriaProvider criteriaProvider = AnnotationUtils.findAnnotation(criteriaField, CriteriaProvider.class);
                         if (criteriaProvider != null || usingEqualsIfNoAnnotationPresent) {
@@ -248,6 +257,7 @@ public class CriteriaBuilder {
                                         criteria,
                                         criteriaParameterName,
                                         new Column(tableName, column),
+                                        //这里要去搜索条件参数的字段而不是映射到实体的字段
                                         new FieldNameValue(criteriaParameterName, criteriaField.getName())
                                 );
                             } else {

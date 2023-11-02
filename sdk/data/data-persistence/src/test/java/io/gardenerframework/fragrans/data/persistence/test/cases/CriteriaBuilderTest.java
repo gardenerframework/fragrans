@@ -1,5 +1,6 @@
 package io.gardenerframework.fragrans.data.persistence.test.cases;
 
+import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Batch;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Equals;
 import io.gardenerframework.fragrans.data.persistence.criteria.support.CriteriaBuilder;
 import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
@@ -20,9 +21,7 @@ import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author ZhangHan
@@ -91,6 +90,17 @@ public class CriteriaBuilderTest {
                 Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get())
         );
         Assertions.assertEquals("((((`test`.`id` = #{test.id}) OR (`test`.`name` = #{test.name}))))", criteria.build());
+        criteria = CriteriaBuilder.getInstance().createCriteria(
+                "test",
+                BatchCriteria.class,
+                new BatchCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
+                "batchTest",
+                null,
+                Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get(), "ids")
+        );
+        String noR = criteria.build().replace("\r", "");
+        String noN = noR.replace("\n", "");
+        Assertions.assertEquals("((((`test`.`id` = #{batchTest.id}) OR (`test`.`name` = #{batchTest.name}) OR ((<foreach item=\"item\" collection=\"batchTest.ids\" separator=\"OR\">       (`test`.`id` = #{item})</foreach>)))))", noN);
     }
 
     @Getter
@@ -115,9 +125,21 @@ public class CriteriaBuilderTest {
     }
 
     @NoArgsConstructor
-    public class ExtendCriteria extends TestCriteria {
+    public static class ExtendCriteria extends TestCriteria {
         public ExtendCriteria(String id, String name) {
             super(id, name);
         }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class BatchCriteria extends TestCriteria {
+        public BatchCriteria(String id, String name) {
+            super(id, name);
+        }
+
+        @Batch(GenericTraits.IdentifierTraits.Id.class)
+        private Collection<String> ids = Collections.singletonList("hehe");
     }
 }
