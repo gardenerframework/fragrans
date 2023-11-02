@@ -135,11 +135,11 @@ public class CriteriaBuilderTest {
     @Setter
     @NoArgsConstructor
     public static class BatchCriteria extends TestCriteria {
+        @Batch(GenericTraits.IdentifierTraits.Id.class)
+        private Collection<String> ids = Collections.singletonList("hehe");
+
         public BatchCriteria(String id, String name) {
             super(id, name);
         }
-
-        @Batch(GenericTraits.IdentifierTraits.Id.class)
-        private Collection<String> ids = Collections.singletonList("hehe");
     }
 }
