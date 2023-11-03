@@ -2,6 +2,7 @@ package io.gardenerframework.fragrans.data.persistence.test.cases;
 
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Batch;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Equals;
+import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Prefix;
 import io.gardenerframework.fragrans.data.persistence.criteria.support.CriteriaBuilder;
 import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.criteria.DatabaseCriteria;
@@ -101,6 +102,15 @@ public class CriteriaBuilderTest {
         String noR = criteria.build().replace("\r", "");
         String noN = noR.replace("\n", "");
         Assertions.assertEquals("((((`test`.`id` = #{batchTest.id}) OR (`test`.`name` = #{batchTest.name}) OR ((<foreach item=\"item\" collection=\"batchTest.ids\" separator=\"OR\">       (`test`.`id` = #{item})</foreach>)))))", noN);
+        criteria = CriteriaBuilder.getInstance().createCriteria(
+                "test",
+                PrefixCriteria.class,
+                new PrefixCriteria(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
+                "prefixTest",
+                null,
+                Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get(), "path")
+        );
+        Assertions.assertEquals("((((`test`.`id` = #{prefixTest.id}) OR (`test`.`name` = #{prefixTest.name}) OR (`test`.`path` LIKE concat(#{prefixTest.path}, '%')))))", criteria.build());
     }
 
     @Getter
@@ -139,6 +149,18 @@ public class CriteriaBuilderTest {
         private Collection<String> ids = Collections.singletonList("hehe");
 
         public BatchCriteria(String id, String name) {
+            super(id, name);
+        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class PrefixCriteria extends TestCriteria {
+        @Prefix
+        private String path = "/a/b";
+
+        public PrefixCriteria(String id, String name) {
             super(id, name);
         }
     }
