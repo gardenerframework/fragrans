@@ -1,6 +1,7 @@
 package io.gardenerframework.fragrans.data.persistence.test.cases;
 
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Batch;
+import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Before;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Equals;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Prefix;
 import io.gardenerframework.fragrans.data.persistence.criteria.support.CriteriaBuilder;
@@ -111,6 +112,26 @@ public class CriteriaBuilderTest {
                 Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get(), "path")
         );
         Assertions.assertEquals("((((`test`.`id` = #{prefixTest.id}) OR (`test`.`name` = #{prefixTest.name}) OR (`test`.`path` LIKE concat(#{prefixTest.path}, '%')))))", criteria.build());
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        CriteriaBuilder.getInstance().createCriteria(
+                                "test",
+                                PrefixCriteriaWithInt.class,
+                                new PrefixCriteriaWithInt(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
+                                "prefixTest",
+                                null,
+                                Arrays.asList(TraitUtils.getTraitFieldNames(GenericTraits.IdentifierTraits.Id.class).stream().findFirst().get(), TraitUtils.getTraitFieldNames(GenericTraits.LiteralTraits.Name.class).stream().findFirst().get(), "path")
+                        ));
+        criteria = CriteriaBuilder.getInstance().createCriteria(
+                "test",
+                BeforeCriteria.class,
+                new BeforeCriteria(),
+                "beforeTest",
+                null,
+                Arrays.asList("date")
+        );
+        Assertions.assertEquals("((((`test`.`date` &lt;= #{beforeTest.date}))))", criteria.build());
     }
 
     @Getter
@@ -163,5 +184,25 @@ public class CriteriaBuilderTest {
         public PrefixCriteria(String id, String name) {
             super(id, name);
         }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class PrefixCriteriaWithInt extends TestCriteria {
+        @Prefix
+        private int path = 0;
+
+        public PrefixCriteriaWithInt(String id, String name) {
+            super(id, name);
+        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class BeforeCriteria extends TestCriteria {
+        @Before
+        private Date date = new Date();
     }
 }

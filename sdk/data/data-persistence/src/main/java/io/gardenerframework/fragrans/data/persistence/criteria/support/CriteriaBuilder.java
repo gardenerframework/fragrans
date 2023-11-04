@@ -2,6 +2,7 @@ package io.gardenerframework.fragrans.data.persistence.criteria.support;
 
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.Batch;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.CriteriaProvider;
+import io.gardenerframework.fragrans.data.persistence.criteria.annotation.TypeConstraints;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory.CriteriaFactory;
 import io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory.EqualsFactory;
 import io.gardenerframework.fragrans.data.persistence.orm.entity.FieldScanner;
@@ -251,6 +252,11 @@ public class CriteriaBuilder {
                             //不是集合
                             CriteriaFactory criteriaFactory = factories.get(criteriaProvider == null ? EqualsFactory.class : criteriaProvider.value());
                             Assert.notNull(criteriaFactory, "cannot get CriteriaFactory bean of " + (criteriaProvider == null ? EqualsFactory.class : criteriaProvider.value()));
+                            TypeConstraints typeConstraints = AnnotationUtils.findAnnotation(criteriaFactory.getClass(), TypeConstraints.class);
+                            if (typeConstraints != null && !typeConstraints.value().isAssignableFrom(criteriaField.getType())) {
+                                //检查条件中的字段是否符合类型约定
+                                throw new IllegalArgumentException("\"" + criteriaField.getName() + "\"" + " did not match type constraints: " + typeConstraints.value().getSimpleName());
+                            }
                             if (criteriaCreated == null) {
                                 criteriaCreated = criteriaFactory.createCriteria(
                                         entityType,

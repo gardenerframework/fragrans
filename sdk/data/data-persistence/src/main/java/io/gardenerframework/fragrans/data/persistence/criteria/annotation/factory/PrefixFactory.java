@@ -1,6 +1,7 @@
 package io.gardenerframework.fragrans.data.persistence.criteria.annotation.factory;
 
 import io.gardenerframework.fragrans.data.persistence.configuration.DataPersistenceComponent;
+import io.gardenerframework.fragrans.data.persistence.criteria.annotation.TypeConstraints;
 import io.gardenerframework.fragrans.data.persistence.orm.database.Database;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.exception.UnsupportedDriverException;
 import io.gardenerframework.fragrans.data.persistence.orm.statement.schema.column.Column;
@@ -14,6 +15,7 @@ import org.springframework.boot.jdbc.DatabaseDriver;
  * @date 2023/11/3
  */
 @DataPersistenceComponent
+@TypeConstraints(String.class)
 public class PrefixFactory implements CriteriaFactory {
     @Override
     public DatabaseCriteria createCriteria(Class<?> entityType, Object criteria, String criteriaParameterName, Column column, BasicValue value) {
