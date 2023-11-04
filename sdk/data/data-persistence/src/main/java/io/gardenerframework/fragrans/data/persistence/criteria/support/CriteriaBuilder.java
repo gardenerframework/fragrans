@@ -103,13 +103,33 @@ public class CriteriaBuilder {
             @Nullable Collection<String> must,
             @Nullable Collection<String> should
     ) {
-        Map<String, DatabaseCriteria> criteriaTraitMapping = createFieldCriteriaMapping(tableName, entityType, criteria, criteriaParameterName, filter);
+        //条件中的字段 -> 对应的搜索条件
+        return createCriteria(
+                createFieldCriteriaMapping(tableName, entityType, criteria, criteriaParameterName, filter),
+                must,
+                should
+        );
+    }
+
+    /**
+     * 按照一种指定must/should的模式创建搜索条件
+     *
+     * @param criteriaFieldMapping 条件字段-> 条件搜索的映射
+     * @param must                 哪些trait是必须的
+     * @param should               哪些trait是可选的
+     * @return 搜索条件
+     */
+    public MatchAllCriteria createCriteria(
+            Map<String, DatabaseCriteria> criteriaFieldMapping,
+            @Nullable Collection<String> must,
+            @Nullable Collection<String> should
+    ) {
         MatchAllCriteria criteriaCreated = new MatchAllCriteria();
         if (!CollectionUtils.isEmpty(must)) {
             MatchAllCriteria mustCriteria = new MatchAllCriteria();
             must.forEach(
-                    trait -> {
-                        DatabaseCriteria basicCriteria = criteriaTraitMapping.get(trait);
+                    fieldName -> {
+                        DatabaseCriteria basicCriteria = criteriaFieldMapping.get(fieldName);
                         if (basicCriteria != null) {
                             mustCriteria.and(basicCriteria);
                         }
@@ -122,8 +142,8 @@ public class CriteriaBuilder {
         if (!CollectionUtils.isEmpty(should)) {
             MatchAnyCriteria shouldCriteria = new MatchAnyCriteria();
             should.forEach(
-                    trait -> {
-                        DatabaseCriteria basicCriteria = criteriaTraitMapping.get(trait);
+                    fieldName -> {
+                        DatabaseCriteria basicCriteria = criteriaFieldMapping.get(fieldName);
                         if (basicCriteria != null) {
                             shouldCriteria.or(basicCriteria);
                         }
