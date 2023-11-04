@@ -26,6 +26,14 @@ public interface NetworkTraits {
         }
 
         @Trait
+        class Socket {
+            /**
+             * 套接字(ip + 端口)
+             */
+            String socket;
+        }
+
+        @Trait
         class Port {
             /**
              * 端口号
