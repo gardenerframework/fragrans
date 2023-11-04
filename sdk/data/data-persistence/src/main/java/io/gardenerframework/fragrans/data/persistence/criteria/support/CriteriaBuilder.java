@@ -320,7 +320,7 @@ public class CriteriaBuilder {
         return fields;
     }
 
-    private static class DefaultFilter<C> implements BiFunction<C, Field, Boolean> {
+    public static class DefaultFilter<C> implements BiFunction<C, Field, Boolean> {
         @Override
         public Boolean apply(C c, Field field) {
             try {
